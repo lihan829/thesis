@@ -84,7 +84,7 @@ indicate vowel length in some literature.
 
 Second, the notation of contour tones may be ambiguous, particularly 
 in languages in which contour tones have greater distributional 
-flexibility. As shown in Table~\ref{tab:Africanist}, a falling tone 
+flexibility. As shown in Table~\ref{tab:africanist}, a falling tone 
 may be written with a circumflex on the nucleus vowel (\textit{â}), 
 on a long vowel (\textit{â:}), or on one element of a complex 
 nucleus (\textit{âi}, \textit{ân}). Additionally, contour tones
@@ -161,8 +161,122 @@ As can be seen, this could be simply handled by ARs by adding an association lin
 
 Another phenomenon which argues for the autosegmental representation
 of tone is across-the-board effects, which refers to the effect that a tone change applies to the whole domain rather than just its local neighbor. As shown in Example \ref{ex:shona} from Shona, a H tone prefix will trigger a series of L tone to change into H. However, if more prefixes stack together, the melody will be in tone alternation, which would be extremely difficult for feature theory to capture accurately.
-
 \subsection{Q-Theory}
+
+\citet{inkelas2013abc+} introduced \textit{Q-theory}, initially designed to account
+for complex diphthongs and later expanded to contour tones. Under this
+framework, each tone (or segment) can be divided into three temporally ordered,
+quantized subsegments. A phonological representation follows the format
+Q($q_1$, $q_2$, $q_3$), where a traditional representation, or a segment, can be
+decomposed into three subsegments $q$. Here, ``q'' is loosely based on the concept
+of quantized temporal subphases of the unit phonologists call a ``segment.''
+A vowel with a rising-falling tone can be represented as
+V(à\textsuperscript{1}á\textsuperscript{2}à\textsuperscript{3}).
+\citet{inkelas2013abc+} argue that Q-theory can compensate for the difficulty of
+Aperture Theory, which limits the number of aperture positions to a maximum of
+two.
+
+Q-theory is motivated by the typological observation that most complex tones do
+not exceed three tonal levels and that four-tone contours are very rare
+\citep{shih2013subsegmental}. It provides a useful harmony--disharmony typology
+based on whether the target of change is the whole segment or a subsegment.
+See Table~\ref{tab:tone-harmony}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Tone harmony and disharmony involving whole segments and subsegments}
+	\label{tab:tone-harmony}
+	\begin{tabular}{lll}
+		\hline
+		& \textbf{Whole segment: Q} & \textbf{Subsegment: q} \\
+		\hline
+		
+		\textbf{Harmony}
+		&
+		\begin{tabular}[t]{@{}l@{}}
+			\textbf{a. Changzhi} \\
+			(Duanmu 1994; a.o.) \\
+			/kuə213-təʔ535/ $\rightarrow$ [kuə213-təʔ213] \\
+			`pan, dim.'
+		\end{tabular}
+		&
+		\begin{tabular}[t]{@{}l@{}}
+			\textbf{c. Yoruba} \\
+			(Akinbiyi \& Liberman 2001) \\
+			/rárà/ $\rightarrow$ [rárâ] \\
+			`elegy'
+		\end{tabular}
+		\\[2ex]
+		
+		\textbf{Disharmony}
+		&
+		\begin{tabular}[t]{@{}l@{}}
+			\textbf{b. Pingyao} \\
+			(Chen 1992; Yip 2002) \\
+			/hai35 bing35/ $\rightarrow$ [hai53 bing35] \\
+			`become ill'
+		\end{tabular}
+		&
+		\begin{tabular}[t]{@{}l@{}}
+			\textbf{d. Tianjin} \\
+			(Chen 1985; a.o.) \\
+			/feiL-jiL/ $\rightarrow$ [feiLH.jiL] \\
+			`airplane'
+		\end{tabular}
+		\\
+		
+		\hline
+	\end{tabular}
+\end{table}
+
+The first limitation of Q-theory is that, even though the typological observation
+suggests a lack of four-tone contours, there is in fact a typological category
+found in some Chinese dialects known as the ``double circumflex''
+\citep{zhu2012dipping}. Double-circumflex tones have two perceptually salient turning
+points. Three variants of the double-circumflex tone can be distinguished by the
+relative heights of these turning points, as shown in
+Table~\ref{tab:double-circumflex}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Three variants of double-circumflex tones}
+	\label{tab:double-circumflex}
+	\begin{tabular}{llll}
+		\hline
+		\textbf{Type} & \textbf{Contour} & \textbf{Variety} & \textbf{Example} \\
+		\hline
+		Back-low     & 4232 & Yuejiashan Mandarin (Zhongyang)
+		& \textit{xiang} `make a sound' \\
+		Equal-height & 3232 & Deqing Wu (Zhejiang)
+		& \textit{ma} `hemp' \\
+		Front-low    & 3242 & Qiyang Xiang (Hunan)
+		& \textit{dong} `freeze' \\
+		\hline
+	\end{tabular}
+\end{table}
+
+One possible solution for accommodating these tones within Q-theory is to
+consider a single contour (a fall or rise) as the subsegmental unit.
+However, if a language with double-circumflex tones also has level tones (such
+as 55) or short tones (also known as ``entered tone'', typically noted as 5), Q-theory is again insufficient to account
+for all these tone types within a unified representation.
+
+Secondly, Q-theory could also be seen as a flat-string version of a nonlinear
+representation. Q could be seen as a tonal node, while its subsegments could be
+seen as tone units. Whether a subsegment or the whole segment undergoes a change
+also corresponds to the two tonal models proposed by \citet{yip1989contour} and
+\citet{bao1999structure}. \citet{jardine2021qtheory} argues that Q-theory is
+logically equivalent to ARs under model theory and logical interpretations. This
+means that, using a set of logical formulas, there is a bijective transduction
+from one representation to the other, and vice versa. The differences are
+presentational, but the representations are notationally equivalent.
+\citet{oakdenNotationalEquivalenceTonal2020} provides a more detailed discussion
+of notational equivalence.
+
+
+
+
+
 
 \subsection{Autosegmental Theory}
 
