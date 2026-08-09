@@ -1,0 +1,179 @@
+\chapter{Tones: Theory and Computation} 
+\label{chap:tones}
+
+Languages with tonal distinctions have been studied as a more or less separate 
+subfield known as tonal phonology. This division reflects a natural difference 
+between the nature of tone and that of segments, as evidenced by a large body of 
+empirical evidence from Asian and African languages. Rather than being inherent 
+properties of vowels, tones may change independently of the segments that bear 
+them. This property challenges traditional linear rule-writing approaches, which 
+provide a cumbersome means of capturing tonal generalizations. Consequently, any 
+discussion of tone necessarily involves a discussion of its representations, 
+ranging from accent marks and feature-based representations to phonetically 
+based notational systems\citep{chao}. These approaches can be found throughout both the African and Asian tonal phonology literature. Among them, Goldsmith's (1976) autosegmental theory has become the most influential and widely adopted framework. The first half of this chapter provides an overview of the major approaches to tonal representation and typology.
+
+The issue of representation further poses important requirements for computational 
+modeling. Since the introduction of autosegmental theory by 
+\citet{goldsmith1976autosegmental}, there has been a clear shift in theoretical 
+phonology toward structurally enriched representations. In contrast, computational 
+approaches have been slower to adopt such representations. Works by \citet{jardine16dissertation,chandlee2019autosegmental,chandleeComputationalAccountTo
+	ne2019,oakden2020computational} argue that linguistically meaningful 
+	representations can reduce computational complexity. These representations 
+	include autosegmental graphs \citep{jardine16dissertation}, metrical structures 
+	\tocite{lamount}, and feature-based representations for segmental learning 
+	\tocite{magda}. These proposals, together with their computational 
+	implementations, highlight an important direction for computational modeling: 
+	the use of linguistically informed representations to improve interpretability, 
+	data efficiency, and linguistic adequacy through the development of small, 
+	specialized language models. The second half of this chapter reviews 
+	computational approaches to tonal phonology, including finite-state transducers 
+	and other computational models. It also discusses the challenges and 
+	opportunities involved in developing computational models that effectively 
+	capture the complexities of tonal phonology.
+
+\section{Representations of Tone}
+
+Estimates of the proportion of the world's tonal languages vary from 42.9\% \citep{bibid}
+\citet{yip2002tone}, for example, suggests that as many as 60--70\% of the world's 
+languages may be tonal, whereas \citet{maddieson2013tone} estimates the proportion 
+to be closer to 40\%. This discrepancy reflects differences in language sampling as 
+well as in the criteria used to distinguish tone languages from languages with pitch 
+accent or marginal tonal contrasts. Nevertheless, tone languages have a non-even 
+geographical distribution: they are especially widespread in Africa, Central America, 
+and East and Southeast Asia, while occurring more sparsely in Eurasia, North America, 
+and Australia 
+\citep{welmers1962, maddieson2013tone, kao2017phonological, 
+	gordon2016phonological}.
+
+Since tonal languages are widespread across different 
+geographic regions, different conventions for representing 
+tones have been developed to accommodate the languages in 
+questions. \citet{yip2002tone} classified three main notational traditions for tones: Africanist, Asianist, and Central Americanist.
+I group the latter two together for the present discussion since 
+both use numerical notation, although they differ in how the numbers 
+correspond to pitch levels and contours.
+ 
+\subsection{Letter System}
+
+An Africanist convention is to represent tone using accent marks. Tones are commonly marked with diacritics, even when they are not represented in a language’s everyday orthography. Table~\ref{{tab:Africanist}} shows a basic system.
+\begin{table}[ht]
+	\centering
+	\caption{Common Africanist tone notation}
+	\label{tab:africanist}
+	\begin{tabular}{lll}
+		\hline
+		\textbf{Tone} & \textbf{Symbol} & \textbf{Letter} \\
+		\hline
+		High      & \textit{á} & H      \\
+		Low       & \textit{à} & L      \\
+		Mid       & \textit{ā} & M      \\
+		Falling   & \textit{â} & F   \\
+		Rising    & \textit{ǎ} & R   \\
+		%		Fall-rise & `\/\` & FR/HLH \\
+		%		Rise-fall & \textit{a᷈} & RF/LHL \\
+		\hline
+	\end{tabular}
+\end{table}
+
+It should be noted that Africanist notation varies across linguists 
+and languages. First, the unmarked tone in a two-tone system may be 
+left without a diacritic; similarly, the mid tone is often unmarked 
+in a three-tone system. Conversely, the macron (ā) is also used to 
+indicate vowel length in some literature. 
+\tocite{Provide examples of unmarked-tone conventions in several African languages} 
+
+Second, the notation of contour tones may be ambiguous, particularly 
+in languages in which contour tones have greater distributional 
+flexibility. As shown in Table~\ref{tab:Africanist}, a falling tone 
+may be written with a circumflex on the nucleus vowel (\textit{â}), 
+on a long vowel (\textit{â:}), or on one element of a complex 
+nucleus (\textit{âi}, \textit{ân}). Additionally, contour tones
+can emerge in the surface form as a morphological or phonological processes, even though the language does not have underlying contour form. One practice is to distinguish underlying contour from deritational contour with F vs HL and R vs LH. but this praxrixe is 
+not consistnetly used. therefore, contour tones may alternatively be represented as (\textit{áà} = \textit{â:}). In 
+languages that permit both concave and convex contour tones, 
+circumflex and caron diacritics alone may be insufficient to 
+represent more complex contours unambiguously.\tocite{Mende tonal 
+	notation system}
+
+\begin{table}[ht]
+	\centering
+	\caption{Common Africanist tone notation}
+	\label{tab:africanist}
+	\begin{tabular}{lll}
+		\hline
+		\textbf{Tone} & \textbf{Symbol} & \textbf{Letter} \\
+		\hline
+		High      & \textit{á} & H      \\
+		Low       & \textit{à} & L      \\
+		Mid       & \textit{ā} & M      \\
+		Falling   & \textit{â,â:,áà} & F/HL   \\
+		Rising    & \textit{ǎ} & R/LH   \\
+				Fall-rise & `\/\` & FR/HLH \\
+				Rise-fall & \textit{a᷈} & RF/LHL \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Although these rules describe the observed mappings, they obscure the generalization 
+that the tonal components are preserved while the number of tone-bearing units is 
+reduced. A representation that decomposes contour tones into sequences of level tones 
+captures this generalization more directly.
+
+\subsection{Phonetic-Based Notation}
+
+In the Asianist tradition, tone is commonly represented using Chao’s five-level system \citep{chao1930system}. This system has the following properties:
+
+\begin{enumerate}
+	\item The natural pitch range of a speaker’s normal voice is divided into five levels, with 1 representing the lowest pitch and 5 the highest.
+	\item A sequence of digits indicates the starting point, any turning point, and the endpoint of a pitch contour. For example, 55 represents a high-level tone, 35 a rising tone, and 214 a falling-rising tone.
+	\item A toneless or neutral-tone syllable may be represented by 0.
+	\item An entering-tone syllable—that is, a syllable ending in a stop coda—is conventionally represented by a single digit.
+\end{enumerate}
+
+\subsection{Feature Theory}
+Feature theory is another option for describing tones. H, L, R, F can be presented as [+H,-contour], [-H,-contour], [-H,+contour], [+H,+contour]. In other words, R
+and F will be a natural class of [+contour] and L and R will be [-H]. However, this system is also inadequate for several reasons. 
+
+
+Firstly, this theory fails to produce the correct rules for patterns that do exist, and also produces unattested patterns. Example \ref{ex:cantdo} lists two common rules when a H tone becomes a R after \{L,F\}, or a L tone turns into a F after \{H,R\}, and there is no possible way to describe the process by using [contour] feature because \{L,F\} or \{H,R\} does not form a natural class. Besides, the theory can also predict unattested patterns in Example \ref{ex:crazyrules}.
+
+% \ea \label{ex:cantdo}
+% H $\rightarrow$ R / \{L,F\} \_\_\\
+% L $\rightarrow$ F / \{H,R\} \_\_
+% \z
+
+% \ea \label{ex:crazyrules}
+% *[+H] $\rightarrow$ [+contour] / [-H]\_\_  \hfill equivalent to H $\rightarrow$ F / \{L,R\} \_\_\hfill(unattested)\\
+% *[-H] $\rightarrow$ [+contour] / [+H]\_\_\hfill   equivalent to L $\rightarrow$ R / \{H,F\} \_\_ \hfill(unattested)
+% \z
+
+As can be seen, this could be simply handled by ARs by adding an association line between L and H to the segment:
+
+    \begin{tikzpicture}
+        \node (s1) at (0, 0) {V} ; 
+        \node[anchor=base] (t1) at (0,1) {H} ; 
+        \node[anchor=base] (t2) at (1,1) {L} ;
+        %association lines
+        \draw [dotted] (s1) -- (t2) ;
+        \draw (s1) -- (t1) ;
+    \end{tikzpicture}
+    
+
+Another phenomenon which argues for the autosegmental representation
+of tone is across-the-board effects, which refers to the effect that a tone change applies to the whole domain rather than just its local neighbor. As shown in Example \ref{ex:shona} from Shona, a H tone prefix will trigger a series of L tone to change into H. However, if more prefixes stack together, the melody will be in tone alternation, which would be extremely difficult for feature theory to capture accurately.
+
+\subsection{Q-Theory}
+
+\subsection{Autosegmental Theory}
+
+
+Autosegmental theory, proposed by \citet{goldsmith1976autosegmental}, proposes that tone be represented autosegmentally in separate tiers from segments, but linked to them by association lines, and the association between tone and tone-bearing unit (TBU) is governed by a set of wellformedness conditions. 
+
+The foremost reason in support of autosegmental representation over linear theory is that  latter struggles to capture the autonomy property of the tonal processes.\textbf{ }One of the most common process in tonal phonology is tone preservation which means the deletion of a vowel segment does not lead to the deletion of the tone carried by the vowel. Example \ref{ex:HL} from Yekhee \citep{odden2005introducing} demonstrates the merger of two tones onto one syllable when the one of the tone-bearing unit is deleted after compounding. Linear rules in a string representations in (\ref{ex:HLrules}) have two problems. First, the rule will over generalizing for all H and L tone merger when it is not; Besides, there is no formulastion of the syllable deletion which contour formation was induced. In addition, new tones need to be introduced into the tone inventory.  The contour formation process can be more simply handled in a representation of ARs as in (\ref{})
+
+
+
+All these above processes can be handled more elegantly by modifying association lines with tones and vowels by using ARs. (draw according examples below).
+
+Lastly, autosegmental theory is advantageous is that it captures the nature of tonal process more accurately. Spreading is one of the most common process, which a tone unit spread over a domain of one or several segments. This process will be generalized as copying if we use a linear theory. For example, in Cameroon \citet{hyman2014}, the H tone spreads onto the L verb root and thus producing a HL as in (\ref{ex:hts}). A rule format of (\ref{ex:htsrule})  generalizes the H tone spreading process as a H tone copying or tone addition in the second syllable, although it is simply a H tone expands its domain.
+

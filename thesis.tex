@@ -1,0 +1,61 @@
+\documentclass[12pt]{book}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+% ---------- Math ----------
+\usepackage{amsmath,amsthm}
+% \usepackage{xcolor}
+
+% ---------- Graphics & Tables ----------
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{multicol}
+
+% ---------- Linguistics ----------
+\usepackage{expex}
+\usepackage{tipa}
+
+% Drawing
+% --------------------------------------------------
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+
+% ---------- References ----------
+\usepackage[authoryear]{natbib}
+
+% ---------- Formatting ----------
+\usepackage{parskip}
+\usepackage{appendix}
+
+% ---------- Hyperlinks ----------
+\usepackage[
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+]{hyperref}
+\usepackage{tikz}
+
+% ---------- Theorems ----------
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}{Example}[chapter]
+\newcommand{\tocite}[1]{\textbf{\textcolor{red}{[CITE: #1]}}}
+\begin{document}
+
+\tableofcontents
+
+\include{Chapter1}
+\include{Chapter2}
+\include{Chapter3}
+\include{Chapter4}
+\include{Chapter5}
+\include{Chapter6}
+\include{Chapter7}
+\bibliographystyle{apalike}
+\bibliography{references}
+
+\end{document}
