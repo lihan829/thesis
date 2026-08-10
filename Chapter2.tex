@@ -10,30 +10,36 @@ them. This property challenges traditional linear rule-writing approaches, which
 provide a cumbersome means of capturing tonal generalizations. Consequently, any 
 discussion of tone necessarily involves a discussion of its representations, 
 ranging from accent marks and feature-based representations to phonetically 
-based notational systems\citep{chao}. These approaches can be found throughout both the African and Asian tonal phonology literature. Among them, Goldsmith's (1976) autosegmental theory has become the most influential and widely adopted framework. The first half of this chapter provides an overview of the major approaches to tonal representation and typology.
+based notational systems \citep{chao1930system}. These approaches can be found 
+throughout both the African and Asian tonal phonology literature. Among them, 
+Goldsmith's (1976) autosegmental theory has become the most influential and widely 
+adopted framework. The first half of this chapter provides an overview of the major 
+approaches to tonal representation and typology.
 
 The issue of representation further poses important requirements for computational 
 modeling. Since the introduction of autosegmental theory by 
 \citet{goldsmith1976autosegmental}, there has been a clear shift in theoretical 
 phonology toward structurally enriched representations. In contrast, computational 
-approaches have been slower to adopt such representations. Works by \citet{jardine16dissertation,chandlee2019autosegmental,chandleeComputationalAccountTo
-	ne2019,oakden2020computational} argue that linguistically meaningful 
-	representations can reduce computational complexity. These representations 
-	include autosegmental graphs \citep{jardine16dissertation}, metrical structures 
-	\tocite{lamount}, and feature-based representations for segmental learning 
-	\tocite{magda}. These proposals, together with their computational 
-	implementations, highlight an important direction for computational modeling: 
-	the use of linguistically informed representations to improve interpretability, 
-	data efficiency, and linguistic adequacy through the development of small, 
-	specialized language models. The second half of this chapter reviews 
-	computational approaches to tonal phonology, including finite-state transducers 
-	and other computational models. It also discusses the challenges and 
-	opportunities involved in developing computational models that effectively 
-	capture the complexities of tonal phonology.
+approaches have been slower to adopt such representations. 
+Works by \citet{jardine16dissertation,chandlee2019autosegmental,oakden2020computational} 
+argue that linguistically meaningful representations can reduce computational complexity. 
+These representations include autosegmental graphs \citep{jardine16dissertation}, 
+metrical structures \tocite{lamount}, and feature-based representations for segmental 
+learning \tocite{magda}. These proposals, together with their computational 
+implementations, highlight an important direction for computational modeling: 
+the use of linguistically informed representations to improve interpretability, 
+data efficiency, and linguistic adequacy through the development of small, 
+specialized language models. The second half of this chapter reviews 
+computational approaches to tonal phonology, including finite-state transducers 
+and other computational models. It also discusses the challenges and 
+opportunities involved in developing computational models that effectively 
+capture the complexities of tonal phonology.
 
 \section{Representations of Tone}
 
-Estimates of the proportion of the world's tonal languages vary from 42.9\% \citep{bibid}
+Estimates of the proportion of the world's tonal languages vary 
+from 42.9\% \tocite{thet}
+
 \citet{yip2002tone}, for example, suggests that as many as 60--70\% of the world's 
 languages may be tonal, whereas \citet{maddieson2013tone} estimates the proportion 
 to be closer to 40\%. This discrepancy reflects differences in language sampling as 
@@ -48,14 +54,25 @@ and Australia
 Since tonal languages are widespread across different 
 geographic regions, different conventions for representing 
 tones have been developed to accommodate the languages in 
-questions. \citet{yip2002tone} classified three main notational traditions for tones: Africanist, Asianist, and Central Americanist.
+questions. \citet{yip2002tone} classified three main notational traditions 
+for tones: Africanist, Asianist, and Central Americanist.
 I group the latter two together for the present discussion since 
 both use numerical notation, although they differ in how the numbers 
-correspond to pitch levels and contours.
- 
+correspond to pitch levels and contours. 
+
+It is worth mentioning that, in this section, I use the terms ``notation'' and 
+``representation'' interchangeably. Although the two terms differ, all the methods 
+discussed below have been used in theoretical or computational analyses of tonal 
+phonology. I review five such systems: letter notation, number notation, feature-based 
+representation, Q-Theory, and autosegmental representation. The first two function 
+primarily as notational systems in previous work, whereas the remaining three are more 
+formal representational frameworks that have also been applied beyond tonal phonology.
+
 \subsection{Letter System}
 
-An Africanist convention is to represent tone using accent marks. Tones are commonly marked with diacritics, even when they are not represented in a language’s everyday orthography. Table~\ref{{tab:Africanist}} shows a basic system.
+An Africanist convention is to represent tone using accent marks. Tones are commonly 
+marked with diacritics, even when they are not represented in a language’s everyday 
+orthography. Table~\ref{tab:africanist} shows a basic system.
 \begin{table}[ht]
 	\centering
 	\caption{Common Africanist tone notation}
@@ -93,12 +110,12 @@ not consistnetly used. therefore, contour tones may alternatively be represented
 languages that permit both concave and convex contour tones, 
 circumflex and caron diacritics alone may be insufficient to 
 represent more complex contours unambiguously.\tocite{Mende tonal 
-	notation system}
+notation system}
 
 \begin{table}[ht]
 	\centering
 	\caption{Common Africanist tone notation}
-	\label{tab:africanist}
+	\label{tab:africanist_updated}
 	\begin{tabular}{lll}
 		\hline
 		\textbf{Tone} & \textbf{Symbol} & \textbf{Letter} \\
@@ -108,8 +125,8 @@ represent more complex contours unambiguously.\tocite{Mende tonal
 		Mid       & \textit{ā} & M      \\
 		Falling   & \textit{â,â:,áà} & F/HL   \\
 		Rising    & \textit{ǎ} & R/LH   \\
-				Fall-rise & `\/\` & FR/HLH \\
-				Rise-fall & \textit{a᷈} & RF/LHL \\
+		Fall-rise & `\/\` & FR/HLH \\
+		Rise-fall & \textit{a} & RF/LHL \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -121,14 +138,100 @@ captures this generalization more directly.
 
 \subsection{Phonetic-Based Notation}
 
-In the Asianist tradition, tone is commonly represented using Chao’s five-level system \citep{chao1930system}. This system has the following properties:
+In the Asianist tradition, tone is commonly represented using Chao’s five-level 
+system \citep{chao1930system}. An example of this system is shown in Table~\ref{tab:cantonese-tones}, which lists the nine lexical tones of Cantonese.
 
-\begin{enumerate}
+\begin{table}[ht]
+\centering
+\caption{Lexical tones in Cantonese}
+\label{tab:cantonese-tones}
+
+\begin{tabular}{llll@{\qquad}llll}
+\toprule
+\multicolumn{4}{c}{Non-entering} &
+\multicolumn{4}{c}{Entering} \\
+\cmidrule(r){1-4}\cmidrule(l){5-8}
+Tone & Value & Description & Example &
+Tone & Value & Description & Example \\
+\midrule
+T1 & 55 & High level   & \textit{si1} `poem' &
+T7 & 5  & High entering & \textit{sik7} `know' \\
+
+T2 & 25 & High rising  & \textit{si2} `history' &
+T8 & 3  & Mid entering  & \textit{sek8} `tin' \\
+
+T3 & 33 & Mid level    & \textit{si3} `to try' &
+T9 & 2  & Low entering  & \textit{sihk9} `eat' \\
+
+T4 & 21 & Low falling  & \textit{si4} `time' &
+   &    &               & \\
+T5 & 23 & Low rising   & \textit{si5} `market' &
+   &    &               & \\
+
+T6 & 22 & Low level    & \textit{si6} `matter' &
+   &    &               & \\
+\bottomrule
+\end{tabular}
+\end{table}
+ 
+Chao's system has been widely adopted in the study of Chinese languages and dialects.
+The specific rules are as follows:
+\begin{enumerate}[itemsep=1em, parsep=-1em]
 	\item The natural pitch range of a speaker’s normal voice is divided into five levels, with 1 representing the lowest pitch and 5 the highest.
-	\item A sequence of digits indicates the starting point, any turning point, and the endpoint of a pitch contour. For example, 55 represents a high-level tone, 35 a rising tone, and 214 a falling-rising tone.
+	\item A sequence of digits indicates the starting point, turning point(s), and the endpoint of a pitch contour. 
 	\item A toneless or neutral-tone syllable may be represented by 0.
 	\item An entering-tone syllable—that is, a syllable ending in a stop coda—is conventionally represented by a single digit.
 \end{enumerate}
+
+In Central Americanist notation, tones are represented in a similar way, but in a 
+reversed order, with 1 representing the highest pitch and 5 the lowest. This system 
+is used in the study of Mayan languages, such as K’iche’ and Q’eqchi’. 
+
+This way of representing tones is effective in describing their productive
+and perceptual details. However, this can also leads to its limitation
+and explains why such system is more treated as a notation rather than a formal mental representation of speakers. Transcriptions of the same languages can vary greatly across
+linguists due to allphonic (or allotonic) and interspeakers variability. 
+Take Shanghai Chinese (also known as Shanghainese, a variaty in Wu Chinese) as an example. Shanghainese has five tones, and their tone values have had different numerical
+descriptions from different sources, as shown in Table~\ref{tab:shanghai-tones}.
+
+\begin{table}[ht]
+\centering
+\caption{Tone values reported across different sources}
+\label{tab:shanghai-tones}
+\begin{tabular}{lccccc}
+\toprule
+& \multicolumn{5}{c}{Tones} \\
+\cmidrule(lr){2-6}
+Sources & T1 & T2 & T3 & T4 & T5 \\
+\midrule
+JSS 1960          & 53              & 34               & 13 / 14           & 5                & 2               \\
+Walton 1983       & 53              & 34               & 14                & 5                & 2               \\
+Xu et al. 1981--83 & 53             & 34               & 13                & \underline{55}   & 12              \\
+Xu \& Tang 1988   & 53 / \underline{52}
+                  & 334 / \underline{434}
+                  & 113 / \underline{223}
+                  & \underline{55} / \underline{54}
+                  & 12 / \underline{23} \\
+T. Shen 1981 (1985)
+                  & 52
+                  & 334 / 34
+                  & 113 / 13
+                  & 4 / 5 / 7 (\underline{45})
+                  & \underline{23} \\
+Yuan 1983         & 42              & 34 / 434         & 24                & 5                & \underline{23}  \\
+Norman 1988       & 42              & 35               & 24                & \underline{55}   & \underline{23}  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Obviously, tonal processes can be generalized using this numerical system, but 
+the generalization appears to involve arbitrary changes in pitch values (which is, 
+as the reader progresses in Section \tocite{later}, same issues for feature system). For example, the fall-rise tone (T3) in Mandarin is consistently transcribed as 214. 
+When two fall-rise tones are adjacent, the former one will undergo a sandhi process
+and become a high rise. This process is formalized as 214 + 214 = 35 + 214. 
+Although, this gives a clear depiction of the phonetic details, but the relationship 
+between 214 and 35 appears arbitrary and does not reveal the phonological structure 
+underlying the change. 
 
 \subsection{Feature Theory}
 Feature theory is another option for describing tones. H, L, R, F can be presented as [+H,-contour], [-H,-contour], [-H,+contour], [+H,+contour]. In other words, R
@@ -137,15 +240,15 @@ and F will be a natural class of [+contour] and L and R will be [-H]. However, t
 
 Firstly, this theory fails to produce the correct rules for patterns that do exist, and also produces unattested patterns. Example \ref{ex:cantdo} lists two common rules when a H tone becomes a R after \{L,F\}, or a L tone turns into a F after \{H,R\}, and there is no possible way to describe the process by using [contour] feature because \{L,F\} or \{H,R\} does not form a natural class. Besides, the theory can also predict unattested patterns in Example \ref{ex:crazyrules}.
 
-% \ea \label{ex:cantdo}
-% H $\rightarrow$ R / \{L,F\} \_\_\\
-% L $\rightarrow$ F / \{H,R\} \_\_
-% \z
+\ex \label{ex:cantdo}
+H $\rightarrow$ R / \{L,F\} \_\_\\
+L $\rightarrow$ F / \{H,R\} \_\_
+\xe 
 
-% \ea \label{ex:crazyrules}
-% *[+H] $\rightarrow$ [+contour] / [-H]\_\_  \hfill equivalent to H $\rightarrow$ F / \{L,R\} \_\_\hfill(unattested)\\
-% *[-H] $\rightarrow$ [+contour] / [+H]\_\_\hfill   equivalent to L $\rightarrow$ R / \{H,F\} \_\_ \hfill(unattested)
-% \z
+\ex \label{ex:crazyrules}
+*[+H] $\rightarrow$ [+contour] / [-H]\_\_  \hfill equivalent to H $\rightarrow$ F / \{L,R\} \_\_\hfill(unattested)\\
+*[-H] $\rightarrow$ [+contour] / [+H]\_\_\hfill   equivalent to L $\rightarrow$ R / \{H,F\} \_\_ \hfill(unattested)
+\xe
 
 As can be seen, this could be simply handled by ARs by adding an association line between L and H to the segment:
 
@@ -160,7 +263,7 @@ As can be seen, this could be simply handled by ARs by adding an association lin
     
 
 Another phenomenon which argues for the autosegmental representation
-of tone is across-the-board effects, which refers to the effect that a tone change applies to the whole domain rather than just its local neighbor. As shown in Example \ref{ex:shona} from Shona, a H tone prefix will trigger a series of L tone to change into H. However, if more prefixes stack together, the melody will be in tone alternation, which would be extremely difficult for feature theory to capture accurately.
+of tone is across-the-board effects, which refers to the effect that a tone change applies to the whole domain rather than just its local neighbor. As shown in Example \tocite{ex:shona} from Shona, a H tone prefix will trigger a series of L tone to change into H. However, if more prefixes stack together, the melody will be in tone alternation, which would be extremely difficult for feature theory to capture accurately.
 \subsection{Q-Theory}
 
 \citet{inkelas2013abc+} introduced \textit{Q-theory}, initially designed to account
@@ -180,54 +283,55 @@ Q-theory is motivated by the typological observation that most complex tones do
 not exceed three tonal levels and that four-tone contours are very rare
 \citep{shih2013subsegmental}. It provides a useful harmony--disharmony typology
 based on whether the target of change is the whole segment or a subsegment.
-See Table~\ref{tab:tone-harmony}.
+% See Table~\ref{tab:tone-harmony}.
 
-\begin{table}[htbp]
-	\centering
-	\caption{Tone harmony and disharmony involving whole segments and subsegments}
-	\label{tab:tone-harmony}
-	\begin{tabular}{lll}
-		\hline
-		& \textbf{Whole segment: Q} & \textbf{Subsegment: q} \\
-		\hline
+
+% \begin{table}[htbp]
+% 	\centering
+% 	\caption{Tone harmony and disharmony involving whole segments and subsegments}
+% 	\label{tab:tone-harmony}
+% 	\begin{tabular}{lll}
+% 		\hline
+% 		& \textbf{Whole segment: Q} & \textbf{Subsegment: q} \\
+% 		\hline
 		
-		\textbf{Harmony}
-		&
-		\begin{tabular}[t]{@{}l@{}}
-			\textbf{a. Changzhi} \\
-			(Duanmu 1994; a.o.) \\
-			/kuə213-təʔ535/ $\rightarrow$ [kuə213-təʔ213] \\
-			`pan, dim.'
-		\end{tabular}
-		&
-		\begin{tabular}[t]{@{}l@{}}
-			\textbf{c. Yoruba} \\
-			(Akinbiyi \& Liberman 2001) \\
-			/rárà/ $\rightarrow$ [rárâ] \\
-			`elegy'
-		\end{tabular}
-		\\[2ex]
+% 		\textbf{Harmony}
+% 		&
+% 		\begin{tabular}[t]{@{}l@{}}
+% 			\textbf{a. Changzhi} \\
+% 			(Duanmu 1994; a.o.) \\
+% 			/kuə213-təʔ535/ $\rightarrow$ [kuə213-təʔ213] \\
+% 			`pan, dim.'
+% 		\end{tabular}
+% 		&
+% 		\begin{tabular}[t]{@{}l@{}}
+% 			\textbf{c. Yoruba} \\
+% 			(Akinbiyi \& Liberman 2001) \\
+% 			/rárà/ $\rightarrow$ [rárâ] \\
+% 			`elegy'
+% 		\end{tabular}
+% 		\\[2ex]
 		
-		\textbf{Disharmony}
-		&
-		\begin{tabular}[t]{@{}l@{}}
-			\textbf{b. Pingyao} \\
-			(Chen 1992; Yip 2002) \\
-			/hai35 bing35/ $\rightarrow$ [hai53 bing35] \\
-			`become ill'
-		\end{tabular}
-		&
-		\begin{tabular}[t]{@{}l@{}}
-			\textbf{d. Tianjin} \\
-			(Chen 1985; a.o.) \\
-			/feiL-jiL/ $\rightarrow$ [feiLH.jiL] \\
-			`airplane'
-		\end{tabular}
-		\\
+% 		\textbf{Disharmony}
+% 		&
+% 		\begin{tabular}[t]{@{}l@{}}
+% 			\textbf{b. Pingyao} \\
+% 			(Chen 1992; Yip 2002) \\
+% 			/hai35 bing35/ $\rightarrow$ [hai53 bing35] \\
+% 			`become ill'
+% 		\end{tabular}
+% 		&
+% 		\begin{tabular}[t]{@{}l@{}}
+% 			\textbf{d. Tianjin} \\
+% 			(Chen 1985; a.o.) \\
+% 			/feiL-jiL/ $\rightarrow$ [feiLH.jiL] \\
+% 			`airplane'
+% 		\end{tabular}
+% 		\\
 		
-		\hline
-	\end{tabular}
-\end{table}
+% 		\hline
+% 	\end{tabular}
+% \end{table}
 
 The first limitation of Q-theory is that, even though the typological observation
 suggests a lack of four-tone contours, there is in fact a typological category
@@ -264,7 +368,8 @@ for all these tone types within a unified representation.
 Secondly, Q-theory could also be seen as a flat-string version of a nonlinear
 representation. Q could be seen as a tonal node, while its subsegments could be
 seen as tone units. Whether a subsegment or the whole segment undergoes a change
-also corresponds to the two tonal models proposed by \citet{yip1989contour} and
+also corresponds to the two tonal models proposed by \citet{yip1980}
+ and
 \citet{bao1999structure}. \citet{jardine2021qtheory} argues that Q-theory is
 logically equivalent to ARs under model theory and logical interpretations. This
 means that, using a set of logical formulas, there is a bijective transduction
@@ -280,14 +385,4 @@ of notational equivalence.
 
 \subsection{Autosegmental Theory}
 
-
-Autosegmental theory, proposed by \citet{goldsmith1976autosegmental}, proposes that tone be represented autosegmentally in separate tiers from segments, but linked to them by association lines, and the association between tone and tone-bearing unit (TBU) is governed by a set of wellformedness conditions. 
-
-The foremost reason in support of autosegmental representation over linear theory is that  latter struggles to capture the autonomy property of the tonal processes.\textbf{ }One of the most common process in tonal phonology is tone preservation which means the deletion of a vowel segment does not lead to the deletion of the tone carried by the vowel. Example \ref{ex:HL} from Yekhee \citep{odden2005introducing} demonstrates the merger of two tones onto one syllable when the one of the tone-bearing unit is deleted after compounding. Linear rules in a string representations in (\ref{ex:HLrules}) have two problems. First, the rule will over generalizing for all H and L tone merger when it is not; Besides, there is no formulastion of the syllable deletion which contour formation was induced. In addition, new tones need to be introduced into the tone inventory.  The contour formation process can be more simply handled in a representation of ARs as in (\ref{})
-
-
-
-All these above processes can be handled more elegantly by modifying association lines with tones and vowels by using ARs. (draw according examples below).
-
-Lastly, autosegmental theory is advantageous is that it captures the nature of tonal process more accurately. Spreading is one of the most common process, which a tone unit spread over a domain of one or several segments. This process will be generalized as copying if we use a linear theory. For example, in Cameroon \citet{hyman2014}, the H tone spreads onto the L verb root and thus producing a HL as in (\ref{ex:hts}). A rule format of (\ref{ex:htsrule})  generalizes the H tone spreading process as a H tone copying or tone addition in the second syllable, although it is simply a H tone expands its domain.
 
