@@ -1,10 +1,12 @@
-\documentclass[12pt]{book}
+\documentclass[12pt]{scrbook}
 \usepackage[margin=1in]{geometry}
 \usepackage{setspace}
 \onehalfspacing
 
+\usepackage{libertine}
+
 % ---------- Math ----------
-\usepackage{amsmath,amsthm}
+\usepackage{amsmath,amsthm, amssymb}
 % \usepackage{xcolor}
 
 % ---------- Graphics & Tables ----------
@@ -18,18 +20,19 @@
 \usepackage{expex}
 \usepackage{tipa}
 
+
 % Drawing
 % --------------------------------------------------
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta}
+\usetikzlibrary{positioning,arrows.meta, calc}
 
 % ---------- References ----------
 \usepackage[authoryear]{natbib}
 
 % ---------- Formatting ----------
-\usepackage{parskip}
-\usepackage{appendix}
-
+% \usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{booktabs}
 % ---------- Hyperlinks ----------
 \usepackage[
     colorlinks=true,
@@ -44,6 +47,21 @@
 \newtheorem{definition}{Definition}[chapter]
 \newtheorem{example}{Example}[chapter]
 \newcommand{\tocite}[1]{\textbf{\textcolor{red}{[CITE: #1]}}}
+\newcommand{\tcitet}[1]{\textbf{\textcolor{red}{[CITE: #1]}}}
+\newcommand{\tcitep}[1]{\textbf{\textcolor{red}{[CITE: #1]}}}
+\newcommand{\kuo}[1]{(\ref{#1})}
+\usepackage{phonrule}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{tipa}
+\usetikzlibrary{arrows, arrows.meta, positioning, matrix, tikzmark,calc, automata}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\algrenewcommand\algorithmiccomment[1]{\hfill{\footnotesize\textit{// #1}}}
+\usepackage[table]{xcolor}
+\usepackage{bm}
+\usepackage{makecell}
 \begin{document}
 
 \tableofcontents
