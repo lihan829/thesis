@@ -226,19 +226,144 @@ Norman 1988       & 42              & 35               & 24                & \un
 
 Obviously, tonal processes can be generalized using this numerical system, but 
 the generalization appears to involve arbitrary changes in pitch values (which is, 
-as the reader progresses in Section \tocite{later}, same issues for feature system). For example, the fall-rise tone (T3) in Mandarin is consistently transcribed as 214. 
+as the reader progresses in Section \tocite{later}, same issues for feature system). 
+For example, the fall-rise tone (T3) in Mandarin is consistently transcribed as 214. 
 When two fall-rise tones are adjacent, the former one will undergo a sandhi process
 and become a high rise. This process is formalized as 214 + 214 = 35 + 214. 
 Although, this gives a clear depiction of the phonetic details, but the relationship 
 between 214 and 35 appears arbitrary and does not reveal the phonological structure 
 underlying the change. 
 
-\subsection{Feature Theory}
-Feature theory is another option for describing tones. H, L, R, F can be presented as [+H,-contour], [-H,-contour], [-H,+contour], [+H,+contour]. In other words, R
-and F will be a natural class of [+contour] and L and R will be [-H]. However, this system is also inadequate for several reasons. 
+\subsection{Tonal Feature}
+From this section onward, we shift from tone ``notations'' to 
+attempts of their mental ``representations''. In segmental 
+phonology, consonants and vowels are represetned
+as a matrices of feature values, where every segment has its
+distinctive features to seperate itself from others.
 
+\tocite{SPE, Pike, Woo etc}
 
-Firstly, this theory fails to produce the correct rules for patterns that do exist, and also produces unattested patterns. Example \ref{ex:cantdo} lists two common rules when a H tone becomes a R after \{L,F\}, or a L tone turns into a F after \{H,R\}, and there is no possible way to describe the process by using [contour] feature because \{L,F\} or \{H,R\} does not form a natural class. Besides, the theory can also predict unattested patterns in Example \ref{ex:crazyrules}.
+\citet{sy1967phonological} proposes one
+of the earliest feature theories of lexical tones to compensate
+for the numerical system does not directly reveal the
+phonological structure of tones, and enable tones to be studied 
+in natural classes and typology. Wang uses the feature \textsc{[\pm contour]} to
+distinguish level tones from contour tones; the three features
+\textsc{[\pm High]}, \textsc{[\pm Central]}, and \textsc{[\pm Mid]} to represent
+pitch height; \textsc{[rising]} and \textsc{[falling]} to describe the
+direction of pitch movement; and \textsc{[convex]} to distinguish
+rise--fall contours from fall--rise contours. These features are shown
+in Table~\ref{tab:tone-feat-matrix}.
+
+\begin{table}[ht]
+\centering
+\caption{Tones and their features}
+\label{tab:tone-feat-matrix}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{l*{13}{c}}
+\toprule
+Tone 
+& 1
+& 2
+& 3
+& 4
+& 5
+& 6
+& 7
+& 8
+& 9
+& 10
+& 11
+& 12
+& 13
+\\
+Feature
+  & \tone{55}
+  & \tone{11}
+  & \tone{44}
+  & \tone{22}
+  & \tone{33}
+  & \tone{25}
+  & \tone{14}
+  & \tone{53}
+  & \tone{31}
+  & \tone{535}
+  & \tone{313}
+  & \tone{453}
+  & \tone{131} \\
+\midrule
+Contour
+  & $-$ & $-$ & $-$ & $-$ & $-$
+  & $+$ & $+$ & $+$ & $+$ & $+$ & $+$ & $+$ & $+$ \\
+
+High
+  & $+$ & $-$ & $+$ & $-$ & $-$
+  & $+$ & $-$ & $+$ & $-$ & $+$ & $-$ & $+$ & $-$ \\
+
+Central
+  & $-$ & $-$ & $+$ & $+$ & $+$
+  & $-$ & $-$ & $-$ & $-$ & $-$ & $-$ & $-$ & $-$ \\
+
+Mid
+  & $-$ & $-$ & $-$ & $-$ & $+$
+  & $-$ & $-$ & $-$ & $-$ & $-$ & $-$ & $-$ & $-$ \\
+
+Rising
+  & $-$ & $-$ & $-$ & $-$ & $-$
+  & $+$ & $+$ & $-$ & $-$ & $+$ & $+$ & $+$ & $+$ \\
+
+Falling
+  & $-$ & $-$ & $-$ & $-$ & $-$
+  & $-$ & $-$ & $+$ & $+$ & $+$ & $+$ & $+$ & $+$ \\
+
+Convex
+  & $-$ & $-$ & $-$ & $-$ & $-$
+  & $-$ & $-$ & $-$ & $-$ & $-$ & $-$ & $+$ & $+$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+under this theory, H, L, R, F, the common tones in african languages,
+can be presented as [+H,-contour], [-H,-contour], [-H,+contour], [+H,+contour]. In other words, R
+and F will be a natural class of [+contour] and L and R will be [-H].
+For Mandarin Chinese, only two features are able to distinguish the
+froru tones, see table~\ref{tab:mandarin-tone-features} 
+
+\begin{table}[ht]
+    \centering
+    \caption{Pekingese tones represented by features}
+    \label{tab:mandarin-tone-features}
+    \begin{tabular}{lcccc}
+        \toprule
+        & Tone 3 [214] & Tone 4 [51] & Tone 2 [35] & Tone 1 [55] \\
+        \midrule
+        \textsc{Falling} & $+$ & $+$ & $-$ & $-$ \\
+        \textsc{Rising}  & $+$ & $-$ & $+$ & $-$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Mandarin third-tone sandhi can now be represented as follows. 
+Compared with the numerical notation, this generalization 
+reveals more clearly that a fall--rise tone loses its falling 
+component when it precedes another fall--rise tone.
+
+\ex
+\text{[+falling]} $\rightarrow$ [-falling] /
+\text{[\underline{\hspace{1em}}, +rising]}  [+falling, +rising]
+\xe
+
+One property of this feature system is that it treats contour tones as
+single units. However, \tcitet{woo} argues that contour tones should 
+be decomposed into sequences of level tones. Thus, whether contour 
+tones should be represented as single units is an important question 
+for feature theories of tone.
+
+Example~\ref{ex:cantdo} presents two common processes: H becomes R 
+after {L, F}, and L becomes F after {H, R}. These processes cannot be
+described using the feature \textsc{[contour]} because neither {L, F}
+nor {H, R} forms a natural class in this system. Moreover, the theory
+predicts unattested patterns, as shown in Example~\ref{ex:unattested}.
 
 \ex \label{ex:cantdo}
 H $\rightarrow$ R / \{L,F\} \_\_\\
@@ -250,20 +375,7 @@ L $\rightarrow$ F / \{H,R\} \_\_
 *[-H] $\rightarrow$ [+contour] / [+H]\_\_\hfill   equivalent to L $\rightarrow$ R / \{H,F\} \_\_ \hfill(unattested)
 \xe
 
-As can be seen, this could be simply handled by ARs by adding an association line between L and H to the segment:
 
-    \begin{tikzpicture}
-        \node (s1) at (0, 0) {V} ; 
-        \node[anchor=base] (t1) at (0,1) {H} ; 
-        \node[anchor=base] (t2) at (1,1) {L} ;
-        %association lines
-        \draw [dotted] (s1) -- (t2) ;
-        \draw (s1) -- (t1) ;
-    \end{tikzpicture}
-    
-
-Another phenomenon which argues for the autosegmental representation
-of tone is across-the-board effects, which refers to the effect that a tone change applies to the whole domain rather than just its local neighbor. As shown in Example \tocite{ex:shona} from Shona, a H tone prefix will trigger a series of L tone to change into H. However, if more prefixes stack together, the melody will be in tone alternation, which would be extremely difficult for feature theory to capture accurately.
 \subsection{Q-Theory}
 
 \citet{inkelas2013abc+} introduced \textit{Q-theory}, initially designed to account
@@ -283,6 +395,7 @@ Q-theory is motivated by the typological observation that most complex tones do
 not exceed three tonal levels and that four-tone contours are very rare
 \citep{shih2013subsegmental}. It provides a useful harmony--disharmony typology
 based on whether the target of change is the whole segment or a subsegment.
+
 % See Table~\ref{tab:tone-harmony}.
 
 
