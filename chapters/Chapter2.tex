@@ -247,9 +247,9 @@ distinctive features to seperate itself from others.
 of the earliest feature theories of lexical tones to compensate
 for the numerical system does not directly reveal the
 phonological structure of tones, and enable tones to be studied 
-in natural classes and typology. Wang uses the feature \textsc{[\pm contour]} to
+in natural classes and typology. Wang uses the feature \textsc{[$pm$contour]} to
 distinguish level tones from contour tones; the three features
-\textsc{[\pm High]}, \textsc{[\pm Central]}, and \textsc{[\pm Mid]} to represent
+\textsc{[$pm$High]}, \textsc{[$pm$ Central]}, and \textsc{[$pm$Mid]} to represent
 pitch height; \textsc{[rising]} and \textsc{[falling]} to describe the
 direction of pitch movement; and \textsc{[convex]} to distinguish
 rise--fall contours from fall--rise contours. These features are shown
@@ -323,7 +323,7 @@ Convex
 \end{tabular}
 \end{table}
 
-under this theory, H, L, R, F, the common tones in african languages,
+Under this theory, H, L, R, F, the common tones in african languages,
 can be presented as [+H,-contour], [-H,-contour], [-H,+contour], [+H,+contour]. In other words, R
 and F will be a natural class of [+contour] and L and R will be [-H].
 For Mandarin Chinese, only two features are able to distinguish the
@@ -375,6 +375,12 @@ L $\rightarrow$ F / \{H,R\} \_\_
 *[-H] $\rightarrow$ [+contour] / [+H]\_\_\hfill   equivalent to L $\rightarrow$ R / \{H,F\} \_\_ \hfill(unattested)
 \xe
 
+There are also other attempts to adopt features to tone fields.
+\cite{zhu1999shanghai} merged Chao's phonetic notation and feature
+system, with one added feature - [Register] to captures the register
+issues in many chinese dialects. Schachter and Fromkin’s (1968) landmark
+generative phonology of Akan (Kwa, Ghana) describes a high tone
+unassociated with a tone­ bearing unit (TBU) as [+seg, +tone, ØF]. 
 
 \subsection{Q-Theory}
 
@@ -491,11 +497,96 @@ presentational, but the representations are notationally equivalent.
 \citet{oakdenNotationalEquivalenceTonal2020} provides a more detailed discussion
 of notational equivalence.
 
+\section{Autosegmental Theory}
+
+Autosegmental theory marks a shift away from the linear representations
+of generative phonology developed in \textit{The Sound Pattern of English}
+\citep{chomsky1968spe}. \citet{goldsmith1976autosegmental} proposes a
+non-linear theory in which tones and segments are represented on separate
+autosegmental tiers. 
+\begin{quote}
+In
+autosegmental representation, however, we posit two or more parallel
+tiers of phonological segments. Each tier itself consists of a string of
+segments, but the segments on each tier differ with regard to what
+features are specified in them.	
+\citep[p.8]{goldsmith1976autosegmental}
+\end{quote}
+
+Elements on different tiers are linked by association lines, which are 
+subject to a variety of well-formedness conditions and conventions. 
+This framework provides the important insight that speech is
+organized into parallel tiers and allows phonological representations to be
+visualized as graph-like, multitiered structures. 
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    node distance=0.8cm,
+    every node/.style={font=\normalsize}
+]
+
+% (a)
+\node at (-1,1.2) {(a)};
+\node[anchor=east] at (1.6,1.2) {segmental};
+\node at (2.0,1.2) {b};
+\node (u1) at (2.5,1.2) {u};
+\node at (3.0,1.2) {l};
+\node (u2) at (3.5,1.2) {u};
+
+\node[anchor=east] at (1.6,0) {tonal};
+\node (H) at (2.5,0) {H};
+\node (L) at (3.5,0) {L};
+
+\draw (u1.south) -- (H.north);
+\draw (u2.south) -- (L.north);
+
+% (b)
+\node at (4.5,1.2) {(b)};
+\node (syl1) at (5.8,1.2) {$[+\mathrm{syll}]$};
+\node at (7.2,1.2) {$[-\mathrm{syll}]$};
+\node (syl2) at (8.6,1.2) {$[+\mathrm{syll}]$};
+
+\node (high) at (5.8,0) {$[+\mathrm{High}]$};
+\node (low)  at (8.6,0) {$[-\mathrm{High}]$};
+
+\draw (syl1.south) -- (high.north);
+\draw (syl2.south) -- (low.north);
+
+\end{tikzpicture}
+\caption{Two representations of the same tonal structure.}
+\label{fig:autosegmental-representations}
+\end{figure}
+
+A core mechanism and major advantage of autosegmental theory is that
+associations can be manipulated independently of the elements they connect.
+A phonological process may add or delete an association line without deleting
+or changing the associated tone or segment. This separation makes it possible
+to represent phenomena such as tone spreading, delinking, floating tones,
+and contour tones in a unified way.
 
 
+\citet{goldsmith1976autosegmental} formalizes a set of well-formedness
+conditions (WFCs) governing the relationship between tones and the units
+that bear them and require association changes to be minimal while maximising satisfaction of basic representational requirements.
+In their original formulation, these conditions require
+every vowel to be associated with at least one tone, every tone to be
+associated with at least one vowel, and association lines not to cross.
 
+\begin{enumerate}
+    \setlength{\itemsep}{0em}
+    \setlength{\parskip}{0em}
+    \item All vowels are associated with at least one tone.
+    \item All tones are associated with at least one vowel.
+    \item Association lines do not cross (the No-Crossing Constraint, NCC).
+\end{enumerate}
 
+The significance of autosegmental theory extends beyond its ability to
+provide simple formalizations of tonal association. As
+\citet{leben2018history} comments, ``these simple rules interacted in
+different ways in different languages, expressing patterns that might be
+language-particular but using mechanisms that were universal''
 
-\subsection{Autosegmental Theory}
-
-
+The rest of this section demonstrate how autosegmental representations
+capture tonal processes in both African and Asian languages more effectively
+than string-based representations. These processes also serve as case studies
+in later chapters.
