@@ -567,11 +567,11 @@ and contour tones in a unified way.
 
 \citet{goldsmith1976autosegmental} formalizes a set of well-formedness
 conditions (WFCs) governing the relationship between tones and the units
-that bear them and require association changes to be minimal while maximising satisfaction of basic representational requirements.
+that bear them and require association changes to be minimal while 
+maximising satisfaction of basic representational requirements.
 In their original formulation, these conditions require
 every vowel to be associated with at least one tone, every tone to be
 associated with at least one vowel, and association lines not to cross.
-
 \begin{enumerate}
     \setlength{\itemsep}{0em}
     \setlength{\parskip}{0em}
@@ -590,3 +590,116 @@ The rest of this section demonstrate how autosegmental representations
 capture tonal processes in both African and Asian languages more effectively
 than string-based representations. These processes also serve as case studies
 in later chapters.
+
+
+
+\subsection{Tone Autonomy}
+A central claim of autosegmental theory is that tones can behave
+autonomously from the segments that bear them. This autonomy is not
+directly captured by linear representations, in which tones and segments
+are encoded as one unit. One evidence that challenge this practice comes
+from vowel deletion: deleting a vowel does not necessarily delete its
+associated tone. Instead, the tone may survive and reassociate with a
+neighboring tone-bearing unit. Such patterns provide evidence that tones
+and segments must be represented as distinct phonological objects.
+
+This subsection examines vowel-deletion processes in three languages:
+Engenni, Etsako, and Ogoja Yala \citep{kao2017phonological}. In all three
+languages, the first vowel in a hiatus sequence is deleted.
+However, the tone originally associated with V1 undergoes a 
+different process in each language. I classify these
+patterns as (1) host-dependent deletion, (2)
+{position-based preservation}, and (3) {quality-based 
+preservation}. From an autosegmental perspective, the three patterns show that how a change
+on the segmental tier may trigger different adjustments on the tonal tier.
+
+Let us first examine an example from Engenni compounds - this is a 
+pattern where I refer as host-dominant. When vowel
+hiatus arises at a morpheme boundary, the first vowel in the sequence
+V1 is deleted, while the second vowel V2 survives. What,
+happens to the tone borne by the deleted vowel? The answer is
+simple: it is deleted along with its host.
+
+\ex 
+\textbf{Engenni (tone deletion):} 
+Deleting the vowel also removes its associated tone.
+\vspace{-1em}
+\begin{multicols}{2}
+\quad\ L\quad H\qquad\qquad H\\
+ /\` ɔkò \# édèì/ $\rightarrow$ [\` ɔkédèì] \\
+ \textit{man \ \ canoe} $\rightarrow$ \textit{``a man’s canoe"} 
+ 
+ \quad\ \ H\quad L\qquad\qquad\ \ \ L\\
+/fùnú \# èdhí/ $\rightarrow$ [fùnèdhí] \\
+\textit{climb \ \ palm tree} $\rightarrow$ \textit{``to climb a palm tree"}
+\end{multicols}
+\xe
+
+
+The second pattern is found in Etsako, a tonal Niger-Congo language
+\citep{elimelech1976tonal}. Unlike in Engenni, the tone T1 originally
+associated with V1 is not deleted with its segmental host.
+Instead, T1 survives and reassociates with its cloest available host V2. 
+Consequently, $V_2$ bears both $T_1$ and its original tone, $T_2$. 
+The two tones preserve their original order and combine to form a contour 
+tone. I refer to this pattern as \textit{position-based preservation}, 
+because the outcome preserves both tones and their order rather than 
+selecting a tone on the basis of its tonal value.
+
+\ex \textbf{Estako (contour formation):} 
+\vspace{-1em}
+\begin{multicols}{2}
+\quad\ \ L \ \ \ H\qquad\qquad LH\\
+/ówà \# ówà/ \ $\rightarrow$ [ówǒwà] \\
+\textit{house \ \ house} $\rightarrow$ \textit{``every house"}
+
+\qquad\ H \ \ \ L\qquad\qquad HL\\
+/\`ɔ \# dé \ \# àkpà/ $\rightarrow$ [\`ɔdâkpà] \\
+\textit{he \ \ buy \ \ cup}\quad$\rightarrow$ \textit{``he buys a cup"}
+\end{multicols}
+\xe
+
+The third pattern is found in Ogoja Yala. Here, the outcome is determined
+by competition between pitch values: the tone with the higher pitch always
+survives, regardless of whether the winning tone was originally associated
+with the deleted vowel or the surviving vowel. A high tone is preserved
+whenever one is present, whereas a low tone is deleted whenever it competes
+with a higher tone. If the two tones have the same value, it does not matter
+which one survives, since there is no difference in the surface form. What could change is M tone, which could be deleted if it's next to a H or presrve if it is L. This
+pattern can therefore be described by the tonal hierarchy $H > M > L$. I
+refer to it as \textit{quality-based preservation} because the surviving
+tone is selected according to its tonal value rather than its original
+position.
+
+
+\ex \textbf{Ogoja Yala (higher-pitch preservation)}
+H tone is preserved. 
+If no H is present (i.e., only L and M), then M is preferred.
+The preserved tone either replaces the tone of the surviving vowel 
+(if surviving vowel has a lower pitched tone), or stay unchanged.
+\vspace{-1em}
+\begin{multicols}{3}
+\quad L \; \  H \qquad \quad \ H\\
+/dè \# áchí/ $\rightarrow$ [dáchí]\\
+\textit{give \ grass} $\rightarrow$ \textit{``to give grass"}
+
+\quad H\quad L\qquad\ \ \ \quad H\\
+/má \# \` ɔchí/ $\rightarrow$ [m\' ɔchí]\\
+\vspace{1em}\textit{see \quad tree} $\rightarrow$ \textit{``to see tree"}
+
+\ \ M \ \ L \qquad \quad \ M\\
+/b\=i \# \` ɔchí/ $\rightarrow$ [b\=ɔchí]\\
+\textit{carry  stick} $\rightarrow$ \textit{``to carry a stick"}
+\end{multicols}
+\xe\vspace{-1em}
+
+\subsection{Contour tones}
+\subsection{Tone spreading}
+\subsection{Floating tones}
+\subsection{Domain-level association in Shanghai}
+
+\section{Computational Approaches to Tone}
+  \subsection{String-Based Approaches}
+  \subsection{Finite-State Approaches}
+  \subsection{Computational Models of Autosegmental Structure}
+  \subsection{Representation and Learnability}
