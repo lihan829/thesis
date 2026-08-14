@@ -24,8 +24,8 @@ approaches have been slower to adopt such representations.
 Works by \citet{jardine16dissertation,chandlee2019autosegmental,oakden2020computational} 
 argue that linguistically meaningful representations can reduce computational complexity. 
 These representations include autosegmental graphs \citep{jardine16dissertation}, 
-metrical structures \tocite{lamount}, and feature-based representations for segmental 
-learning \tocite{magda}. These proposals, together with their computational 
+metrical structures \todo{lamount}, and feature-based representations for segmental 
+learning \todo{magda}. These proposals, together with their computational 
 implementations, highlight an important direction for computational modeling: 
 the use of linguistically informed representations to improve interpretability, 
 data efficiency, and linguistic adequacy through the development of small, 
@@ -38,7 +38,7 @@ capture the complexities of tonal phonology.
 \section{Representations of Tone}
 
 Estimates of the proportion of the world's tonal languages vary 
-from 42.9\% \tocite{thet}
+from 42.9\% \todo{thet}
 
 \citet{yip2002tone}, for example, suggests that as many as 60--70\% of the world's 
 languages may be tonal, whereas \citet{maddieson2013tone} estimates the proportion 
@@ -97,7 +97,7 @@ and languages. First, the unmarked tone in a two-tone system may be
 left without a diacritic; similarly, the mid tone is often unmarked 
 in a three-tone system. Conversely, the macron (ā) is also used to 
 indicate vowel length in some literature. 
-\tocite{Provide examples of unmarked-tone conventions in several African languages} 
+\todo{Provide examples of unmarked-tone conventions in several African languages} 
 
 Second, the notation of contour tones may be ambiguous, particularly 
 in languages in which contour tones have greater distributional 
@@ -109,7 +109,7 @@ can emerge in the surface form as a morphological or phonological processes, eve
 not consistnetly used. therefore, contour tones may alternatively be represented as (\textit{áà} = \textit{â:}). In 
 languages that permit both concave and convex contour tones, 
 circumflex and caron diacritics alone may be insufficient to 
-represent more complex contours unambiguously.\tocite{Mende tonal 
+represent more complex contours unambiguously.\todo{Mende tonal 
 notation system}
 
 \begin{table}[ht]
@@ -226,7 +226,7 @@ Norman 1988       & 42              & 35               & 24                & \un
 
 Obviously, tonal processes can be generalized using this numerical system, but 
 the generalization appears to involve arbitrary changes in pitch values (which is, 
-as the reader progresses in Section \tocite{later}, same issues for feature system). 
+as the reader progresses in Section \todo{later}, same issues for feature system). 
 For example, the fall-rise tone (T3) in Mandarin is consistently transcribed as 214. 
 When two fall-rise tones are adjacent, the former one will undergo a sandhi process
 and become a high rise. This process is formalized as 214 + 214 = 35 + 214. 
@@ -241,7 +241,7 @@ phonology, consonants and vowels are represetned
 as a matrices of feature values, where every segment has its
 distinctive features to seperate itself from others.
 
-\tocite{SPE, Pike, Woo etc}
+\todo{SPE, Pike, Woo etc}
 
 \citet{sy1967phonological} proposes one
 of the earliest feature theories of lexical tones to compensate
@@ -354,7 +354,7 @@ component when it precedes another fall--rise tone.
 \xe
 
 One property of this feature system is that it treats contour tones as
-single units. However, \tcitet{woo} argues that contour tones should 
+single units. However, \todo{woo} argues that contour tones should 
 be decomposed into sequences of level tones. Thus, whether contour 
 tones should be represented as single units is an important question 
 for feature theories of tone.
@@ -666,18 +666,13 @@ with the deleted vowel or the surviving vowel. A high tone is preserved
 whenever one is present, whereas a low tone is deleted whenever it competes
 with a higher tone. If the two tones have the same value, it does not matter
 which one survives, since there is no difference in the surface form. What could change is M tone, which could be deleted if it's next to a H or presrve if it is L. This
-pattern can therefore be described by the tonal hierarchy $H > M > L$. I
+pattern can therefore be described by the tonal hierarchy H > M > L. I
 refer to it as \textit{quality-based preservation} because the surviving
 tone is selected according to its tonal value rather than its original
 position.
 
 
 \ex \textbf{Ogoja Yala (higher-pitch preservation)}
-H tone is preserved. 
-If no H is present (i.e., only L and M), then M is preferred.
-The preserved tone either replaces the tone of the surviving vowel 
-(if surviving vowel has a lower pitched tone), or stay unchanged.
-\vspace{-1em}
 \begin{multicols}{3}
 \quad L \; \  H \qquad \quad \ H\\
 /dè \# áchí/ $\rightarrow$ [dáchí]\\
@@ -693,13 +688,90 @@ The preserved tone either replaces the tone of the surviving vowel
 \end{multicols}
 \xe\vspace{-1em}
 
-\subsection{Contour tones}
-\subsection{Tone spreading}
+\todo{add another example where vowel is quality senstive, but tone is not}
+
+\subsection{Tone spreading and shift}
+\citet{hyman2011tone} points a few aspects where tonal phonology distingusih itself
+from segmental phonology. One striking property of tones is its long-distance
+effects, which sometimes can go greatly beyond the current domain. This property
+does not find analogous counterparts in segmental or mertrical phonology.
+In Yoruba \todo{(Laniran \& Clements 2003:207)}, when the input forms have an alternating
+sequence of Hs and Ls, a series of phrase-internal cntour tones are formed, 
+resutlsing a an alternating sequences of Falls and Rs.
+
+
+\ex
+\begin{tikzpicture}[
+    baseline=(current bounding box.center),
+    x=0.55cm,
+    every node/.style={inner sep=1pt}
+]
+% Segmental tier
+\node (a1) at (0,0) {má};
+\node (a2) at (1,0) {yò};
+\node (a3) at (2,0) {mì};
+\node (a4) at (3,0) {rà};
+\node (a5) at (4,0) {wé};
+\node (arrow) at (6,0) {$\rightarrow$};
+\node (text) at (10,0) {[máy\^ọ m\v i r\^ a w\v e ]};
+\node (text2) at (20,0) {`Mayomi bought books'};
+
+
+% Tonal tier
+\node (t1) at (0,1) {H};
+\node (t2) at (1,1) {L};
+\node (t3) at (2,1) {H};
+\node (t4) at (3,1) {L};
+\node (t5) at (4,1) {H};
+
+% Association lines
+\draw (a1) -- (t1);
+\draw (a2) -- (t2);
+\draw (a3) -- (t3);
+\draw (a4) -- (t4);
+\draw (a5) -- (t5);
+
+% Tone spreading
+\draw[dashed] (t1) -- (a2);
+\draw[dashed] (t2) -- (a3);
+\draw[dashed] (t3) -- (a4);
+\draw[dashed] (t4) -- (a5);
+\end{tikzpicture}
+\xe
+
+Hyman referes to this as bounded tone spreading. Another type of 
+tone spreading can go across many positions, even into different
+words. 
+One example comes from Ndebele [Zimbabwe] \todo{Sibanda 2004}, which hyman calss unbouned
+tone spreading. The H prefix /ú/ will spread all the way up
+to the antepenult. In Zule, it si diffenret, the high tone will delink from
+the original TBU, and then asscoiate to the antepenult.
+\ex
+\begin{tabular}{lll}
+      \textbf{Ndebele} & \textbf{Zulu} &\\
+a.   \textit{ú-kú-hlek-a} 
+     & \textit{u-kú-hlek-a} 
+     & `to laugh' \\
+
+     \textit{ú-kú-hlék-is-a} 
+     & \textit{u-ku-hlék-is-a} 
+     & `to amuse (make laugh)' \\
+
+     \textit{ú-kú-hlék-ís-an-a} 
+     & \textit{u-ku-hlek-ís-an-a} 
+     & `to amuse each other' \\
+\end{tabular}
+\xe
+
+The unbounded tone spreading so far is triggered by one trigger on one
+side. One special case discussed in the preivous work, refered to as
+``unbounded circumambient process'' \citep{Jjardine2016locality,oddenbook,hyman2011tone}
+
+
 \subsection{Floating tones}
 \subsection{Domain-level association in Shanghai}
 
 \section{Computational Approaches to Tone}
-  \subsection{String-Based Approaches}
-  \subsection{Finite-State Approaches}
+  \subsection{Tonotactics}
+  \subsection{Tonal Processes}
   \subsection{Computational Models of Autosegmental Structure}
-  \subsection{Representation and Learnability}
