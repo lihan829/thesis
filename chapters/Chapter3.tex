@@ -182,9 +182,8 @@ would instead generate exactly the target language, such that \(G=L\).
 
 \caption{Possible relations between hypothesized grammars and a target
 language $L$. $G_1$ undergenerates $L$, $G_2$ both undergenerates and
-overgenerates, $G_3$ overgenerates, and $G_4=\Sigma^*$ places no
+overgenerates, $G_3, G_4$ overgenerates while $G_4=\Sigma^*$ places no
 restrictions on possible strings.}
-
 \label{fig:Grammarvenn}
 \end{figure}
 
@@ -786,6 +785,7 @@ can be modelled with the same relation, that is, the successor relation
 within each tier, and on association relation between two adjacent tiers. 
 \citet{oakdenNotationalEquivalenceTonal2020} uses a dominance relation,
 \(\delta\) for the tonal nodes withe the tonal node. 
+
 % In addition to representing model-theoretic relational structures 
 % with graphs, one can use \textit{adjacency matrices}
 % \citep{west2001introduction,CLRS2022}, which use binary values to
@@ -886,99 +886,63 @@ within each tier, and on association relation between two adjacent tiers.
 % Some particular or ill-formed patterns can also be 
 % readily detected, which will be discussed in Section~\ref{sec:bufiaar}.
 
-\section {Transduction}
+\section{Factors and Subfactors}
 
-What is a transduction
 
-string tranduction, feature transducton, AR transduction
-
-	\begin{figure}
-		\centering
-		
-		\begin{minipage}[t]{0.48\textwidth}
-			\centering
-			
-			\begin{tabular}{c c c}
-				
-				\textbf{UR} & $\Rightarrow$ & \textbf{SR} \\[0.5em]
-				
-				\begin{tikzpicture}[scale=0.7, every node/.style={inner sep=2pt}]
-					\node (v1) at (0,0) {V$_1$};
-					\node (v2) at (1.4,0) {V$_2$};
-					
-					\node (t1) at (0,1.3) {T$_1$};
-					\node (t2) at (1.4,1.3) {T$_2$};
-					
-					\draw (v1)--(t1);
-					\draw (v2)--(t2);
-				\end{tikzpicture}
-				
-				&&
-				
-				\begin{tikzpicture}[scale=0.7, every node/.style={inner sep=2pt}]
-					\node [fill=gray!20](v1) at (0,0) {V$_1$};
-					\node (v2) at (1.4,0) {V$_2$};
-					
-					\node (t1) at (0,1.3) {T$_1$};
-					\node (t2) at (1.4,1.3) {T$_2$};
-					
-					\draw (v1)--(t1) node[midway] {=};
-					\draw (v2)--(t2);
-					
-					\draw[dotted, thick] (v2)--(t1);
-				\end{tikzpicture}
-				
-			\end{tabular}
-			
-		\end{minipage}
-		\hfill
-		\begin{minipage}[t]{0.48\textwidth}
-			\centering
-			
-			\begin{tabular}{c c c}
-				
-				\textbf{UR} & $\Rightarrow$ & \textbf{SR} \\[0.5em]
-				
-				$
-				\begin{array}{c|cc}
-					& T_1 & T_2\\
-					\hline
-					V_1 & \cellcolor{gray!75}1 & 0 \\
-					V_2 & \cellcolor{gray!15}0 & 1 \\
-				\end{array}
-				$
-				
-				&&
-				
-				$
-				\begin{array}{c|cc}
-					& T_1 & T_2\\
-					\hline
-					V_1 & \cellcolor{gray!15}0 & 0 \\
-					V_2 & \cellcolor{gray!75}1 & 1 \\
-				\end{array}
-				$
-				
-			\end{tabular}
-			
-		\end{minipage}
-		\caption{Contour formation in both graph-theoretic and matrix representations.}
-		\label{fig:hiatus}
-	\end{figure}
-
-\section{Factor}
-\subsection{Structure Containment}
 An important concept when considering model-theoretic relational
-structures, either strings, sequences of feature bundles, or ARs, is
-\textit{containment}. Intuitively, containment refers to the situation
-when one structure includes another structure inside of it. We
-formalise this notion using two related definitions, following
-\citet{chandleeBufia2019}: \textit{restriction}
-(Definition~\ref{def.res}) and \textit{containment}
+structures is \textit{containment}. Specifically, when a string 
+can be viewed as contained in another string, it is known as its 
+substring; if a graph is contained in another graph, it is known 
+as its subgraph. Intuitively, containment refers to the situation
+when one structure includes another structure inside of it. This 
+section will gives a more formalisation that rooted from model theory,
+where a "substructore" or the one contained in another one, 
+known as a subfactor of it. \citep{rogers.lambert2019mol,chandleeBufia2019}
+
+\todo{the difference between substructure vs subfactor}
+
+\citet{rogers.lambert2019mol} define $A$ to be a $k$-factor of $B$
+if and only if:
+\begin{enumerate}
+    \item $\operatorname{card}(A) \leq k$;
+    \item $A$ is $\operatorname{card}(A)$-connected;
+    \item there exists a homomorphism $h \colon A \to B$.
+\end{enumerate}
+
+These requires A is a \textit{k}-subfactor of B if
+A is connected and has a size of <k, and there is a bijective 
+homomorphism relation between A to B. We will unpack two concepts
+\textit{connected} and \textit{homomorphism}, following
+\citet{chandleeBufia2019}: \textit{Connected} (Definition~\ref{def.connected})
+\textit{Restriction} (Definition~\ref{def.res}) and \textit{Containment}
 (Definition~\ref{def.contain}). Readers are referred to
 \citet{rogers.lambert2019mol} for an alternative formulation. In the
 definitions below, it is assumed the structures A and B have the same
 signature $\langle R_1, \ldots R_n \rangle$.
+
+\begin{definition}[Connectedness]
+$ C := \{
+    (x,y) \in D \times D \mid  \exists i \in \{1 \cdots n\},
+    \exists (x_1 \cdots x_m) \in R_i,
+    \exists s, t \in \{1 \cdots m\},
+    x = x_s, y = x_t
+\}$
+
+\end{definition}
+
+
+
+
+\begin{definition}[Connected Structure]
+    \label{def.connected}
+A structure $\mathcal{S} = \langle D; R_1, R_2, \ldots, R_n \rangle$ is
+\emph{connected} if and only if
+\[
+    \forall x,y \in D,\quad (x,y) \in C^{*}.
+\]
+
+\end{definition}
+
 
 \begin{definition}
 	\label{def.res}
@@ -1001,16 +965,62 @@ signature $\langle R_1, \ldots R_n \rangle$.
 These definitions mean that $A$ is \textit{contained} in $B$ whenever
 there exists a subpart of $B$ onto which \(A\) projects via a function
 \(h\), and furthermore, that the relations that hold among elements of
-\(A\) hold among their corresponding elements in \(B\). For instance,
-the AR in Figure~\ref{fig.restriction:a} is contained in the AR
-in Figure~\ref{fig.restriction:b} because the dotted region in
-\ref{fig.restriction:b} preserves all internal relations of
-%:
-\ref{fig.restriction:a}, despite the differences in the
-indexing. In particular, $\mu_1, \mu_2, \sigma_1$ in
-\ref{fig.restriction:a} project to $\mu_2, \mu_3, \sigma_2$ in
-\ref{fig.restriction:b}, respectively.
+\(A\) hold among their corresponding elements in \(B\). 
 
+I will show two examples in the context of tonal forms here. One is the
+feature bundles and the other one is ARs. 
+% Preamble:
+\usetikzlibrary{positioning}
+
+
+For feature bundles, $[-\mathrm{Low}][+\mathrm{Low}]$ is a
+2-subfactor of the structure shown in Figure~\ref{fig:feature-bundles}.
+
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        \node[state, right=1.5cm of n2] (n3) {1};
+        \node[state, right=1.5cm of n3] (n4) {2};
+
+        \draw (n3) -- node[midway, above] {$\lhd$} (n4);
+        \node[align=center, above=2pt of n3]
+            {$-\mathrm{Low}$};
+        \node[align=center, above=2pt of n4]
+            {$+\mathrm{Low}$};
+    \end{tikzpicture}
+    \hfill
+    \begin{tikzpicture}
+        \node[state] (n1) {1};
+        \node[state, right=1.5cm of n1] (n2) {2};
+        \node[state, right=1.5cm of n2] (n3) {3};
+        \node[state, right=1.5cm of n3] (n4) {4};
+
+        % Successor relation
+        \draw (n1) -- node[midway, above] {$\lhd$} (n2);
+        \draw (n2) -- node[midway, above] {$\lhd$} (n3);
+        \draw (n3) -- node[midway, above] {$\lhd$} (n4);
+
+        % Feature labels
+        \node[align=center, above=2pt of n1]
+            {$+\mathrm{Low}$\\$-\mathrm{Contour}$};
+        \node[align=center, above=2pt of n2] {$\cdot$};
+        \node[align=center, above=2pt of n3]
+            {$-\mathrm{Low}$\\$-\mathrm{Contour}$};
+        \node[align=center, above=2pt of n4]
+            {$+\mathrm{Low}$\\$-\mathrm{Contour}$};
+    \end{tikzpicture}
+    \caption{A feature-bundle structure}
+    \label{fig:feature-bundles}
+\end{figure}
+
+For instance, the AR in Figure~\ref{fig:restriction:a} is contained in the
+AR in Figure~\ref{fig:restriction:b}, because the dotted region in
+Figure~\ref{fig:restriction:b} preserves all the internal relations of
+Figure~\ref{fig:restriction:a}, despite the difference in indexing.
+In particular, $\mu_1$, $\mu_2$, and $\sigma_1$ in
+Figure~\ref{fig:restriction:a} map to $\mu_2$, $\mu_3$, and $\sigma_2$,
+respectively, in Figure~\ref{fig:restriction:b}.
 
 \begin{figure}[h]
 	\centering
@@ -1067,6 +1077,7 @@ indexing. In particular, $\mu_1, \mu_2, \sigma_1$ in
 	\label{fig.restriction}
 \end{figure}
 
+\section{Partically Ordered Space}
 
 The containment relation is particularly important because it provides
 a natural \textit{ordering} over the space of possible structures. The
@@ -1079,28 +1090,6 @@ structure \(A\) is a \textit{subfactor} of structure \(B\), whereas
 \(B\) is a \textit{superfactor} of \(A\). They prefer these terms to
 substructures and superstructures, which have different
 technical meanings in model theory.
-
-To illustrate, Figure~\ref{fig.hasse.str} displays a
-non-exhaustive portion of the partial ordering of possible strings
-over the alphabet $\Sigma = \{a,b\}$. At the bottom of the ordering is
-the empty string $\epsilon$, with more complex strings appearing
-higher in the ordering.  Whenever two elements are connected by a
-line, it means that the higher element contains the lower element. For
-example, no line relates the \(a\) to \(b\), because neither contains
-the other.  However, a line is drawn from \(a\) to \(aa, ab\) and
-\(ba\), because \(a\) is contained in each of these structures. As
-defined above, \(aa, ab, ba\) and \(aaa\), and any other strings that
-contain \(a\) are superfactors of \(a\); correspondingly, \(a\) is a
-subfactor of each of these strings.
-
-There can be many layers between a superfactor and one of its 
-subfactors. When there are no structures ordered 
-between a superfactor and one of its subfactors, the 
-superfactor is called a \textit{next superfactor}. 
-In this sense, among all superfactors of \(a\) such as 
-\(\{aa, ab, ba, aaa, aab, \cdots\}\), only those superfactors that 
-are exactly one level above are next superfactors of \(a\), 
-namely \(\{aa, ab, ba\}\).
 
 \begin{figure}
 	\centering
@@ -1141,94 +1130,166 @@ namely \(\{aa, ab, ba\}\).
 	\label{fig.hasse.str}
 \end{figure}%
 
+To illustrate, Figure~\ref{fig.hasse.str} displays a
+non-exhaustive portion of the partial ordering of possible strings
+over the alphabet $\Sigma = \{a,b\}$. At the bottom of the ordering is
+the empty string $\epsilon$, with more complex strings appearing
+higher in the ordering.  Whenever two elements are connected by a
+line, it means that the higher element contains the lower element. For
+example, no line relates the \(a\) to \(b\), because neither contains
+the other.  However, a line is drawn from \(a\) to \(aa, ab\) and
+\(ba\), because \(a\) is contained in each of these structures. As
+defined above, \(aa, ab, ba\) and \(aaa\), and any other strings that
+contain \(a\) are superfactors of \(a\); correspondingly, \(a\) is a
+subfactor of each of these strings.
+
+There can be many layers between a superfactor and one of its 
+subfactors. When there are no structures ordered 
+between a superfactor and one of its subfactors, the 
+superfactor is called a \textit{next superfactor}. 
+In this sense, among all superfactors of \(a\) such as 
+\(\{aa, ab, ba, aaa, aab, \cdots\}\), only those superfactors that 
+are exactly one level above are next superfactors of \(a\), 
+namely \(\{aa, ab, ba\}\).
+
+The partial ordern space provides a inference path for grammaticaltiy
+search. The grammaticiality is entailed downwards: if a factor is considered
+well-formed, or is attested in the data; all its subfactors are also
+well-formed; on the contrary, The grammaticiality is entailed upwards:
+if a factor is ill-formed, then all its
+superfactors (which contains this ill-formed factor) are also ill-formed 
+\citep{Yolyan2025}. 
+
+Take one example, if a heavy L syllable, as in \ref{fig.restriction:a} is
+an ill-formed strcture, meaning that the grammar will forbide this form; 
+its superfacotr, as in \ref{fig.restriction:b}, will also be banned from
+the data. On the other hand, if  \ref{fig.restriction:b} is well-formed,
+that all its subcomponents should also be well-formed. 
 
 
-% \subsection{BUFIA}\label{sec:prelim.bufia}
+\section {Transduction}
 
-% Recall that given a set of positive examples, BUFIA returns a grammar just like
-% the ones considered by \citet{jardine2017LocalNature}: a conjunction
-% of negative literals: $\lnot C_1 \land \lnot C_2 \land \ldots \land \lnot C_n$.
-% BUFIA begins its search of the possible structure space with the most
-% general structure (the empty structure) and progresses to more
-% specific ones. In other words, it proceeds from the bottom of the
-% inverted pyramid upwards. In this process, two functions are central 
-% to BUFIA: \textsc{Contain} and \textsc{NextSupFact}. For each 
-% candidate structure \(S\), BUFIA applies the
-% \textsc{Contain} function to check whether it is attested
-% in the positive data. If it is, BUFIA concludes it is not a bona-fide
-% constraint, discards it, and uses \textsc{NextSupFact} to generate a
-% set of next superfactors to continue the search. If, on the other
-% hand, \(S\) is absent from the positive data, it is added to the
-% grammar as a constraint. For structures that are labelled as constraints,
-% BUFIA does not apply \textsc{NextSupFact}. Consequently, all structures/possible 
-% constraints that contain it are pruned from the remaining search. The learning 
-% process continues until a stopping condition is met, which in this work is a
-% predetermined upper bound on the size of the constraints.
+The previous section introduced model theory as a unified framework for 
+defining phonological forms proposed by different theories. It essentially 
+express how the consisting units within a representation relate to one 
+another.
 
-% Using the same example from Figure~\ref{fig.hasse.str}, suppose
-% the language forbids adjacent \(b\)s, formalised as a constraint
-% \(^*bb\), which excludes strings \(\{bb, bba, bbb, abb,
-% \cdots\}\). For concreteness, assume a data set \(D = 
-% \{aba, baabaa\}\).  BUFIA begins from the most general hypothesis:
-% applies \textsc{Contain} to check whether the empty string $\epsilon$
-% is attested in the positive data.  Since $\epsilon$ is contained in
-% every string trivially, \textsc{Contain} returns true, and BUFIA does
-% not add $\epsilon$ as a constraint. Then, BUFIA applies
-% \textsc{NextSupFact} to generate the next superfactors of $\epsilon$,
-% which are the two singletons \(a\) and \(b\). In a breadth-first
-% order, BUFIA checks whether \(a\) and \(b\) are contained in the
-% positive data.  In the same fashion, the \textsc{Contain} function
-% confirms both strings are attested as substrings of \(D\), discards
-% them, and then generates their superfactors for later checking. When
-% BUFIA reaches \(bb\), \textsc{Contain} returns false because
-% \(bb\) is not contained in any datum in the data set (neither \(aba\) nor 
-% \(baabaa\) contains \(bb\)). BUFIA therefore adds
-% \(^*bb\) to the grammar and skips generating any superfactors of
-% \(bb\). The search then continues with the remaining candidates until
-% the stopping condition is met (e.g., the size of structures exceeds a
-% predefined size such as two).\footnote{An alternative stopping
-%   condition is to set a number of constraints. Both kinds of stopping
-%   conditions control the amount of generalisation. The longer the
-%   search is permitted, more constraints may be found, and amount of
-%   generalisation is reduced. Without any limits, it will overfit the
-%   data. However, when the search terminates sooner, generally fewer
-%   constraints will be found, and the grammar makes broader
-%   generalisations.}
+This section uses the same method from the previous section and moves beyond 
+an individual phonological form to the mapping between representations, that
+is how one representation can transform to another one. This question is 
+related to two questions in tonal phonology that are underexplored. 
+The first one has to do with UR-SR learning over enriched representation.
+Given two representations at different abstract levels, how does one derive 
+from one to another. The second is representation conversion: how different representational chocies grounded 
+theories relate to one another.
 
-% \citet{chandleeBufia2019} prove that BUFIA returns a set of
-% constraints that (1) are consistent with the data (no constraint
-% returned by BUFIA is contained in any datum in the positive data); (2)
-% contain the most general constraints (obtains the simplest possible
-% constraints according to the order imposed by the containment
-% relation, e.g.  only \(^*bb\) is returned but not \(^*bba\), \(^*bbb\)
-% or others); and (3) generate the smallest set of structures consistent
-% with the data, among the other possible grammars that are
-% consistent with the data subject to the same conditions (generalises
-% conservatively).
+There are indeed existing proposed approaches addressing these two 
+questions such as rewriting rules and modifications of association lines.
+Yet these questions are not settled. SPE-style rewrite rules struggles 
+to generalize some common tonal patterns such as contour formation and
+tonal spreading (see Chapter~\ref{chap:tones}[\todo{fix lit review}]). 
+Even based on autosegmental theory, there are competing tonal models
+that differ in the nodes and branching structures, and interpretations
+to these tonal modesl could also differ in people. 
 
-% One concern for BUFIA is its time complexity: BUFIA runs in exponential time in the worst 
-% case \citep{chandleeBufia2019}. However, as \citet{Swanson+2025} 
-% point out, data sparsity is highly advantageous for learning since 
-% the hypothesis space is thus pruned more efficiently.
+A logical transduction specifies how to construct an output model 
+$\mathcal{M}_o$ from an input model $\mathcal{M}_i$ using a set of
+of logic formulas. For each relation in the output model, the logic
+formulas defines a unique output with reference to the relation in 
+the input. 
+\begin{table}[t]
+		\centering	\small 
+		\begin{tabular}{llll}
+			\toprule
+			\textbf{Output} & & \textbf{Input} & \textbf{Interpretation} \\
+			\midrule
+			
+			$\phi_{\textsf{Domain}}$
+			&
+			$:=$
+			&
+			$\textsc{True}$
+			&
+			Preserve all input elements
+			\\[0.5em]
+			
+			
+			\textsc{Copy}
+			&
+			$:=$
+			&
+			1&
+			Define output domain same size as input
+			\\[0.5em]
+		    
+            
+            $\phi_{\textsf{License}}$
+			&
+			$:=$
+			&
+			$\textsc{True}$
+			&
+			Preserve all input elements
+			\\[0.5em]
 
-% Another concern raised by the reviewers is that, in its
-% present form, BUFIA is fragile with respect to noise. For example, if
-% there is a single data point violating a constraint \(C\) in the
-% data (a ``noisy intrusion''), then \(C\) will not be included in the
-% output grammar, even if \(C\) is an otherwise valid
-% generalisation. It is important to put this current limitation in
-% context. First, even in the absence of noise, it is currently unknown
-% how to learn constraints expressed with ARs. From the viewpoint of
-% scientific practice, it makes sense to address an easier problem
-% before addressing a harder problem. Second, BUFIA can be adapted to
-% handle noise in different kinds of ways. Prior literature suggests
-% multiple strategies for handling noisy intrusions, exceptions, and
-% sparse data \citep{angluin88, Yang2016, Wu-Heinz-2023-SELDNI,
-%   Kaelbling+2023-RILIPD, Dai2025}. Considering versions of BUFIA that
-% are robust to all kinds of noise is a valuable direction for future
-% research. Third, it is worth pointing out that the mere use of
-% statistical methods for learning does not automatically make learners
-% robust to noise \citep{Angluin88b}. In other words, noisy data is an
-% issue, and one that can be studied separately from the fundamental
-% issue of successful generalisation. See \citet{Heinz2009} for
-% additional discussion on factoring learning problems.
+
+			$\phi_{R_i}(x)$
+			&
+			$:=$
+			&
+			$R_i(x)$
+			&
+			Preserve elements and their labels
+			\\[0.5em]
+
+            $\phi_{R_i}(x,y)$
+			&
+			$:=$
+			&
+			$R_i(x,y)$
+			&
+			Preserve elements and their labels
+			\\[0.5em]
+		
+			\bottomrule
+		\end{tabular}
+		
+		\caption{Logical formulas defining an faithful input-output transduction.}
+		\label{tab.transduction}
+	\end{table}
+	
+Table~\ref{tab.transduction} provides the formulas described below.
+
+\begin{itemize}\itemsep-0.5ex
+\item $\phi_{\textsf{Domain}}$: a domain formula determines
+which ARs are in the domain of the function. If $\phi_{\textsf{Domain}}:= \text{True}$, it indicates this function is total.
+
+\item The copy set helps determine the size of the output structures.
+When \textsc{Copy} := 1, it means every node in the output
+corresponds to one element in the input. 
+When \textsc{Copy} := 2, it means the number of nodes in the output
+are twice the size of the input nodes.
+
+\item For each unary relation $R_i\in\{R_1,R_2,\cdots R_n\}$, the formula 
+\(\phi_{R_i}(x)\) determines that the node \(x\) in the output has will
+property \(R_i\) as their corresponding nodes in the input.
+
+
+\item For each binary relation, the formula \(\phi_{R_i}(x,y)\) 
+determines which pairs of nodes in the output structure stand in the 
+same binary relation.
+
+\item The licensing formula $\phi_{\textsf{license}}(x)$
+determines which nodes in the output are licensed.
+According to the semantics of graph transductions,
+unlicensed nodes disappear,
+along with any relations associated with them.
+Here, only output nodes that stand
+in an association relation in the output are licensed.
+
+\end{itemize}
+
+
+\subsection{UR-SR Mapping}
+
+
