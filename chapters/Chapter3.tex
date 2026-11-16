@@ -10,21 +10,23 @@ representation allows us to compare representational choices
 foundation for developing and understanding subsequent algorithms and learning,
 some of them will be placed in separate chapters.
 
-\section{Models: Why Are They Necessary?}
+\section{Learning Problem}
 \label{sec:formal-why}
 
+\subsection{Representations}
 What is a model exactly and why do we need it? In linguistics, all forms must be represented in 
 some way, whether as a sequence of symbols, such as an orthographic form 
-\textit{phonology}; in an IPA transcription, such as fəʊ.nɑ.lə.ʤi; or as a 
-feature bundle like [+nasal, cor, ant][-sonorant, +voice]. 
-
-These representations share a basic property: they consist of a finite 
+\textit{phonology}; in an IPA transcription, such as /fəʊ.nɑ.lə.ʤi/; or as a 
+feature bundle like [+nasal, cor, ant][-sonorant, +voice]. These representations share a basic property: they consist of a finite 
 set of symbols organized in a particular way. What differs across these 
 representations is how and what structural dependency they implicitly 
-encode. For example, the orthographic form \textit{phonology} 
-implies that there are nine letters organized by a successor relation: 
+encode. 
+
+For example, the orthographic form \textit{phonology} 
+implies that there are nine letters organized by a \textit{successor} relation: 
 \textit{p} is followed by \textit{h}, which is followed by \textit{o}, 
-and so on. In other words, the symbols are linearly ordered.
+and so on. In other words, the symbols are \textit{linearly ordered}, or
+\textit{totally ordered}, which means if we assign an index to each element, the indices of any two elements can be compared.
 
 The form /fəʊ.nɑ.lə.ʤi/ encodes additional structure. For example, the 
 first syllable /fəʊ/ contains three segments, /f/, /ə/, and /ʊ/, each 
@@ -48,17 +50,27 @@ nasal, a place feature of being coronal, and more specifically, anterior;
 the second bundle describes a following segment have both properties of 
 being voiced and non-sonorant at the same time. 
 
-Note that the written order of features within a bundle does not necessarily encode a linguistic relation. Although [+nasal] is written before [coronal], and [−sonorant] before [+voice], this does not mean that one feature precedes or dominates the other. With respect to linear order, features within the same bundle are simultaneous properties of a single segment and are therefore unordered with respect to one another. However, 
-this principle is not consistent: some phonological theories impose additional structure on particular features. For example, in a feature-geometric representation, a segment must have coronal specification for [anterior] to further take place. In such a representation, the relationship between [coronal] and [anterior] is therefore hierarchical rather than linear. 
+Note that the written order of features within a bundle does not necessarily 
+encode a linguistic relation. Although [+nasal] is written before [coronal], 
+and [−sonorant] before [+voice], this does not mean that one feature precedes 
+or dominates the other. With respect to order, features belonging to different 
+elements are comparable in the temporal sequence. However, features within the 
+same bundle are simultaneous properties of a single segment, and therefore are 
+unordered with respect to one another. However, this principle is not 
+consistent: some phonological theories impose additional structure on 
+particular features. For example, in a feature-geometric representation, a 
+segment must have [coronal] specification for [anterior] to further take place. 
+In such a representation, the relationship between [coronal] and [anterior] is 
+therefore hierarchical rather than linear. 
 
-What these examples indicates three facts that linguistic modeling 
+These examples indicates three facts that linguistic modeling 
 should be mindful of.
 
 First, a single representation may have multiple formal interpretations, 
 and it is hard to make comparison between representations if we do not
 explicitly define the relations within. Second, some relations among 
 symbols may be implicit and therefore not readily visible in the written 
-form. Conversely, the written form may appear to impose relations, such as 
+form, such as syllabification. Conversely, the written form may appear to impose relations, such as 
 linear order as in [-sonorant, +voice], but that are actually not part of 
 the representation. Lastly, the principles governing a representation may 
 differ, or even conflict, within the same representation, or across different 
@@ -72,22 +84,17 @@ logic, model theory provides a formal way of describing mathematical
 objects, known as \textit{models}. A model explicitly defines a set of 
 elements, called its \textit{domain}, together with one or multiple 
 relations that hold among those elements. These relations collectively
-define a distinct structure, and are called the \textit{signature}. For 
-example, a signature may include a binary successor relation, a binary 
-dominance/association relation. The benefits of using model theory are 
-threefold. First, it reduces ambiguity in the interpretation of 
-phonological representations by requiring their units and relations to be 
-explicitly defined. Second, it provides a common formal foundation on 
-which different phonological representations can be systematically 
-compared, for example, in terms of their complexity, expressivity, or 
-membership or containment between two. Third, as I will show later in 
-this chapter, the well-defined containment relation is important in this 
-work since provides a hypothesis space where phonotactic or phonological 
-process learning can be performed.
+define a distinct structure, and are called the \textit{signature}. We
+will introduce these concepts with concrete examples in later sections.
+As one will see that by using model theory, it reduces ambiguity in the 
+interpretation of phonological representations by requiring their units 
+and relations to be explicitly defined (Section~\ref{sec:formal_prelim} to
+Section~\ref{sec:prelim.ar}). Secondly, this method provides a common 
+formal foundation on which different phonological representations can be systematically compared, for example, in terms of their complexity, expressivity, or their empircal converage (see Section~\ref{sec:transduction}).
 
-\subsection{Modeling}
-[might move to the vincinity of BUFIA/learning]
 
+\subsection{Grammars}
+\todo{might move to the vincinity of BUFIA/learning}
 A string is a finite sequence of symbols or characters. For a 
 particular language, we assume a finite set of symbols with which 
 strings can be constructed. Let \(\Sigma\) denote this finite 
@@ -96,111 +103,110 @@ that can be formed from symbols in \(\Sigma\), including the empty
 string \(\epsilon\). For example, if a language contains only the five 
 vowels \textit{a,e,i,o,u}, we may define \(\Sigma=\{a,e,i,o,u\}\), and
 the possible strings defined over this alphabet can be \(aa\), \(ababa\). Similarily, for a tonal system with only two tones, H and L, 
-we may define \(\Sigma=\{H,L\}.\), then \(H\), \(HL\), \(LHH\), and \(HLHL\) are all members of \(\Sigma^*\).
+we may define \(\Sigma=\{H,L\}.\), then \(H\), \(HL\), \(LHH\), and \(HLHL\) are all members of \(\Sigma^*\). Let $|w|$ denote the length of a string $w$. A string 
+\(w\) is a substring of a string \(t\) if there exists 
+two strings \(p\) and \(s\) such that \(t = pws\).
+The empty string $\epsilon$ is trivially a substring of every string.
 
 While \(\Sigma^*\) contains all possible strings that can be 
 constructed from the alphabet, \(L\) contains only a subset of these 
-strings. Formally, \(L \subseteq \Sigma\). For example, not every 
-sequence of letters, such as *bnick, *ptak are ``allowed'' in English.
-The learning problem is then to discover a grammar (G) that distinguishes 
-well-formed strings from ill-formed ones. Let (L(G)) denote the set of strings 
-permitted by (G). Ideally, the language generated by the grammar coincides with 
-the target language:
+strings (\(L \subseteq \Sigma\)). For example, some sequences, such as *bnick, 
+*ptak are not ``allowed'' in English, because the sequence *bn and *pt are
+phonotactic constraints in English grammar. Such grammars that consist of 
+a set of constraints are known as constraint-based grammars. Formally, if 
+Grammar $G$ is the set of constraints in the language, such that \(G = \{C_1, C_2, \ldots, C_n\}\), a well-formed form satisfies the \emph{conjunctive 
+negative literals}: \(\lnot C_1 \land \lnot C_2 \land \ldots \land \lnot C_n\)
+\citep{jardine2017LocalNature,rogers.lambert2019mol}. The learning problem is 
+then to discover a grammar \(G\) that distinguishes well-formed strings from 
+ill-formed ones. Let \(L(G)\) denote the set of strings permitted by \(G\). 
 
 As shown in Figure~\ref{fig:Grammarvenn}, the target language \(L\) is a subset 
 of \(\Sigma^*\), the set of all possible strings over the alphabet \(\Sigma\). 
-There are multiple possible grammars, such as \(G_1\), \(G_2\), \(G_3\), and \(G_4\), but none of these grammars exactly captures the target language. \(G_1\) permits only a subset of the target language and therefore \textit{undergenerates}: it incorrectly excludes some patterns that belong to \(L\). \(G_2\) both undergenerates and overgenerates: it excludes some patterns in \(L\) while permitting some patterns outside \(L\).
-
-At the other extreme, \(G_4=\Sigma^*\), meaning that the grammar imposes no 
+An ideal grammar would instead generate exactly the target language, such that \(G=L\). However, for most of time, different representations, learning schemes, 
+or the size of data might produce different grammars. Let us consider
+four possible grammars: \(G_1\), \(G_2\), \(G_3\), and \(G_4\), and none of these grammars exactly captures the target language. \(G_1\) permits only a subset of the target language and therefore \textit
+{undergenerates}: it incorrectly excludes some patterns that belong to \(L\). \(G_2\) both undergenerates and overgenerates: it excludes some patterns in \(L\) while permitting some patterns outside \(L\). At the other extreme, \(G_4=\Sigma^*\), meaning that the grammar imposes no 
 restrictions and permits every possible string. \(G_3\) is more restrictive 
 than \(G_4\) and provides a tighter fit of the target language. Nevertheless,\(G_3\) 
 still does not coincide with \(L\). Like \(G_4\), it permits some 
-patterns that should be excluded and therefore overgenerates. An ideal grammar 
-would instead generate exactly the target language, such that \(G=L\).
-
-
+patterns that should be excluded and therefore overgenerates.
 \begin{figure}[ht]
-\centering
-\begin{tikzpicture}[
-    scale=1.15,
-    every node/.style={font=\small}
-]
+    \centering
+    \begin{tikzpicture}[
+        scale=1.15,
+        every node/.style={font=\small}
+    ]
 
-% --------------------------------------------------
-% Universe: all possible strings
-% G_4 = Sigma*
-% --------------------------------------------------
-\draw[thick]
-    (0,0.25) ellipse (4.2cm and 1.9cm);
+    \draw[thick]
+        (0,0.25) ellipse (4.2cm and 1.9cm);
 
-\node at (-2.98,1.01)
-    {$G_4 = \Sigma^*$};
+    \node at (-2.98,1.01)
+        {$G_4 = \Sigma^*$};
 
+    \draw[loosely dashed]
+        (-0.25,0) ellipse (2.05cm and 1.12cm);
 
-% --------------------------------------------------
-% G_3: overgeneration
-% L is a proper subset of G_3
-% --------------------------------------------------
-\draw[loosely dashed]
-    (-0.25,0) ellipse (2.05cm and 1.12cm);
-
-\node at (-1.73,0.25)
-    {$G_3$};
+    \node at (-1.73,0.25)
+        {$G_3$};
 
 
-% --------------------------------------------------
-% Target language
-% --------------------------------------------------
-\draw[very thick]
-    (0.25,0) ellipse (1.35cm and 0.85cm);
+    % --------------------------------------------------
+    % Target language
+    % --------------------------------------------------
+    \draw[very thick]
+        (0.25,0) ellipse (1.35cm and 0.85cm);
 
-\node at (0.25,0.58)
-    {$L$};
-
-
-% --------------------------------------------------
-% G_1: undergeneration
-% G_1 is a proper subset of L
-% --------------------------------------------------
-\draw[densely dotted]
-    (0.05,-0.10) ellipse (0.65cm and 0.35cm);
-
-\node at (0.05,-0.10)
-    {$G_1$};
+    \node at (0.25,0.58)
+        {$L$};
 
 
-% --------------------------------------------------
-% G_2: both under- and overgeneration
-% --------------------------------------------------
-\draw[dash dot, dashed]
-    (1.99,0.5) ellipse (1.05cm and 0.52cm);
+    % --------------------------------------------------
+    % G_1: undergeneration
+    % G_1 is a proper subset of L
+    % --------------------------------------------------
+    \draw[densely dotted]
+        (0.05,-0.10) ellipse (0.65cm and 0.35cm);
 
-\node at (2.62,0.55)
-    {$G_2$};
+    \node at (0.05,-0.10)
+        {$G_1$};
 
-\end{tikzpicture}
 
-\caption{Possible relations between hypothesized grammars and a target
-language $L$. $G_1$ undergenerates $L$, $G_2$ both undergenerates and
-overgenerates, $G_3, G_4$ overgenerates while $G_4=\Sigma^*$ places no
-restrictions on possible strings.}
+    % --------------------------------------------------
+    % G_2: both under- and overgeneration
+    % --------------------------------------------------
+    \draw[dash dot, dashed]
+        (1.99,0.5) ellipse (1.05cm and 0.52cm);
+
+    \node at (2.62,0.55)
+        {$G_2$};
+
+    \end{tikzpicture}
+\caption{Possible relations between hypothesized grammars and a target language $L$}
 \label{fig:Grammarvenn}
 \end{figure}
 
-
-From a constraint-based perspective, \(G\) can be seen as a set 
-of constraints that a well-formed form must comply. 
+Figure~\ref{fig:Grammarvenn} highlights the containment or membership question 
+that we need to resolve. Although this question is relatively straightforward 
+for strings, it becomes more complex for tonal representations with richer 
+structures. This provides a second motivation for using model theory. Explicit 
+model-theoretic definitions of tonal representations provide a well-defined 
+hypothesis space in which containment relations between structures and their 
+factors (regardless of strings and substrings, or graphs and subgraphs) can be 
+precisely specified. This hypothesis space is important for learning because it 
+determines the candidate grammars that a learner can consider and how those grammars can be evaluated against the data. These topics are introduced in 
+Section~\ref{sec:factors} and Section~\ref{sec:poset}.
 
 
 
 \section{Model Theory} 
+
 \label{sec:formal_prelim} 
 
 \subsection{Relation}
-As mentioned in Section~\ref{sec:formal-why}, a model is defined by a set 
-of explicitly defined relations, known as signature of a model. These 
-relations organize the subparts of a representation with regard to one 
-another. Formally, we denote a model in the form of below:
+A model is defined by a set of explicitly defined \textit{relations} which 
+describe how elements of a representation are organized with regard to one 
+another. All relations of a model are also colllectively referred to as the 
+\textit{signature} of the model. Formally, we denote a model in the form of below:
 
 \[
 \mathcal{M} = 
@@ -215,17 +221,12 @@ can be mathmatically described. A model consists of two parts. First,
 a domain, \(D\), is a set of natural numbers that indicate how many 
 elements are there in the representation. These elements can be any 
 building blocks of a representation based on particular linguistic 
-theories, for exmaple, syllable, ipa symbols, letters, mora, feature or 
-tonal units. Second, a finite set of relations that are defined over 
-those elements. Table~\ref{tab:relations} shows some common 
+theories, for exmaple, IPA symbols, feature or other tonal units
+such as syllable or moras. Second, a finite set of relations that are 
+defined over those elements. Table~\ref{tab:relations} shows some common 
 relations that will be used in this work and are also commonly seen
-in other works, even though the notation might varies. See more in 
+in other related works, even though the notation might varies. See more in 
 \citet{strother2017using,oakdenNotationalEquivalenceTonal2020,chandleeBufia2019}.
-
-In Table~\ref{tab:relations}, the Property relation
-is unary (only one element $x$ is involved), and the rest are binary 
-relation (two elements, $x$ and $y$, are involved). 
-
 
 \begin{table}[!ht]
     \centering
@@ -235,7 +236,7 @@ relation (two elements, $x$ and $y$, are involved).
         \midrule
         Property   & $p(x)$            & $x$ has the property of being $p$ \\
         Successor   & $\lhd(x,y)$            & $x$ immediately precedes $y$\\
-        Precedence  & $<(x,y)$                & $x$ precedes $y$ \\
+        Precedence  & $\prec(x,y)$                & $x$ precedes $y$ \\
         Dominance   & $\delta(x,y)$ & $x$ dominates $y$ \\
         Association & $\alpha(x,y)$          & $x$ is associated to $y$ \\
         \bottomrule
@@ -245,13 +246,21 @@ relation (two elements, $x$ and $y$, are involved).
 \end{table}
 
 
+A relation can be unary or binary, depending on the number of elements it defines over. In Table~\ref{tab:relations}, the Property relation
+is unary (only one element $x$ is involved), and the rest are binary 
+relation (two elements, $x$ and $y$, are involved in this relation). 
 
-A unary relation, which is somewhat counter intuitive, means a relation of an element defined over itself, usually it can be viewed as a property or identity of individual elements. For example, \(p(x)\)
-means that the element \(x\) has the property of being \(x\). In a tonal representation, \(H(x)\) means that \(x\) is an element of the domain with the property of being a high tone. In feature theory, \(nasal(x)\) means that x has the property of being nasal.
+The property relation can be viewed as ``assigning" a characteristic or identity to an individual element. \(p(x)\) means that the element \(x\) has the property of being \(p\). For example, in a tonal representation, \(H(x)\) means that \(x\) is an element of the domain with the property of being a high tone. \(\sigma(x)\) means that \(x\) is an element of the domain with the property of being a syllable.
 
-A relation may also be binary and specifies a connection between two elements. For example, a successor relation specifies that one element \(x\) immediately is followed by another element \(y\). In Section~\ref{sec:formal-why}, we saw that the orthographic form \textit{phonology} follows this pattern: \(p\) is immediately followed by \(h\), and \(h\) is immediately followed by \(o\). Using \(\lhd\) to denote the successor relation, these relations can be written as \(\lhd(p,h)\) and \(\lhd(h,o)\).
+A relation may also be binary and specifies a connection between two elements. For example, a successor relation specifies that one element \(x\) immediately is followed by another element \(y\). In Section~\ref{sec:formal-why}, we saw that the orthographic form \textit{phonology} follows this pattern: each letter
+follows the previous letter. Formally, for the first three letters: \textit{pho}, there are three positions and we index them as \(x, y, z\). The unary relations are: \(p(x)\), \(h(y)\), and \(o(z)\). This means x is p, y is h, and z is o, and \(p\) is immediately followed by \(h\), and \(h\) is immediately followed by \(o\). Using \(\lhd\) to denote the successor relation, these relations can be written as \(\lhd(x,y)\) and \(\lhd(y,z)\).
 
-A precedence relation resembles successor but does not require adjacency; it specifies only the relative order between two elements. Suppose we use \(\prec\) to denote precedence. Since \(p\) precedes \(h\), \(h\) precedes \(o\), so that \(p\) also precedes \(o\), we have \(\prec(p,h)\), \(\prec(h,o)\), and \(\prec(p,o)\). In contrast, although \(\lhd(p,h)\) and \(\lhd(h,o)\) hold, \(\lhd(p,o)\) does not since they are not adjacent.
+A precedence relation resembles successor but does not require adjacency; it 
+specifies only the relative order between two elements. Since \(p\) precedes 
+\(h\), \(h\) precedes \(o\), so that \(p\) also precedes \(o\). Given, \(p(x)\),
+\(h(y)\), and \(o(z)\), the precedence relations are \(\prec(x,y)\), \(\prec(y, z)\), 
+and also \(\prec(x,z)\). In contrast, \(\lhd(x,z)\) does not hold since they 
+are not adjacent.
 
 If successor and precedence relations are typically represented horizontally, 
 dominance and association relations are often represented vertically. They 
@@ -264,10 +273,7 @@ also suggests a H tone is associated with a syllable. In other words, \(\alpha(\
 
 From here on, I will begin by showing how segmental sequences and feature
 bundles are represented model-theoretically, and then move on to metrical 
-and autosegmental representations. 
-
-Before going into the details, it is useful to preview an important 
-distinction among them. Segmental and feature-based representations can largely 
+and autosegmental representations. Segmental and feature-based representations can largely 
 be modeled as one-dimensional structures, in which elements are organized 
 primarily by one axis of a linear order. Metrical and autosegmental 
 representations, by contrast, require richer relational structures are more 
@@ -530,15 +536,15 @@ includes single binary successor relation $\rightarrow$ defining linear order.
 Unlike the string models, there are five unary relations:
 \{+Low, -Low, +Contour, -Contour, Boundary\},
 where \texttt{low} and \texttt{contour} are binary features, 
-and \texttt{Boundary} is treated as a privative feature.
+and \texttt{Boundary} is treated as a privative feature. (Note in this representation \texttt{[$\pm$Contour]} is only used to indicate monomoraic contour tones.)
 In the string model, each position is true of exactly one unary relation.
 However, in the feature model, positions may be true of more 
 than one unary relation.
+The position 1 and 4 have the feature \texttt{+Low} and \texttt{-Contour}.
 \citet{strother2017using} and \citet{vu2018statistical} refer to such 
 models as \textit{unconventional} because they are not the standard 
 way to model strings in theoretical computer science (though it is 
-standard in phonology).
-Note in this representation \texttt{[$\pm$Contour]} is only used to indicate monomoraic contour tones.
+common in phonology). 
 
 \begin{figure}[ht]
     \centering
@@ -684,7 +690,7 @@ relational structure in Figure~\ref{fig.model.AR3}.
 			\draw (c2) -- node[midway, above]  {$\lhd$}(c3);
 			\draw (s1) -- node[midway, above]  {$\lhd$}(s2);
 		\end{tikzpicture}
-		\subcaption{Graph}
+		\subcaption{Model Visualization}
 		\label{fig.model.AR2}
 	\end{minipage}
 	\hfill
@@ -708,7 +714,7 @@ relational structure in Figure~\ref{fig.model.AR3}.
 		\end{aligned}
 		\right\}
 		\end{align*}
-		\subcaption{Model}
+		\subcaption{Model Signature}
 		\label{fig.model.AR3}
 	\end{minipage}
 	
@@ -717,208 +723,153 @@ relational structure in Figure~\ref{fig.model.AR3}.
 	\label{fig.model.AR}
 \end{figure}
 
-A graph consists of a set of vertices $V$ and edges $E$.  
-As shown in Figure~\ref{fig.model.AR3}, the graph consists
-of seven \textit{labelled nodes} which are circles numbered with $\{1, 2,\dots,7\}$, 
-representing linguistic units, each labelled with its corresponding properties, such
-as $L$, $H$, $\sigma$, or $\mu$. 
-The lines connecting elements are referred to as \textit{edges}, which 
-may be either \textit{directed} or \textit{undirected}. For clarity, 
+
+In the model signature in Figure~\ref{fig.model.AR3}, there are seven nodes representing different linguistic units, and they are distributed across three different tiers: tonal, moraic, and syllabic tiers. For clarity, 
 we distinguish two types of connections: \textit{association relations}, 
 denoted by $\alpha$, refer to the undirected edges across tiers; 
-%(e.g., between tones and moras, or between moras and syllables), 
+(e.g., between tones and moras, or between moras and syllables), 
 and successor relations, denoted by $\lhd$, represent ordered relationships within a single tier. 
 All the successor connections in the current example are given by
 \( \lhd = \{\langle 1,2 \rangle,\ \langle 3,4 \rangle,\ \langle 4,5
 \rangle,\ \langle 6,7 \rangle \}.\) The association relations, on the
 other hand, are expressed as a set of unordered pairs:
 \(\alpha = \{ (1,3),\ (2,4),\ (2,5),\ (3,6),\ (4,6),\ (5,7) \}.\)
-Together, the tuple $\langle H, L, \mu, \sigma, \lhd, \alpha \rangle$
-constitutes the \textit{signature} of this model-theoretic representation
-of an AR.
 
-\subsection{Other Tonal Models}
-There are other representational proposals about tones, for example, 
-the Q-theoretical representation \citep{shih2013subsegmental}, Bao's
-tonal model \citep{bao1999structure} and Yip's model \citep{yip1989contour}.
-These models, to some extent, are both couched in the autosegmental
-theory which encodes the associations across tiers. 
+\subsection{Model Theory and Graph of ARs}
 
-For example, \citet{yip1989contour} proposed two contour tone representations.
-One is a contour can be decomposed into two sequences of level tones and the 
-other one bahave as a single tone. The distinction is how the tones associate
-with the tonal node.
+As one can notice, the visual representation of the AR in Figure~\ref{fig.model.AR} 
+resembles a \textit{graph}, which is another mathmatical object represetned 
+with a set of vertices/nodes $V$ and edges/links $E$, \(G = (V, E)\). Table~\ref{tab:graph-model} shows how concepts from the model-theoretic representation can be mapped to the graph-theoretic framework.
 
-\begin{figure}[ht]
+
+\begin{table}[ht!]
     \centering
-    \begin{minipage}[b]{0.7\textwidth}
-        \begin{tikzpicture}	
-		\node (r1) at (0,0) {TBU:};
-		\node (r2) at (0,1) {Tonal Root:};
-		\node (n1) at (0,2) {Tone:};
-	\end{tikzpicture} \hfill
-    \begin{tikzpicture}	
-		\node (r1) at (0,2) {L};
-		\node (r2) at (1,2) {H};
-		\node (n1) at (0,1) {\(\circ\)};
-        \node (n2) at (1,1) {\(\circ\)};
-        \node (s) at (.5,0) {$\sigma$};
-		\draw (s) -> (n1) -> (r1);
-		\draw (s) -> (n2) -> (r2);
-	\end{tikzpicture}\hfill
-	\begin{tikzpicture}	
-		\node (r1) at (0,2) {L};
-		\node (r2) at (1,2) {H};
-		\node (n1) at (0.5,1) {\(\circ\)};
-        % \node (n2) at (1,1) {\(\circ\)};
-        \node (s) at (.5,0) {$\sigma$};
-		\draw (s) -> (n1) -> (r1);
-		\draw (s) -> (n1) -> (r2);
-	\end{tikzpicture}\hfill
-    \end{minipage}
-\end{figure}
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Model-Theoretic Concept}
+        & \textbf{Graph-Theoretic Correspondence} \\
+        \midrule
+        AR as a tiered structure & Graph with  partitioned and labelled nodes \\
+        Domain elements (positions) & Vertices (nodes) \\
+        Unary predicates & Vertex labels \\
+        Within-tier successor relations & Directed successor edges \\
+        Symmetric association relation & Undirected association edges \\
+        \bottomrule
+    \end{tabular}
+    \caption{Correspondences between AR model and AR graph}
+    \label{tab:graph-model}
+\end{table}
 
+
+The structure in Figure~\ref{fig.model.AR}, if seen as a graph, consists
+of seven \textit{labelled nodes} which are circles numbered with $\{1, 2,\dots,7\}$, 
+representing linguistic units, each labelled with its corresponding properties, such
+as $L$, $H$, $\sigma$, or $\mu$. 
+The lines connecting elements are referred to as \textit{edges}, which 
+may be either \textit{directed} or \textit{undirected}.
+
+One common representation of graphs is through \textit{adjacency matrices}
+\citep{west2001introduction,CLRS2022}, which use binary values to
+denote whether there is an edge between two nodes. Two nodes, $v$ and
+$w$, are considered \textit{adjacent} if there is an edge connecting
+them. If $G$ is a graph with $n$ nodes 
+then its adjacency matrix $A$ is an $n \times n$ matrix. If $i$ and 
+$j$ are connected, the entry $(i, j)$ has the value of 1; otherwise it is
+0. 
+
+Using this method, an AR with $t$ tones, $m$ moras, and $s$ 
+syllables can be encoded as a $t \times m$ tone-mora matrix and 
+a $m \times s$ mora-syllable matrix, with successor relations 
+implicit in the indexing. For instance, Table~\ref{tab.matrices} provides an alternative
+representation of the same AR in Figure~\ref{fig.model.AR}.
+In the tone-mora matrix, the header row reflects the tonal sequence
+$LH$, and the index column reflects the mora sequence. Since the L tone is
+associated with the first mora $\mu_1$, and the H tone is associated with
+both $\mu_2$ and $\mu_3$, the corresponding cells
+$(L, \mu_1), (H, \mu_2), (H, \mu_3)$ are marked with 1, and the others
+with 0 which indicates no connection between them.
+
+If we examine the matrix by columns, one can infer that
+the L tone occupies the first mora, while the H tone occupies the
+remaining two.  Likewise, in the mora syllable matrix, since
+$\sigma_1$ is associated with $\mu_1$ and $\mu_2$, and $\sigma_2$ with
+$\mu_3$, the corresponding cells are marked with 1. If we examine this
+matrix by rows, it can be seen that $\sigma_1$ is heavy while
+$\sigma_2$ is light. Hereafter, we refer to the rows and columns in
+the tone-mora matrix as the mora rows and tone columns respectively;
+and to the rows and columns in the mora-syllable matrix as the
+syllable rows and mora columns respectively.
+\begin{table}[ht]
+\centering 
+	\begin{tabular}{cc}
+	\centering
+	\begin{tabular}{c|cc}
+			& L & H \\
+			\hline
+			$\mu_1$ & 1 & 0 \\
+			$\mu_2$ & 0 & 1 \\
+			$\mu_3$ & 0 & 1 \\
+	\end{tabular} \vspace{1em}
+		&
+	\begin{tabular}{c|ccc}
+			& $\mu_1$ & $\mu_2$ & $\mu_3$ \\ \hline
+			$\sigma_1$ & 1     & 1     & 0     \\
+			$\sigma_2$ & 0     & 0     & 1
+	\end{tabular}
+	\end{tabular}
+	\caption{Adjacency matrices: tone–mora matrix (left) and mora–syllable matrix (right)}
 	
-These two representations, although not exactly like the representation 
-in Figure~\ref{fig.model.AR} in the terms of its consisting nodes, and labels,
-can be modelled with the same relation, that is, the successor relation
-within each tier, and on association relation between two adjacent tiers. 
-\citet{oakdenNotationalEquivalenceTonal2020} uses a dominance relation,
-\(\delta\) for the tonal nodes withe the tonal node. 
+	\label{tab.matrices}
+\end{table}
 
-% In addition to representing model-theoretic relational structures 
-% with graphs, one can use \textit{adjacency matrices}
-% \citep{west2001introduction,CLRS2022}, which use binary values to
-% denote whether there is an edge between two nodes. Two nodes, $v$ and
-% $w$, are considered \textit{adjacent} if there is an edge connecting
-% them. If $G$ is a graph with $n$ nodes %,labelled $\{1, 2, \ldots, n\}$,
-% then its adjacency matrix $A$ is an $n \times n$ matrix. If $i$ and 
-% $j$ are connected, the entry $(i, j)$ has the value of 1; otherwise it is
-% 0. 
-% Using this method, an AR with $t$ tones, $m$ moras, and $s$ 
-% syllables can be encoded as a $t \times m$ tone-mora matrix and 
-% a $m \times s$ mora-syllable matrix, with successor relations 
-% implicit in the indexing. For instance, Table~\ref{tab.matrices} provides an alternative
-% representation of the same AR in Figure~\ref{fig.model.AR}.
-% In the tone-mora matrix, the header row reflects the tonal sequence
-% $LH$, and the index column reflects the mora sequence. Since the L tone is
-% associated with the first mora $\mu_1$, and the H tone is associated with
-% both $\mu_2$ and $\mu_3$, the corresponding cells
-% $(L, \mu_1), (H, \mu_2), (H, \mu_3)$ are marked with 1, and the others
-% with 0 which indicates no connection between them.\footnote{For
-% 	convenience, we refer to each cell by the labels of the nodes. Node
-% 	indices will be omitted from here on. For example, we may refer to $(1,3)$
-% 	and $(2,4)$ with $(L,\mu_1)$ and $(H, \mu_2)$, respectively. However, 
-% 	these are the labels of the nodes rather than the nodes 
-% 	themselves.}  If we examine the matrix by columns, one can infer that
-% the L tone occupies the first mora, while the H tone occupies the
-% remaining two.  Likewise, in the mora syllable matrix, since
-% $\sigma_1$ is associated with $\mu_1$ and $\mu_2$, and $\sigma_2$ with
-% $\mu_3$, the corresponding cells are marked with 1. If we examine this
-% matrix by rows, it can be seen that $\sigma_1$ is heavy while
-% $\sigma_2$ is light. Hereafter, we refer to the rows and columns in
-% the tone-mora matrix as the mora rows and tone columns respectively;
-% and to the rows and columns in the mora-syllable matrix as the
-% syllable rows and mora columns respectively.
-% \begin{table}[ht]
-% \centering 
-% 	\begin{tabular}{cc}
-% 	\centering
-% 	\begin{tabular}{c|cc}
-% 			& L & H \\
-% 			\hline
-% 			$\mu_1$ & 1 & 0 \\
-% 			$\mu_2$ & 0 & 1 \\
-% 			$\mu_3$ & 0 & 1 \\
-% 	\end{tabular} \vspace{1em}
-% 		&
-% 	\begin{tabular}{c|ccc}
-% 			& $\mu_1$ & $\mu_2$ & $\mu_3$ \\ \hline
-% 			$\sigma_1$ & 1     & 1     & 0     \\
-% 			$\sigma_2$ & 0     & 0     & 1
-% 	\end{tabular}
-% 	\end{tabular}
-% 	\caption{Adjacency matrices: tone–mora matrix (left) and mora–syllable matrix (right)}
-	
-% 	\label{tab.matrices}
-% \end{table}
+These AR adjacency matrices capture precisely the same information as
+the graphs and model-theoretic structures. If we replace the header
+row and index column with the node numbers used in the graph model
+signature, and replace the 1s with the indices of row and column, we
+obtain the table filled as in Table~\ref{tab.index}. As can be
+seen, these pairs are identical to the information encoded in
+Figure~\ref{tab.matrices}.
 
-% These AR adjacency matrices capture precisely the same information as
-% the graphs and model-theoretic structures. If we replace the header
-% row and index column with the node numbers used in the graph model
-% signature, and replace the 1s with the indices of row and column, we
-% obtain the table filled as in Table~\ref{tab.index}. As can be
-% seen, these pairs are identical to the information encoded in
-% Figure~\ref{tab.matrices}.
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{cc}
+		$\begin{array}{c|c@{}c@{}c}
+			& 1 & \lhd & 2 \\
+			\hline
+			3 & (1,3)  && 0 \\
+			\lhd & && \\
+			4 & 0 & & (2,4) \\
+			\lhd & && \\
+			5 & 0 & & (2,5) \\
+		\end{array}$ \hspace{1em} &
+		$\begin{array}{c|c@{}c@{}c@{}c@{}c}
+			& 3 & \lhd & 4 & \lhd & 5 \\
+			\hline
+			6           & (3,6) &         & (4,6) &         &   	\\
+			\lhd  &       &         &       &         &   	\\
+			7           &       &         &       &         & (5,7) \\
+		\end{array}$
+	\end{tabular}
+\caption{Equivalent node-indexed encodings of the adjacency matrices in Table~\ref{tab.matrices}, where $\lhd$ and $\alpha$ are the successor and association predicates of the model signature.}
+	\label{tab.index}
+\end{table}
 
-% \begin{table}[ht]
-% 	\centering
-% 	\begin{tabular}{cc}
-% 		$\begin{array}{c|c@{}c@{}c}
-% 			& 1 & \lhd & 2 \\
-% 			\hline
-% 			3 & (1,3)  && 0 \\
-% 			\lhd & && \\
-% 			4 & 0 & & (2,4) \\
-% 			\lhd & && \\
-% 			5 & 0 & & (2,5) \\
-% 		\end{array}$ \hspace{1em} &
-% 		$\begin{array}{c|c@{}c@{}c@{}c@{}c}
-% 			& 3 & \lhd & 4 & \lhd & 5 \\
-% 			\hline
-% 			6           & (3,6) &         & (4,6) &         &   	\\
-% 			\lhd  &       &         &       &         &   	\\
-% 			7           &       &         &       &         & (5,7) \\
-% 		\end{array}$
-% 	\end{tabular}
-% \caption{Equivalent node-indexed encodings of the adjacency matrices in Table~\ref{tab.matrices}, where $\lhd$ and $\alpha$ are the successor and association predicates of the model signature.}
-% 	\label{tab.index}
-% \end{table}
 
-% Furthermore, certain patterns can be easily identified by inspecting the
-% matrices. For example, a series of contiguous 1s may indicate tone 
-% spreading over multiple moras if observed in the tone column, or a mora 
-% shared by multiple tones if seen in the mora row. 
-% Two 1s positioned diagonally suggest a one-to-one mapping.
-% The associations $(L,\mu_1)$ and $(H,\mu_2)$
-% in the tone-mora matrix in Table \ref{tab.matrices}
-% present an example of this.
-% Some particular or ill-formed patterns can also be 
-% readily detected, which will be discussed in Section~\ref{sec:bufiaar}.
+
+
+
+
 
 \section{Factors and Subfactors}
+\label{sec:factors}
 
+The previous sections have looked at various structures that can be used to represent tonal information: they can be strings, or relational structures, or graphs. From here, we will abstract
+away from specific presentation of the structures:
+and consider them as \textit{factors}, which are connected relational structures. 
 
-An important concept when considering model-theoretic relational
-structures is \textit{containment}. Specifically, when a string 
-can be viewed as contained in another string, it is known as its 
-substring; if a graph is contained in another graph, it is known 
-as its subgraph. Intuitively, containment refers to the situation
-when one structure includes another structure inside of it. This 
-section will gives a more formalisation that rooted from model theory,
-where a "substructore" or the one contained in another one, 
-known as a subfactor of it. \citep{rogers.lambert2019mol,chandleeBufia2019}
-
-\todo{the difference between substructure vs subfactor}
-
-\citet{rogers.lambert2019mol} define $A$ to be a $k$-factor of $B$
-if and only if:
-\begin{enumerate}
-    \item $\operatorname{card}(A) \leq k$;
-    \item $A$ is $\operatorname{card}(A)$-connected;
-    \item there exists a homomorphism $h \colon A \to B$.
-\end{enumerate}
-
-These requires A is a \textit{k}-subfactor of B if
-A is connected and has a size of <k, and there is a bijective 
-homomorphism relation between A to B. We will unpack two concepts
-\textit{connected} and \textit{homomorphism}, following
-\citet{chandleeBufia2019}: \textit{Connected} (Definition~\ref{def.connected})
-\textit{Restriction} (Definition~\ref{def.res}) and \textit{Containment}
-(Definition~\ref{def.contain}). Readers are referred to
-\citet{rogers.lambert2019mol} for an alternative formulation. In the
-definitions below, it is assumed the structures A and B have the same
-signature $\langle R_1, \ldots R_n \rangle$.
+\subsection{Connectedness}
+\citet{chandleeBufia2019} define a factor as a connected relational structure, and a subfactor as a connected substructure of a factor.
+The definition of connectedness (stands between two elements) is given in Definition~\ref{def.connected} and a connected structure is defined in Definition~\ref{def.connect.struc}.
 
 \begin{definition}[Connectedness]
 $ C := \{
@@ -927,22 +878,159 @@ $ C := \{
     \exists s, t \in \{1 \cdots m\},
     x = x_s, y = x_t
 \}$
-
+\label{def.connected}
 \end{definition}
-
-
-
 
 \begin{definition}[Connected Structure]
-    \label{def.connected}
+    \label{def.connect.struc}
 A structure $\mathcal{S} = \langle D; R_1, R_2, \ldots, R_n \rangle$ is
 \emph{connected} if and only if
-\[
+\(
     \forall x,y \in D,\quad (x,y) \in C^{*}.
-\]
-
+\)
 \end{definition}
 
+
+Definition~\ref{def.connected} states that two elements $x$ and $y$ in 
+the domain $D$ are connected, if there exsits an \(R_i\) whose relational 
+tuple contains both \(x\) and \(y\). Informally, if there exists a path 
+connecting from element \(x\) to element \(y\) through any relation in 
+the model, then \(x\) and \(y\) are connected. Definition~\ref{def.connect.struc} 
+states that a structure is connected if every pair of elements are in 
+the symmetric transitive closure of C , denoted as \(C^{*}\).
+
+However, this connectedness restriction need not be imposed globally for ARs.
+Since ARs allow unassociated elements across tiers. For example, the ARs
+that have two tiers with no association lines between them, are not connected in the sense of \citet
+{chandleeBufia2019}; but they are still valid ARs, or at least valid as an intermiediate 
+representation of a tonal structure. For this reason, the connectness for ARs is a
+weaker condition as \emph{tier-wise connectedness}: an AR is a valid connected structure
+if elements are in connectedess within the tier. 
+
+\begin{figure}[ht!]
+    \centering
+		\begin{tikzpicture}[scale=0.5]
+			\node[state] (t1) at (0,8) {1\textsubscript{L}};
+			\node[state] (t2) at (8,8) {2\textsubscript{H}};
+			
+			\node[state] (c1) at (0,4) {3\textsubscript{$\mu$}};
+			\node[state] (c2) at (4,4) {4\textsubscript{$\mu$}};
+			\node[state] (c3) at (8,4) {5\textsubscript{$\mu$}};
+			% \draw (t1) -- node[midway, left]   {$\alpha$} (c1);
+			% \draw (t2) -- node[midway, right] {$\alpha$} (c3) ;
+			
+			\draw (t1) -- node[midway, above]  {$\lhd$} (t2);
+			\draw (c1) -- node[midway, above]  {$\lhd$}(c2);
+			\draw (c2) -- node[midway, above]  {$\lhd$}(c3);
+			% \draw (s1) -- node[midway, above]  {$\lhd$}(s2);
+		\end{tikzpicture} \hspace{5em}
+		\begin{tikzpicture}[scale=0.5]
+			\node[state] (t1) at (0,8) {1\textsubscript{L}};
+			% \node[state] (t2) at (8,8) {2\textsubscript{H}};
+			
+			\node[state] (c1) at (0,4) {3\textsubscript{$\mu$}};
+			\node[state] (c2) at (4,4) {4\textsubscript{$\mu$}};
+			\node[state] (c3) at (8,4) {5\textsubscript{$\mu$}};
+			% \draw (t1) -- node[midway, left]   {$\alpha$} (c1);
+			% \draw (t2) -- node[midway, right] {$\alpha$} (c3) ;
+			
+			% \draw (t1) -- node[midway, above]  {$\lhd$} (t2);
+			\draw (c1) -- node[midway, above]  {$\lhd$}(c2);
+			\draw (c2) -- node[midway, above]  {$\lhd$}(c3);
+			% \draw (s1) -- node[midway, above]  {$\lhd$}(s2);
+		\end{tikzpicture}
+		\subcaption{Two examples of ARs with unassociated elements.}
+		\label{fig:unassociated.tiers}
+\end{figure}
+\subsection{Size}
+\todo{in the future}
+\subsection{Containment}
+An important concept when considering relational
+structures is \textit{containment}. 
+Informally, one structure in contained in another one if it can be
+found as a subpart of the other. For strings, substrings are a 
+common example of containment; for graphs, subgraphs. 
+In model theory, what the commonly used term ``substructure" refers to is
+more precisely known as ``subfactor", and it makes distinction between the two concepts \citep{rogers.lambert2019mol,chandleeBufia2019}.
+
+
+
+
+
+
+Let us consider the simplest and trivial case of subfactors, which is when two factors are identical, or formally, they are \textit{isomorphic}. 
+
+\begin{definition}[Isomorphism]
+Let
+$\mathcal{A} =
+\langle D; R_1^{\mathcal{A}},\ldots,R_n^{\mathcal{A}}\rangle$
+and
+$
+\mathcal{B} =
+\langle D; R_1^{\mathcal{B}},\ldots,R_n^{\mathcal{B}}\rangle
+$
+be two relational structures over the same signature.
+$\mathcal{A}$ and $\mathcal{B}$ are \emph{isomorphic}, written
+$\mathcal{A} \cong \mathcal{B}$, if there exists a bijection
+$f:A \to B$ such that for every $m$-ary relation symbol $R_i$ and all
+$a_1,\ldots,a_m \in A$,
+\[
+R_i^{\mathcal{A}}(a_1,\ldots,a_m)
+\Longleftrightarrow
+R_i^{\mathcal{B}}(f(a_1),\ldots,f(a_m)).
+\]
+\end{definition}
+
+Informally, the two factors are identical in terms of their structure 
+and properties. An example of two isomorphic factors is shown in 
+Figure~\ref{fig:isomorphic}, where all nodes and edges are identical,
+except the index (which is not in the signature) of the nodes are different.
+
+
+\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}
+			\node (t2) at (1,1) {L};
+			
+			\node[anchor=base] (c11) at (1,0) {$\mu_{1}$};
+			\node[anchor=base] (c12) at (2,0) {$\mu_{2}$};
+			
+			\node (s2) at (1,-1) {$\sigma$};
+			\draw (t2) -- (c11) -- (s2);
+			\draw (t2) -- (c12) -- (s2);
+			
+
+			\node (t2) at (5,1) {L};
+			
+			\node[anchor=base] (c1) at (5,0) {$\mu_{3}$};
+			\node[anchor=base] (c2) at (6,0) {$\mu_{4}$};
+			
+			\node (s2) at (5,-1) {$\sigma$};
+			\draw (t2) -- (c1) -- (s2);
+			\draw (t2) -- (c2) -- (s2);
+			
+		  \draw[densely dotted] (c11.north east) .. controls (2.5,1.2) and (3.5,1.2) .. (c1.north west);
+		  \draw[densely dotted] (c12.east) .. controls (3.26,-1) and (4.5,-1.08) .. (c2.west);
+		  \node[draw=white] at (3.05,1.2) {\textit{h}};  
+\node[draw=white] at (4,-0.5) {\textit{h}};
+		\end{tikzpicture}  
+	\caption{Two factors are isomorphic despite the difference in their labels. }
+    \label{fig:isomorphic}
+\end{figure}
+
+
+
+A more complex case arises when two factors are not isomorphic, but one is
+\emph{homomorphic} to the other. A homomorphism does not require the two
+structures to be identical. Rather, it requires that all relations holding in
+the smaller factor are preserved under a bijective function into the larger structure.
+In other words, if two elements stand in a relation \(R\) the smaller factor,
+then their images under the function must stand in the corresponding relation
+in the larger factor. \citet{chandleeBufia2019} define this relation through
+\textit{restriction} and \textit{containment}: a factor is contained in another
+factor if there exists a restriction of the larger factor and a function from
+the smaller factor to this restriction such that all relations in the smaller
+factor are preserved in the larger factor.
 
 \begin{definition}
 	\label{def.res}
@@ -958,138 +1046,125 @@ A structure $\mathcal{S} = \langle D; R_1, R_2, \ldots, R_n \rangle$ is
 		($A \sqsubseteq B$) if there exists a restriction of $B$, denoted
 		$B'$, and there exists a function $h:A \rightarrow B'$ such that for
 		each $m$-ary relation $R_i$ in the model signature:
-		\(R_i(a_1, \ldots, a_m) \in A \implies R(h(a_1), \ldots, h(a_m)) \in
-		B'.\)}
+		\(R_i(a_1, \ldots, a_m) \in A \implies R(h(a_1), \ldots, h(a_m)) \in B'.\)}
 \end{definition}
 
-These definitions mean that $A$ is \textit{contained} in $B$ whenever
-there exists a subpart of $B$ onto which \(A\) projects via a function
-\(h\), and furthermore, that the relations that hold among elements of
-\(A\) hold among their corresponding elements in \(B\). 
 
-I will show two examples in the context of tonal forms here. One is the
-feature bundles and the other one is ARs. 
-% Preamble:
-\usetikzlibrary{positioning}
+For example, Factors \ref{fig:feature-factor-a} and \ref{fig:feature-factor-b}
+are both contained in Factor \ref{fig:feature-factor-big}. Because the within 
+the bigger factor, both smaller factors preserve all their internal relations,
+despite the difference in indexing. 
 
-
-For feature bundles, $[-\mathrm{Low}][+\mathrm{Low}]$ is a
-2-subfactor of the structure shown in Figure~\ref{fig:feature-bundles}.
+Note that containment does not require all labels in the larger factor to be
+preserved in the smaller factor. For example, nodes 2 and 3 in
+Figure~\ref{fig:feature-factor-big} each has two labels. The corresponding
+nodes in Figure~\ref{fig:feature-factor-a} preserve both labels, whereas the
+nodes in Figure~\ref{fig:feature-factor-b} preserve only one of
+them. This does not prevent both smaller factors from being contained in the
+larger factor. What matters is that all relations present in the smaller factor
+are preserved in the larger factor, not the other way around.\footnote{This is
+the difference between \textit{subfactors} and \textit{substructure}. A \textit{subfactor} does not have to maintain all relations that the corresponding nodes have as long what occurs in the subfactors are also bijectively preserved in the superfactors; a \textit{substructure} is the contrary. In Figure~\ref{fig:feature-factors}, Factor~\ref{fig:feature-factor-a} is both a substrcuture and subfactor of Figure~\ref{fig:feature-factor-big} but Figure~\ref{fig:feature-factor-a} is a subfactor but not a substructure of Figure~\ref{fig:feature-factor-a}}.
 
 
 \begin{figure}[ht]
     \centering
-    \begin{tikzpicture}
-        \node[state, right=1.5cm of n2] (n3) {1};
-        \node[state, right=1.5cm of n3] (n4) {2};
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \node[state] (n1) at (0,0) {1};
+            \node[state, right=1.5cm of n1] (n2) {2};
 
-        \draw (n3) -- node[midway, above] {$\lhd$} (n4);
-        \node[align=center, above=2pt of n3]
-            {$-\mathrm{Low}$};
-        \node[align=center, above=2pt of n4]
-            {$+\mathrm{Low}$};
-    \end{tikzpicture}
-    \hfill
-    \begin{tikzpicture}
-        \node[state] (n1) {1};
-        \node[state, right=1.5cm of n1] (n2) {2};
-        \node[state, right=1.5cm of n2] (n3) {3};
-        \node[state, right=1.5cm of n3] (n4) {4};
+            \draw (n1) -- node[midway, above] {$\lhd$} (n2);
 
-        % Successor relation
-        \draw (n1) -- node[midway, above] {$\lhd$} (n2);
-        \draw (n2) -- node[midway, above] {$\lhd$} (n3);
-        \draw (n3) -- node[midway, above] {$\lhd$} (n4);
+            \node[align=center, above=2pt of n1] {-Low\\+Contour};
+            \node[align=center, above=2pt of n2] {+Low\\+Contour};
+        \end{tikzpicture}
+        \caption{Factor}
+        \label{fig:feature-factor-a}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \node[state] (n1) at (0,0) {1};
+            \node[state, right=1.5cm of n1] (n2) {2};
 
-        % Feature labels
-        \node[align=center, above=2pt of n1]
-            {$+\mathrm{Low}$\\$-\mathrm{Contour}$};
-        \node[align=center, above=2pt of n2] {$\cdot$};
-        \node[align=center, above=2pt of n3]
-            {$-\mathrm{Low}$\\$-\mathrm{Contour}$};
-        \node[align=center, above=2pt of n4]
-            {$+\mathrm{Low}$\\$-\mathrm{Contour}$};
-    \end{tikzpicture}
-    \caption{A feature-bundle structure}
-    \label{fig:feature-bundles}
+            \draw (n1) -- node[midway, above] {$\lhd$} (n2);
+
+            \node[align=center, above=2pt of n1] {$-\mathrm{Low}$};
+            \node[align=center, above=2pt of n2] {$+\mathrm{Contour}$};
+        \end{tikzpicture}
+        \caption{Factor}
+        \label{fig:feature-factor-b}
+    \end{subfigure}
+    % \begin{subfigure}[b]{0.3\textwidth}
+    %     \centering
+    %     \begin{tikzpicture}
+    %         \node[state] (n1) at (0,0) {1};
+    %         \node[state, right=1.5cm of n1] (n2) {2};
+
+    %         \draw (n1) -- node[midway, above] {$\lhd$} (n2);
+
+    %         \node[align=center, above=2pt of n1] {$-\mathrm{Low}$};
+    %         \node[align=center, above=2pt of n2] {$+\mathrm{Low}$};
+    %     \end{tikzpicture}
+    %     \caption{Factor}
+    %     \label{fig:feature-factor-c}
+    % \end{subfigure}
+    \vspace{1em}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \node[state] (n1) {1};
+            \node[state, right=1.5cm of n1] (n2) {2};
+            \node[state, right=1.5cm of n2] (n3) {3};
+
+            \draw (n1) -- node[midway, above] {$\lhd$} (n2);
+            \draw (n2) -- node[midway, above] {$\lhd$} (n3);
+
+            \node[align=center, above=2pt of n1] {$+\mathrm{High}$};
+            \node[align=center, above=2pt of n2] {$-\mathrm{Low}$\\$+\mathrm{Contour}$};
+            \node[align=center, above=2pt of n3] {$+\mathrm{Low}$\\$+\mathrm{Contour}$};
+        \end{tikzpicture}
+        \caption{Larger feature model}
+        \label{fig:feature-factor-big}
+    \end{subfigure}
+
+    \caption{Two feature models in a containment relation}
+    \label{fig:feature-factors}
 \end{figure}
 
-For instance, the AR in Figure~\ref{fig:restriction:a} is contained in the
-AR in Figure~\ref{fig:restriction:b}, because the dotted region in
-Figure~\ref{fig:restriction:b} preserves all the internal relations of
-Figure~\ref{fig:restriction:a}, despite the difference in indexing.
-In particular, $\mu_1$, $\mu_2$, and $\sigma_1$ in
-Figure~\ref{fig:restriction:a} map to $\mu_2$, $\mu_3$, and $\sigma_2$,
-respectively, in Figure~\ref{fig:restriction:b}.
-
-\begin{figure}[h]
-	\centering
-	\begin{minipage}[t]{0.32\textwidth}
-		
-		
-		\centering
-		\begin{tikzpicture}
-			\node (t2) at (1,1) {L};
-			
-			\node[anchor=base] (c1) at (1,0) {$\mu_1$};
-			\node[anchor=base] (c2) at (2,0) {$\mu_2$};
-			
-			\node (s2) at (1,-1) {$\sigma_1$};
-			\draw (t2) -- (c1) -- (s2);
-			\draw (t2) -- (c2) -- (s2);
-			
-		\end{tikzpicture} 
-		\subcaption{Heavy L syllable}
-		\label{fig.restriction:a}
-	\end{minipage}	
-	\begin{minipage}[t]{0.32\textwidth}
-		\begin{tikzpicture}
-			\node (t1) at (1,1) {H};
-			\node (t2) at (2,1) {L};
-			\node (t3) at (3,1) {H};
-			
-			\node[anchor=base] (c1) at (1,0) {$\mu_1$};
-			\node[thick, anchor=base] (c2) at (2,0) {$\mu_2$};
-			\node[thick, anchor=base] (c3) at (3,0) {$\mu_3$};
-			
-			\node (s1) at (1,-1) {$\sigma_1$};			
-			\node (s2) at (2,-1)  {$\sigma_2$};
-			\draw (t1) -- (c1) -- (s1);
-			\draw (t2) -- (c1) -- (s1);
-			\draw (t2) -- (c3) --(s2);
-			\draw  (t2) -- (c2) -- (s2);
-			\draw  (t3) -- (c3);
-			\draw[dotted, thick]
-			($(t2)+(-0.3,0.3)$) --
-			($(t2)+(0.2,0.3)$) --
-			($(c3)+(0.3,0.2)$) --
-			($(c3)+ (0.3,0.2) + (0,-0.45)$) --
-			($(s2)+(0.2,-0.3)$) --
-			($(s2)+(-0.3,-0.3)$) --
-			cycle;
-			
-			
-		\end{tikzpicture} 
-		\subcaption{AR containing a heavy L}
-		\label{fig.restriction:b}
-	\end{minipage}
-	\caption{A heavy L-toned syllable and a structure in which it is contained}
-	\label{fig.restriction}
-\end{figure}
 
 \section{Partically Ordered Space}
-
+\label{sec:poset}
 The containment relation is particularly important because it provides
-a natural \textit{ordering} over the space of possible structures. The
-ordering is not total, like a linear order; it is a \textit{partial}
-ordering. In such a partially-ordered space, some structures are
-comparable in terms of containment, but not necessarily all of them
-are. \citet{chandleeBufia2019} provides some additional terminology:
-if one structure \(A\) is contained in another structure \(B\), then
-structure \(A\) is a \textit{subfactor} of structure \(B\), whereas
-\(B\) is a \textit{superfactor} of \(A\). They prefer these terms to
-substructures and superstructures, which have different
-technical meanings in model theory.
+a natural \textit{ordering} over the space of all logically possible 
+structures. The ordering is not total, like a linear order; it is a 
+\textit{partial} ordering. Below gives the formal definition of total and partial ordering \citep{CLRS2022}.
+
+\begin{definition}[Total Ordering]
+A \emph{total ordering} on a set $D$ is a binary relation
+$\leq \,\subseteq D \times D$ satisfying the following properties
+for all $x,y,z \in D$:
+\begin{enumerate}[itemsep=1em, parsep=-1em]
+    \item Reflexivity: $x \leq x$.
+    \item Antisymmetry: If $x \leq y$ and $y \leq x$,
+    then $x = y$.
+    \item Transitivity: If $x \leq y$ and $y \leq z$,
+    then $x \leq z$.
+    \item Totality: $x \leq y$ or $y \leq x$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Partial Ordering]
+A \emph{partial ordering} on a set $D$ is a binary relation
+$\leq \,\subseteq D \times D$ that is reflexive, antisymmetric,
+and transitive. 
+\end{definition}
+
+Unlike a total ordering, a partial ordering
+allows two distinct elements to be incomparable: neither
+$x \leq y$ nor $y \leq x$ need hold. In other words, in a partially-ordered space, some elements can be comparable, but others are not.
 
 \begin{figure}
 	\centering
@@ -1107,6 +1182,10 @@ technical meanings in model theory.
 			&& \node (a) {a}; & & \node (b) {b}; &  \\
 			&&& \node (z) {$\epsilon$}; && \\};
 		
+		\node [left = 1cm of aaa,font=\bfseries, gray] {\small $k = 3$};
+        \node [left = 1cm of aa,font=\bfseries,gray] {$k = 2$};
+        \node [left = 1cm of a,font=\bfseries,gray] {$k = 1$};
+        \node [left = 1cm of z,font=\bfseries,gray] {$k = 0$};
 		\draw[edge] (z) -- (a);
 		
 		\draw[edge] (z) -- (b);
@@ -1127,18 +1206,22 @@ technical meanings in model theory.
 		\draw[edge, dotted] (bb) -- ++(0,1.5em);
 	\end{tikzpicture}
 	\caption{Strings over $\Sigma = \{a,b\}$ ordered by the containment relation (non-exhaustive)}
-	\label{fig.hasse.str}
+	\label{fig:hasse.str}
 \end{figure}%
 
-To illustrate, Figure~\ref{fig.hasse.str} displays a
+
+To illustrate, Figure~\ref{fig:hasse.str} displays a
 non-exhaustive portion of the partial ordering of possible strings
-over the alphabet $\Sigma = \{a,b\}$. At the bottom of the ordering is
-the empty string $\epsilon$, with more complex strings appearing
-higher in the ordering.  Whenever two elements are connected by a
-line, it means that the higher element contains the lower element. For
-example, no line relates the \(a\) to \(b\), because neither contains
-the other.  However, a line is drawn from \(a\) to \(aa, ab\) and
-\(ba\), because \(a\) is contained in each of these structures. As
+over the alphabet $\Sigma = \{a,b\}$ in terms of containment relation. 
+
+At the bottom of the ordering is
+the empty string $\epsilon$ (with the length of \(0\)) and the more complex strings occur
+higher in the space (with increasing length \(k\) value). Whenever two elements are connected by a
+line, it means that the higher element \textit{contains} the lower element;
+hence they are comparable.
+Otherwise, the two elements are incomparable and neither contains the other.
+For example, no line relates the \(a\) to \(b\), because a doesn't contain b or vice versa. However, a line is drawn from \(a\) to \(aa, ab\) and
+\(ba\), because \(a\) is contained each of them. As
 defined above, \(aa, ab, ba\) and \(aaa\), and any other strings that
 contain \(a\) are superfactors of \(a\); correspondingly, \(a\) is a
 subfactor of each of these strings.
@@ -1152,144 +1235,214 @@ In this sense, among all superfactors of \(a\) such as
 are exactly one level above are next superfactors of \(a\), 
 namely \(\{aa, ab, ba\}\).
 
-The partial ordern space provides a inference path for grammaticaltiy
-search. The grammaticiality is entailed downwards: if a factor is considered
-well-formed, or is attested in the data; all its subfactors are also
-well-formed; on the contrary, The grammaticiality is entailed upwards:
+The partial ordering provides an important guide for well-formedness inference \citep{Yolyan2025,chandleeBufia2019,rawski2021structure}. The well-formedness is entailed downwards: if a factor is considered
+well-formed, or is attested in the data; all its subfactors are also well-formed. For instance, if \textit{aba} is a wellformed factor, all of its subfactors, that is, \textit{ab, ba, a, b} and trivially \(\epsilon\) 
+are also wellformed. On the contrary, the 
+illformedness passes upwards:
 if a factor is ill-formed, then all its
-superfactors (which contains this ill-formed factor) are also ill-formed 
-\citep{Yolyan2025}. 
+superfactors that contains this ill-formed factor are also ill-formed. For example, if \textit{ab} is an illformed structure, then
+all factors containing it, \textit{aab,aba,abb...} are all illformed. However, \textit{ab} being illformed does not provide any guidence of the wellformedness of \textit{ba}, since the two are incomparable.
 
-Take one example, if a heavy L syllable, as in \ref{fig.restriction:a} is
-an ill-formed strcture, meaning that the grammar will forbide this form; 
-its superfacotr, as in \ref{fig.restriction:b}, will also be banned from
-the data. On the other hand, if  \ref{fig.restriction:b} is well-formed,
-that all its subcomponents should also be well-formed. 
+This example demonstrates a hypothesis space of strings. In Chapter~\ref{chap:tones}, I will show how such space can be constructed in terms of tonal patterns, which is more complex.
 
 
 \section {Transduction}
+\label{sec:transduction}
 
 The previous section introduced model theory as a unified framework for 
 defining phonological forms proposed by different theories. It essentially 
 express how the consisting units within a representation relate to one 
 another.
 
-This section uses the same method from the previous section and moves beyond 
-an individual phonological form to the mapping between representations, that
-is how one representation can transform to another one. This question is 
-related to two questions in tonal phonology that are underexplored. 
-The first one has to do with UR-SR learning over enriched representation.
-Given two representations at different abstract levels, how does one derive 
-from one to another. The second is representation conversion: how different representational chocies grounded 
-theories relate to one another.
-
-There are indeed existing proposed approaches addressing these two 
-questions such as rewriting rules and modifications of association lines.
-Yet these questions are not settled. SPE-style rewrite rules struggles 
-to generalize some common tonal patterns such as contour formation and
-tonal spreading (see Chapter~\ref{chap:tones}[\todo{fix lit review}]). 
-Even based on autosegmental theory, there are competing tonal models
-that differ in the nodes and branching structures, and interpretations
-to these tonal modesl could also differ in people. 
-
-A logical transduction specifies how to construct an output model 
-$\mathcal{M}_o$ from an input model $\mathcal{M}_i$ using a set of
-of logic formulas. For each relation in the output model, the logic
-formulas defines a unique output with reference to the relation in 
-the input. 
-\begin{table}[t]
-		\centering	\small 
-		\begin{tabular}{llll}
-			\toprule
-			\textbf{Output} & & \textbf{Input} & \textbf{Interpretation} \\
-			\midrule
-			
-			$\phi_{\textsf{Domain}}$
-			&
-			$:=$
-			&
-			$\textsc{True}$
-			&
-			Preserve all input elements
-			\\[0.5em]
-			
-			
-			\textsc{Copy}
-			&
-			$:=$
-			&
-			1&
-			Define output domain same size as input
-			\\[0.5em]
-		    
-            
-            $\phi_{\textsf{License}}$
-			&
-			$:=$
-			&
-			$\textsc{True}$
-			&
-			Preserve all input elements
-			\\[0.5em]
+This section uses the same method and moves beyond an individual 
+phonological form to the mapping between representations, that
+is how one representation can transform to another one. This 
+question is related to two questions in tonal phonology. One is the UR-SR 
+learning over model-theoretic representation. Given two representations at different 
+abstract levels, how does one derive from one to another. Unlike segmental
+phonology where many processes can be written as SPE-style rules,
+in tonal phonology, the transformation between UR to SR is largely
+generalized by delinking and modifying the association lines of ARs.
+These generalizations are what the linear rules struggle to capture.
+The second is representation conversion: 
+how representations grounded  in different linguistic theories relate to one another. 
+Logical transduction can be used to address these questions, which is to 
+view two models as the input and output of a function. One example is  
+\citet{oakdenNotationalEquivalenceTonal2020} argues that two feature-geometric 
+models proposed by \citet{bao1999structure} and \citet{yip1989contour} 
+might appear to be different visually, but they actually do not differ in 
+their empirical coverage. The two models can be converted into each other
+using a set of logical formulas, hence they are ``notationally equivalent''.
 
 
-			$\phi_{R_i}(x)$
-			&
-			$:=$
-			&
-			$R_i(x)$
-			&
-			Preserve elements and their labels
-			\\[0.5em]
+This section will give a general introduction to logical transduction using
+the representation conversion as an example, using the examples from
+\citet{oakdenNotationalEquivalenceTonal2020}. As for the UR-SR mapping, it 
+will be discussed in the Chapter~\ref{chap:process}, with a focus on the 
+delinking and modifying association lines in ARs.
 
-            $\phi_{R_i}(x,y)$
-			&
-			$:=$
-			&
-			$R_i(x,y)$
-			&
-			Preserve elements and their labels
-			\\[0.5em]
-		
-			\bottomrule
-		\end{tabular}
-		
-		\caption{Logical formulas defining an faithful input-output transduction.}
-		\label{tab.transduction}
-	\end{table}
-	
-Table~\ref{tab.transduction} provides the formulas described below.
+For example, \citet{yip1989contour} proposes that a contour can be either decomposed 
+into two sequences of level tones and the other one bahave as a single tone. 
+The distinction is how the tones associate with the tonal node. 
+\begin{figure}[ht]
+    \centering
 
-\begin{itemize}\itemsep-0.5ex
-\item $\phi_{\textsf{Domain}}$: a domain formula determines
-which ARs are in the domain of the function. If $\phi_{\textsf{Domain}}:= \text{True}$, it indicates this function is total.
+    \begin{minipage}[b]{0.4\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \node[state] (t1) at (0,4) {1\textsubscript{L}};
+            \node[state] (t2) at (3,4) {2\textsubscript{H}};
+            \node[state] (c1) at (0,2) {3\textsubscript{$\circ$}};
+            \node[state] (c2) at (3,2) {4\textsubscript{$\circ$}};
+            \node[state] (s1) at (1.5,0) {5\textsubscript{$\sigma$}};
 
-\item The copy set helps determine the size of the output structures.
-When \textsc{Copy} := 1, it means every node in the output
-corresponds to one element in the input. 
-When \textsc{Copy} := 2, it means the number of nodes in the output
-are twice the size of the input nodes.
+            \draw (s1) -- node[midway, left] {$\alpha$} (c1);
+            \draw (c1) -- node[midway, left] {$\alpha$} (t1);
+            \draw (s1) -- node[midway, right] {$\alpha$} (c2);
+            \draw (c2) -- node[midway, right] {$\alpha$} (t2);
+        \end{tikzpicture}
+    \end{minipage}
+    \hspace{2em}
+    \begin{minipage}[b]{0.4\textwidth}
+        \centering
+        
+        \begin{tikzpicture}
+            \node[state] (t1) at (0,4) {1\textsubscript{L}};
+            \node[state] (t2) at (3,4) {2\textsubscript{H}};
+            \node[state] (c1) at (1.5,2) {3\textsubscript{$\circ$}};
+            \node[state] (s1) at (1.5,0) {4\textsubscript{$\sigma$}};
 
-\item For each unary relation $R_i\in\{R_1,R_2,\cdots R_n\}$, the formula 
-\(\phi_{R_i}(x)\) determines that the node \(x\) in the output has will
-property \(R_i\) as their corresponding nodes in the input.
+            \draw (s1) -- node[midway, left] {$\alpha$} (c1);
+            \draw (c1) -- node[midway, left] {$\alpha$} (t1);
+            \draw (c1) -- node[midway, right] {$\alpha$} (t2);
+        \end{tikzpicture}
+    \end{minipage}
+
+    \caption{Single-node and branching-node representations with indexed labels.}
+\end{figure}
 
 
-\item For each binary relation, the formula \(\phi_{R_i}(x,y)\) 
-determines which pairs of nodes in the output structure stand in the 
-same binary relation.
+Let us call the first representation a single-node model, and the second one 
+a two-node model. We can construct a transduction that transforms one to 
+another. To keep the discussion focused, and to avoid introducing
+operations that will not be used immediately, I only show the transduction from
+the two-node model to the single-node model. Readers may refer to
+\citep{oakdenNotationalEquivalenceTonal2020} for a more detailed discussion of
+the transduction in the other direction.
 
-\item The licensing formula $\phi_{\textsf{license}}(x)$
-determines which nodes in the output are licensed.
-According to the semantics of graph transductions,
-unlicensed nodes disappear,
-along with any relations associated with them.
-Here, only output nodes that stand
-in an association relation in the output are licensed.
 
+Both models have the same types of 
+relations 
+$\langle D; R_H, R_L, R_\sigma, R_{\circ},R_\lhd,R_\alpha \rangle$ with different model signautres given in the Table~\ref{tab:tonalmodels}.
+
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{c|c}
+        \toprule
+        \textbf{Branching-node model} & \textbf{Single-node model} \\
+        \midrule
+        $D = \{1,2,3,4,5\}$ & $D = \{1,2,3,4\}$ \\
+        $R_L = \{1\}$ & $R_L = \{1\}$ \\
+        $R_H = \{2\}$ & $R_H = \{2\}$ \\
+        $R_{\circ} = \{3,4\}$ & $R_{\circ} = \{3\}$ \\
+        $R_\sigma = \{5\}$ & $R_\sigma = \{4\}$ \\
+        $R_\lhd = \{(1,2),(3,4)\}$ & $R_\lhd = \{(1,2)\}$ \\
+        $R_\alpha = \{(1,3),(2,4),(3,5),(4,5)\}$ & $R_\alpha = \{(1,3),(2,3),(3,4)\}$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Two tone models}
+    \label{tab:tonalmodels}
+\end{table}
+
+
+To transform a branching-node model (input) into a single-node 
+model (output), we can compare their signatures and observe three 
+changes: (i) the domain D is reduced (from 5 to 4); (ii) the labels
+L and H remain unchanged; and (iii) the other relations are modified.
+
+For each relation or domian change, we need to define a formula 
+$\phi_{R_i}$ such that the interpretation of $R$ in the output is 
+derived from its interpretation in the input model.
+Specifically:
+
+\begin{itemize}
+    
+
+\item \(
+\phi_{\textsf{Domain}} := \text{True}.
+\)
+This formula leaves the output domain unrestricted.
+
+\item \(
+\textsc{Copy} := 1.
+\)
+This means that no additional copies of input elements are introduced in the output structure.
+\item 
+\(
+\phi_{\textsf{license}}(x) :=
+R_\circ(x) \wedge
+\neg \exists z \bigl(R_\lhd(z,x) \wedge R_\circ(z)\bigr).
+\)
+This formula licenses only the first tonal node. Unlicensed tonal nodes disappear together with relations associated with them.
+
+\item \(
+\phi_{R_H}(x) := R_H(x).
+\)
+This preserves the H-tone relation: elements that belong to $R_H$ in the input
+also belong to $R_H$ in the output.
+
+\item \(
+\phi_{R_L}(x) := R_L(x).
+\)
+This preserves the L-tone relation: elements that belong to $R_L$ in the input
+also belong to $R_L$ in the output.
+
+\item \(
+\phi_{R_\circ}(x) :=
+R_\circ(x) \wedge
+\neg \exists z \bigl(R_\lhd(z,x) \wedge R_\circ(z)\bigr).
+\)
+This keeps only the first tonal node in the output. \todo{is it accurate?}
+
+\item \(
+\phi_{R_\sigma}(x) := R_\sigma(x).
+\)
+This preserves the syllable relation: elements that belong to $R_\sigma$ in the
+input also belong to $R_\sigma$ in the output. 
+
+\item \(
+\phi_{R_\lhd}(x,y) := R_\lhd(x,y).
+\)
+This preserves precedence: if pair $(x,y)$ that belong to $R_\lhd$ in the input
+also belong to $R_\lhd$ in the output. Or if \(x\) follows \(y\) in the input, it does so as well in the output.
+
+\item \(
+\phi_{R_\alpha}(x,y) :=
+\colorbox{gray!20}{$\displaystyle R_\alpha(x,y)$}
+\vee
+\colorbox{gray!40}{$\displaystyle
+\left(
+    \bigl(R_H(x) \vee R_L(x)\bigr)
+    \wedge R_\circ(y)
+\right)
+$}
+\vee
+\colorbox{gray!60}{$\displaystyle
+\bigl(
+    R_\circ(x)
+    \wedge R_\sigma(y)
+\bigr)$}
+\)
+This redefines association based on three cases (corresponding to three shaded conditions). A pair $(x,y)$ belongs to $R_\alpha$ in the output if 
+\begin{itemize}
+    \item $(x,y)$ belongs to $R_\alpha$ in the input; or
+    \item $x$ is a tone (H or L) and $y$ is a tonal node (\(\circ\))
+    \item $x$ is a tonal node (\(\circ\))and
+$y$ is a syllable  (\(\sigma\)).
 \end{itemize}
 
 
-\subsection{UR-SR Mapping}
-
+\end{itemize}
+This set of formulas first faithfully preserves the domain, the L and H tone nodes, and the syllable nodes, but modifies the $\alpha$-relations: tones are associated with tonal nodes, and tonal nodes are associated with syllables. The merging of tonal nodes is handled by licensing only the first tonal node. As a result, all unlicensed tonal nodes, together with any relations associated with them, are ignored in the output.
 

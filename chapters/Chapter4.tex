@@ -1,56 +1,70 @@
 \chapter{Tonotactics} 
 \label{chap:tonotactics}
 
+\section{Overview}\label{sec:intro} 
+This chapter investigates tonotactic patterns--the associations between
+tones and TBUs. Tonotactic grammar distinguishes what forms between tones and
+TBUs are allowed in the language and what is not. In this chapter, I mainly 
+discuss three questions:
+\begin{enumerate}[label=Q\arabic*., itemsep=0.1em,]
+      \item Are tonotactic grammars learnable directly from autosegmental representations (ARs)?
+    \item How does the choice of representation (ARs,features, strings) affect tonotactic learning?
+    \item How does the choice of learning framework (categorical vs stochastic) affect learning?
+\end{enumerate}
 
-\section{Introduction}\label{sec:intro} 
-This paper provides one
-method for learning tonotactic patterns over autosegmental
-representations (ARs). A key insight of phonological theory is to view
-forms in tonal languages as \textit{autosegmental graphs}, rather than
-one-dimensional linear strings \citep{goldsmith1976autosegmental,
-	coleman1991no, jardine2017LocalNature,
-	oakdenNotationalEquivalenceTonal2020}. These representations have
-been argued to offer advantages for analysing tonal
-patterns \citep{hyman2009representation, clements1984autosegmental,
-oddenbook}.  Computationally, grammars over ARs have been
-shown to express both local and long-distance constraints, while
-maintaining a relatively low level of computational complexity
-\citep{jardine2017LocalNature, chandleejardine19aisl}.  
-However, despite the importance of ARs in tonal phonology and previous research
-on their formal properties \citep{kornai2007mathematical},  
-there has been limited work on learning tonal grammars, and, to our 
-knowledge, no phonotactic learning models have adopted ARs.
 
-This paper focuses on learning tonotactic grammars. Following
-\citet{jardine2017LocalNature}, the tonotactic grammar consists of a
+As can be seen, a great emphasis is placed on ARs. The reason is that  
+autosegmental theory has long been widely adopted in tonal analysis 
+especially in African languages. Computationally, grammars over ARs 
+have been shown to express both local and long-distance constraints, 
+while maintaining a relatively low level of computational complexity 
+\citep{jardine2017LocalNature, chandleejardine19aisl}. These theoretical 
+and computational advantages should have motivated the use of ARs in 
+tonotactic learning. However, despite the importance of ARs in tonal 
+phonology and previous research on their formal properties \citep{kornai2007mathematical}, there has been limited work on learning tonal grammars, and, to our knowledge, no phonotactic learning models have 
+adopted ARs, while several learners can handle string-based representations.
+
+Driven by this motivation, Q1 asks whether ARs can serve as a viable 
+representational basis for tonotactic learning. Once its availability 
+is established, we can further compare it to other representations
+and over different learning schemes.
+
+Following \citet{jardine2017LocalNature}, the tonotactic grammar consists of a
 set of language-specific inviolable constraints over ARs. The
 constraints themselves only specify marked AR structures. Logically,
 such grammars are simply the conjunction of negative literals
 \citep{rogers.lambert2019mol}. In this setting, the tonotactic
 learning problem boils down to identifying those constraints (the
 marked AR structures) which are consistent with the entire dataset.
-
-The Bottom-Up Factor Inference Algorithm (BUFIA) is a learning
-algorithm that deterministically searches a space of possible
-constraints and is provably guaranteed to find the most general
+These language-specific negative constraints can be learned by 
+the Bottom-Up Factor Inference Algorithm (BUFIA, \citet{chandleeBufia2019}).
+BUFIA is a learning algorithm that deterministically searches a space of 
+possible constraints and is provably guaranteed to find the most general
 constraints consistent with its input data \citep{chandleeBufia2019,
 	rawski2021structure}. Crucially, it is couched in model theory
 \citep{Rogers1998, enderton2001mathematical} so that it can operate
 with any particular representational scheme.
 
-This work presents BUFIA-AR, an instantiation of BUFIA that learns
-tonotactic constraints expressed with ARs. As will be explained, this
-implementation utilises a matrix-based representation for ARs, which
+To answer Q1, this work develops BUFIA-AR, an instantiation of BUFIA 
+that learns tonotactic constraints expressed with ARs. As explained in
+Chapter~\ref{chap:formal} and more details in Section~\todo{fix sec} in
+the current chapter, 
+this implementation uses a matrix-based representation for ARs, which
 is an adaptation of matrix-based representations of graphs
 \citep{west2001introduction,CLRS2022}.
 
-BUFIA-AR was tested on a curated corpus of Hausa \citep{wold-4,li2025learning}, a
+Section~\todo{fix} presents the learning results of BUFIA-AR, which
+was tested on a curated corpus of Hausa \citep{wold-4,li2025learning}, a
 Chadic language in West Africa. The corpus consists of 621
 mono-morphemic words, which altogether provide a collection of 64
 distinct ARs.  Using this corpus as input, we assess the performance
 of BUFIA-AR through a combination of qualitative and quantitative
-evaluations. Qualitatively, BUFIA-AR returns a grammar
-consisting of 11 AR constraints when syllable, tone, and mora counts
+evaluations. 
+
+Section~\todo{fix} provides model evaluations. In particular, I evaluated
+the learning results both qualitatively and quantitatively. 
+Qualitatively, BUFIA-AR returns a grammar consisting of 11 AR constraints 
+when syllable, tone, and mora counts
 are limited to three. These BUFIA-AR-learned constraints either align
 with, or are more specific than, those previously proposed in the
 literature. The algorithm additionally identifies novel patterns that
@@ -63,47 +77,25 @@ demonstrate the feasibility of using BUFIA-AR for tonotactic grammar
 inference. All data and programs used in this paper are accessible in
 the Dryad repository.
 
-In this way, this paper takes a first step towards learning tonal
-grammars expressed in terms of ARs. We acknowledge that tonal grammars
-are much more than just the tonotactic component. The grammars that
-BUFIA-AR returns have nothing to say about how underlying
-representations of tonal languages are learned, nor how these
-underlying representations are transformed into surface
-representations. We also acknowledge that some surface constraints
-have been argued to follow from the tonal processes themselves in some
-languages (see Section~\ref{sec:learning}), which is again something
-the grammars returned by BUFIA-AR cannot express. Nonetheless, despite
-these limitations, BUFIA-AR still makes a contribution to our
-understanding of how tonal grammars expressed in terms of ARs can be
-learned. We expect that some of the insights made here will persist in
-future research which addresses these broader problems regarding the
-learning of tonal grammars.
-
-This paper is structured as follows. Section~\ref{sec:learning}
-provides an overview of the tonotactic learning problem and current models. Section~\ref{sec:prelim} introduces 
-formal language theory, model theory, and graph theory relevant to ARs
-and BUFIA. Section~\ref{sec:bufiaar} provides a detailed description
-of the BUFIA-AR implementation. Section~\ref{sec:hausa} presents the Hausa case study and model evaluations. Section~\ref{sec:discussion}
-discusses issues relating to constraint optimisation, constraint
-satisfaction, and constraint weighting. Section~\ref{sec:conclusion}
-concludes the paper and points to some future directions.
+In Section~\todo{fix}, I use the same corpus data but over varying 
+representations, and use as inputs for four different models \todo{fix}:
+MaxEnt, BUFIA, and BUFIA-AR.
 
 
-\section{Learning Tonotactics} \label{sec:learning}
-\subsection{Tonal Mapping Problem}\label{sec:learning.mapping}
+\section{Leading Question: Tone Mapping and Containment} \label{sec:learning}
+% \subsection{Tonal Mapping Problem}\label{sec:learning.mapping}
 
-A central question in tonal phonology concerns how languages organise 
-tones, syllables, and/or moras into well-formed structures. A 
-closely related modelling question asks what kinds of well-formed 
-tonal patterns are attested in a language, and how such patterns 
-can be systematically characterised. To illustrate these issues, 
-we begin with a frequently discussed example: the tonal mapping 
-problem in two West African tonal languages, Hausa and Mende. 
+A central question in tonal phonology learning asks what kinds of 
+well-formed tonal patterns are attested in a language, and how such 
+patterns can be systematically characterised. 
+To illustrate these issues, 
+I begin with a frequently discussed example: the tonal mapping 
+problem in two West African tonal languages, Hausa and Mende, which
+have been constantly discussed in terms of its tonotactics.
+
 Hausa is a Chadic language, while Mende is a Southwestern Mande 
 language spoken in Sierra Leone \citep{lebenRepresentationTone1978}.
-Both languages use High (H) and
-Low (L) tones as basic tonemes with the mora as the tone-bearing unit
-(TBU). However, they show distinct patterns in how their tonal
+Both languages has two basic tonemes, H and L, with the mora as the TBU. However, they show distinct patterns in how their tonal
 melodies are mapped to TBUs \citep{Newmanbook,
 	lebenRepresentationTone1978, zoll2003optimal, jardine2017LocalNature}.  
 
@@ -116,36 +108,27 @@ Hausa have distinct surface forms:
 HL surfaces as H.L.L in Mende (\textit{fé.là.là} `junction') but as H.H.L in Hausa 
 (\textit{jée.máa.gèe} `bat'); similarly, LH surfaces as L.L.H in Mende 
 (\textit{lè.lè.má} `mantis') but as L.H.H in Hausa (\textit{jì.mí.ná} 
-`ostrich')\footnote{This
-	paper follows the
-	tonal transcription method commonly used by Africanists. For
-	instance, ``H.H.L'' represents two H-toned syllables followed 
-	by a L-toned syllable. In addition, tones are always
-	marked on the nuclear vowels. Long
-	vowels are transcribed as double vowels.}\(^,\)\footnote{\citet{dwyerMende1978} offers a different
-	analysis of Mende tones than \citet{lebenRepresentationTone1978}'s,
-	and provides supplemental data in which L.H.H forms also occur (e.g.
-	\textit{ndàvúlá} `sling'). \citet{lebenRepresentationTone1978}
-	account for the different patterns by proposing two distinct
-	mappings.}.
+`ostrich').
+
+
 
 \begin{table}
 	\centering
 	\begin{tabular}
 		{
-			>{\centering\arraybackslash}m{1.35cm}|
-			>{\centering\arraybackslash}m{4.5cm}|
-			>{\centering\arraybackslash}m{4.5cm}
+			>{\centering\arraybackslash}m{2cm}|
+			>{\centering\arraybackslash}m{8cm}|
+			>{\centering\arraybackslash}m{5cm}
 		}
 \toprule
 		& Mende & Hausa \\
 \midrule
-		contour inventory
+		contours
 		&
 		\begin{tikzpicture}[scale=.8]
 			
 			\node (seg) at (0,0) {mbu};
-			\node[font=\scriptsize] at (0,-0.5) {`owl'};
+			\node at (0,-0.5) {`owl'};
 			\node (H) at (0.3,1) {H};
 			\node (L) at (0.8,1) {L};
 			\coordinate (v) at (0.3,0.2);
@@ -155,7 +138,7 @@ HL surfaces as H.L.L in Mende (\textit{fé.là.là} `junction') but as H.H.L in 
 		\begin{tikzpicture}[scale=.8]
 	
 			\node (seg) at (0,-.1) {ngew\textopeno\textopeno};
-			\node[font=\scriptsize] at (0,-0.5) {`God'};
+			\node at (0,-0.5) {`God'};
 			
 			\node (T1) at (-0.12,1) {L};
 			\node (T2) at (0.4,1) {H};
@@ -170,7 +153,7 @@ HL surfaces as H.L.L in Mende (\textit{fé.là.là} `junction') but as H.H.L in 
 		\end{tikzpicture} \hfil
 		\begin{tikzpicture}[scale=.8]
 			\node (c) at (0,0) {mbaa};
-			\node[font=\scriptsize] at (0,-0.5) {`rice'};
+			\node  at (0,-0.5) {`rice'};
 			\node (t1) at (0.2,1) {L};
 			\node (t2) at (0.8,1) {H};
 			\draw (t1) -- (0.2,0.2);
@@ -236,16 +219,14 @@ first identifies three key factors that determine the surface forms:
 \textit{directionality} (whether tone spreads rightwards or leftwards), 
 \textit{morphological categories }(prefix or suffix), and \textit{tone quality}
 (whether spreading is sensitive to H or L) \citep{hyman1987prosodic,
-	leben2017tone, hyman2009representation}.
-
-The second account is Optimal Tone Mapping \citep[OTM;][]
-{zoll2003optimal}. Zoll argues that directionality-based accounts of
+	leben2017tone, hyman2009representation}. The second account is Optimal 
+	Tone Mapping \citep[OTM;][]{zoll2003optimal}. 
+Zoll argues that directionality-based accounts of
 phonological mapping can in some cases yield incorrect surface
 predictions. Under OTM, surface tonal patterns emerge from
 language-specific rankings between morphological faithfulness
 constraints and markedness constraints, \textsc{Clash} and
 \textsc{Lapse}, which are sensitive to tone quality.
-
 The third approach, proposed by \citet{jardine2017LocalNature}, 
 is to use language-specific, inviolable constraints, where the
 constraints are marked, forbidden ARs; that is, ARs to be
@@ -319,170 +300,103 @@ melody can be represented as in Figure~\ref{graph:lh1}.
 \caption{The forbidden structure in (a), *$\check{\mu}$ (corresponding to \textsc{No Short Rise}), and two ARs in (b--c) containing it.}	\label{intro.fig.noLH}
 \end{figure}
 
-Following \citet{jardine2017LocalNature}, if
-Figure~\ref{graph:lh1} is forbidden in the language, any AR
-\textit{containing} it, such as
-Figure~\ref{graph:lh2}-\ref{graph:lh3}, will also be
-forbidden. Formally, if Grammar $G$ is the set of constraints in the
-language, such that \(G = \{AR_1, AR_2, \ldots, AR_n\}\), a well-formed
-AR satisfies the \emph{conjunctive negative literals}:
-\(\lnot AR_1 \land \lnot AR_2 \land \ldots \land \lnot AR_n\)
-\citep{jardine2017LocalNature,rogers.lambert2019mol}. It follows that
-the tonotactic learning problem is to identify a set \(G\) of banned
-ARs given a set of example surface forms. This paper follows the third
-approach of \citet{jardine2017LocalNature}.  
+% Following \citet{jardine2017LocalNature}, if
+% Figure~\ref{graph:lh1} is forbidden in the language, any AR
+% \textit{containing} it, such as
+% Figure~\ref{graph:lh2}-\ref{graph:lh3}, will also be
+% forbidden. Formally, if Grammar $G$ is the set of constraints in the
+% language, such that \(G = \{AR_1, AR_2, \ldots, AR_n\}\), a well-formed
+% AR satisfies the \emph{conjunctive negative literals}:
+% \(\lnot AR_1 \land \lnot AR_2 \land \ldots \land \lnot AR_n\)
+% \citep{jardine2017LocalNature,rogers.lambert2019mol}. It follows that
+% the tonotactic learning problem is to identify a set \(G\) of banned
+% ARs given a set of example surface forms. 
 
 
-One potential criticism of \citet{jardine2017LocalNature}, anticipated
-by the author and also applicable to the present work, is that it
-explains tonal patterns exclusively in terms of surface-true
-constraints. One consequence is that well-formed patterns that are not
-directly observable in surface forms, or at the lexical level, are not
-realised by the grammar. The grammar inferred at this level therefore
-reflects only the final outcomes of tonal mapping, rather than
-intermediate representations produced by tonal rules, which
-potentially misses important phonological generalisations.
+% Section~\ref{sec:bufiaar.nextar} introduces the four ways to obtain next 
+% superfactors of an AR. This section addresses a different question: 
+% given two ARs, how can we determine if one AR \textit{contains} the other? 
 
-Hausa provides a clear illustration of this point. The absence 
-of rising tones on a single syllable can be explained as follows. 
-An underlying LH sequence may arise as an intermediate representation, 
-either through synchronic processes or as the result of 
-historical change, but it is subsequently simplified to either H in non-final 
-position or L elsewhere \citep{leben1996tonal,Newmanbook}. Likewise, the absence of final 
-L.L sequences on long vowels is attributed to \textsc{Low Tone Raising}, which 
-changes underlying L.L to L.H when the second L occurs on a long vowel \citep{Leben1971hausa,leben1996tonal}.
+Another question is concerning This question is important for any implementation of BUFIA because it
+provides an explicit, formal criterion for checking containment rather
+than an impressionistic intuition.  For example, one might assume that
+a light HL contour is contained in a heavy HL syllable, and similarly
+that a light LH is contained in a heavy LH. Under this assumption, any
+language that allows a heavy contour would necessarily also allow the
+corresponding light contour. This is, however, not accurate. As shown
+in Table~\ref{tab.2typescontours}, Hausa accepts heavy HL but not
+light HL, whereas Mende accepts heavy LH but not light LH.
 
-This example illustrates that unattested surface patterns do not
-necessarily reflect illicit structures in the grammar itself, but
-rather intermediate representations that are subsequently subject to
-some repair processes. While acknowledging the limitations of these
-grammars, we argue that learning such grammars is nonetheless
-valuable. They still provide meaningful insights into tonotactic
-patterns and serve as a foundation for further work for three reasons.
+In other words, the algorithm must be able to determine that none 
+of the structures in Table~\ref{tab.2typescontours} contains 
+one another. Containment between ARs is not determined solely 
+by tonal string matching or by the number of TBUs, which are 
+straightforward to verify (e.g., \textit{L} is contained in \textit{HLH}, 
+and a bimoraic sequence is contained within a trimoraic sequence). A more  
+challenging task is to identify if the associations across tiers (i.e., the 
+temporal arrangement of autosegments) in one AR are fully preserved in another.
 
-First, a grammar containing a set of forbidden ARs that is consistent
-with observable surface forms is not in conflict with a grammar for
-the tonal processes; rather, it captures their pronounceable
-outcomes. Given available access to a lexicon at a
-different level of abstractness, another grammar could likewise be
-learned, and these two grammars can be systematically compared. This
-comparison between different levels of abstractness itself yields
-non-trivial insights into tonal processes.
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lcccc}
+		\toprule
+		\textbf{} & \textbf{light LH} & \textbf{light HL} & \textbf{heavy LH} &
+		\textbf{heavy HL} \\
+		\midrule
+		AR & 
+		\makecell[c]{\vspace{2pt}
+			\begin{tikzpicture}[scale=0.8]
+				\node (t1) at (1,1) {L};
+				\node (t2) at (2,1) {H};
+				\node (c2) at (1.5,0) {$\mu$};
+				\node (s1) at (1.5,-1) {$\sigma$};
+				\draw (t1) -- (c2) -- (s1);
+				\draw (t2) -- (c2) -- (s1);
+		\end{tikzpicture}} &
+		
+		\makecell[c]{\vspace{2pt}
+			\begin{tikzpicture}[scale=0.8]
+				\node (t1) at (1,1) {H};
+				\node (t2) at (2,1) {L};
+				\node (c2) at (1.5,0) {$\mu$};
+				\node (s1) at (1.5,-1) {$\sigma$};
+				\draw (t1) -- (c2) -- (s1);
+				\draw (t2) -- (c2) -- (s1);
+		\end{tikzpicture}} &
+		
+		\makecell[c]{\vspace{2pt}
+			\begin{tikzpicture}[scale=0.8]
+				\node (t1) at (1,1) {L};
+				\node (t2) at (2,1) {H};
+				\node (c1) at (1,0) {$\mu$};
+				\node (c3) at (2,0) {$\mu$};
+				\node (s1) at (1.5,-1) {$\sigma$};
+				\draw (t1) -- (c1) -- (s1);
+				\draw (t2) -- (c3) -- (s1);
+		\end{tikzpicture}} &
+		
+		\makecell[c]{\vspace{2pt}
+			\begin{tikzpicture}[scale=0.8]
+				\node (t1) at (1,1) {H};
+				\node (t2) at (2,1) {L};
+				\node (c1) at (1,0) {$\mu$};
+				\node (c3) at (2,0) {$\mu$};
+				\node (s1) at (1.5,-1) {$\sigma$};
+				\draw (t1) -- (c1) -- (s1);
+				\draw (t2) -- (c3) -- (s1);
+		\end{tikzpicture}} \\
+		\midrule
+		Hausa & N & N & N & Y \\
+		Mende & N & Y & Y & Y \\
+		\bottomrule
+	\end{tabular}
+	\caption{Contour Inventory in Hausa and Mende}
+	\label{tab.2typescontours}
+\end{table}
 
-Second, considering that ARs have been long used in tonal phonology, 
-yet are absent from computational learning, we believe a more pressing 
-priority is establishing representational adequacy for learning tones, 
-which is the goal of this work.
-Without an explicit framework
-that encodes the geometry of tonal representations, modelling more
-complex tonal alternations, such as those discussed above, is more
-difficult. Establishing this representational foundation is therefore
-a useful precondition for future work on deeper tonal processes.
 
-Lastly, we are not aware of existing learning models that operate
-with ARs directly for either tonal processes or tonotactics. In the next
-section, we review previous learning approaches related to tier-based
-representations and learning, and then introduce BUFIA, the algorithm
-that our model is based on.
 
-\subsection{Learning Models}\label{sec:learning.models}
-
-This section reviews systems for phonotactic and tonotactic
-learning. One line of research employs statistical methods from
-machine learning \citep{CP97, hayes2008maximum,
-	goldsmith2012information}. These methods have
-been deployed on string and syllabic representations for learning
-segmental phonotactic patterns as well as stress patterns,
-but have not been used for learning tonotactics with ARs.
-
-\citet{GouskovaGallagher2020} synthesises the Maximum Entropy (MaxEnt)
-strategy of \citet{hayes2008maximum} with a procedure that induces
-phonological tiers in order to learn non-local phonotactics. Related
-work by
-\citeauthor{Jardine-Heinz-2016-LTSLL}~(\citeyear{Jardine-Heinz-2016-LTSLL}),
-\citeauthor{jardinemcmullin17}~(\citeyear{jardinemcmullin17}),
-\citeauthor{de-santo-aksenova-2021-learning}~(\citeyear{de-santo-aksenova-2021-learning}),
-and
-\citeauthor{pmlr-v153-lambert21a}~(\citeyear{pmlr-v153-lambert21a}),
-and \citeauthor{Swanson2025}~(\citeyear{Swanson2025}) provide
-theoretical results and algorithms regarding the induction of
-phonological tiers for non-local phonotactics. Other work has proposed
-procedures for learning tiers for grammars modelling non-local
-phonological processes \citep{BurnessMcMullin2019,
-	burness-mcmullin-2021, Belth2024}. While the successful induction of
-tiers from data is an important achievement of the 21st century, the
-constraints induced over the projected tiers are still strings, and
-not ARs. For example, none of the aforementioned methods can learn a
-constraint that describes a many-to-one association from the tonal
-tier to the TBU tier or vice versa.
-
-BUFIA represents another approach \citep{chandleeBufia2019, rawski2021structure}.
-BUFIA differs from the aforementioned approaches in a couple of ways. First,
-it is not specific to any particular representation or data structure,
-such as strings or trees. For this reason,
-\citeauthor{chandleeBufia2019}'s (\citeyear{chandleeBufia2019})
-presentation of BUFIA abstracts away from a specific representation,
-and presents BUFIA in terms of arbitrary model-theoretic relational
-structures. As long as the representations of interest can be
-expressed model-theoretically, BUFIA can be implemented. %Consequently,
-Since strings, trees, and graphs are all examples of structures that
-have model-theoretic representations, versions of BUFIA can in
-principle be designed for finding constraints over any of these
-representations. This generality not only allows it to be
-instantiated and ultimately deployed for the learning of a variety of
-constraint types, but it also makes clear how the structure of the
-space of possible constraints facilitates learning.
-
-Second, BUFIA is a deterministic learning algorithm and in its current
-form uses no statistical methods or randomness in its decision-making.
-Basically, BUFIA checks possible constraints against the data one at a
-time, adding those that are consistent with the data. It returns a
-grammar consisting of inviolable constraints. As such, this grammar is
-a conjunction of negative literals:
-$\lnot C_1 \land \lnot C_2 \land \ldots \land \lnot C_n$, where each
-\(C_i\) is a constraint, that is, a forbidden relational structure.
-
-As will be explained in Section~\ref{sec:prelim.bufia}, BUFIA works because
-any representational scheme orders the expressible constraints in a
-natural way. By beginning with the smallest constraint, BUFIA is
-guaranteed to search as much of the space as possible and return the
-most general constraints (that is, the smallest forbidden structures)
-consistent with the data, before a stopping condition is
-met. Furthermore, BUFIA has been shown to be at least as successful in
-learning feature-based, segmental phonotactics of Quechua
-\citep{Swanson+2025} as phonotactic learning models based on the
-principle of Maximum Entropy \citep{hayes2008maximum,
-	wilson2018accidental}. However, BUFIA has not previously been used
-in tonotactic learning over non-string representations.
-
-To sum up, while ARs have long been conceptualised as graph
-structures, no existing work learns grammars with ARs, nor has BUFIA
-been instantiated to operate with ARs. To address this gap, we
-present BUFIA-AR, a BUFIA-based learner capable of learning tonotactic
-constraints directly over ARs. To our knowledge, BUFIA-AR is the first
-learning algorithm that directly infers such constraints from ARs. As
-an instantiation of the original BUFIA framework, BUFIA-AR inherits
-its strengths and limitations.
-
-A more detailed presentation of BUFIA-AR is given in Section~\ref{sec:bufiaar}. 
-Before turning to that discussion, we first introduce in Section~\ref{sec:prelim} 
-several elements from formal language theory, model theory, and graph theory 
-that are essential for understanding the algorithm and its internal structure.  
-Some of this background knowledge is well established in computer science 
-\citep{CLRS2022,west2001introduction}; our presentation is adapted to suit 
-those only familiar with phonological theory. 
-
-Section~\ref{sec:prelim} and ~\ref{sec:bufiaar} are
-somewhat technical, and researchers only interested in BUFIA-AR's
-performance may skip them. However, we
-believe these sections are important to include because they provide
-the necessary details for someone (1) to understand how BUFIA-AR is an
-instantiation of the more general BUFIA algorithm, (2) to implement
-the algorithm themselves (in order to replicate the study we
-conducted), and (3) to understand how the algorithm's behaviour as well
-as how it reflects the geometry of tonal phonology.
-
-\section{Preliminaries} \label{sec:prelim} 
+\section{BUFIA and BUFIA-AR} \label{sec:prelim} 
 
 In this section, we begin with structures for representing strings
 (Section~\ref{sec:prelim.string}), and then extend them to ARs using
@@ -500,471 +414,8 @@ graphs. These formal representations are essential for subsequent
 algorithm development and for understanding the properties and 
 learnability of ARs.
 
-\subsection{String Representations}\label{sec:prelim.string}
-Tonal melodies can be represented as strings, that is, sequences of
-symbols.  Let $\Sigma$ be a finite alphabet of symbols and $\Sigma^*$
-the set of all strings over $\Sigma$. For example, in a language with
-a tonal inventory $\{H, L\}$, we have $\Sigma = \{H, L\}$, and
-$\Sigma^*$ contains all possible strings over $\Sigma$, such as
-\textit{HL}, \textit{HHL}, \textit{HLHL}, and so on. Let $|w|$ 
-denote the length of a string $w$. For $0 \le n < m \le |w|$,
-let $w[n:m]$ denote a non-empty substring of $w$
-starting at position $n$ and ending just before position $m$.
-The empty string $\epsilon$ is trivially a substring of every string.
 
-A string can also be represented \textit{model-theoretically} with two
-components: the domain $D$ and a finite set of $n$-ary relations
-$\mathcal{R} = \{ R_1, R_2, \ldots, R_i \}$ \citep{rogers2013,
-	chandleeBufia2019, rogers.lambert2019mol}.  A string model of
-\textit{HLHL} is shown in Figure~\ref{fig.model.str}.  In this
-model, $D = \{1, 2, 3, 4\}$ indicates that there are four elements in
-the string. Positions $\{1, 3\}$ are 
-labelled with the unary relation $H$, while $\{2, 4\}$ are the
-positions labelled with $L$.  Elements are connected via a
-binary \textit{successor} relation, denoted by $\lhd$.  For example,
-$\lhd = \{\langle 1, 2\rangle, \langle 2, 3\rangle, \langle 3,
-4\rangle\}$ specifies that position 1 (labelled $H$) immediately
-precedes position 2 (labelled $L$), and position 2 immediately precedes
-position 3, and so on.
-
-\begin{figure}
-	\centering	
-	\begin{minipage}[r]{0.4\textwidth}
-		\centering
-		\begin{tikzpicture}[
-			scale=.5,
-			node distance=1.5cm,
-			state/.style={draw,circle,minimum size=0.6cm}
-			]
-			\node[state] (1) {1\textsubscript{H}};
-			\node[state,right of=1] (2) {2\textsubscript{L}};
-			\node[state,right of=2] (3) {3\textsubscript{H}};
-			\node[state,right of=3] (4) {4\textsubscript{L}};
-			
-			\draw (1) -- (2) node[midway, above]  {$\lhd$};
-			\draw (2) -- (3) node[midway, above]  {$\lhd$};
-			\draw (3) -- (4) node[midway, above]  {$\lhd$};
-
-		\end{tikzpicture}
-	\end{minipage}
-	\hfil
-	\begin{minipage}[l]{0.40\textwidth}
-		\small
-		\[
-		\begin{aligned}
-			\mathcal{M} &= \{D \mid H,L,\lhd\} \\
-			D           &= \{1,2,3,4\} \\
-			H           &= \{1,3\} \\
-			L           &= \{2,4\} \\
-			\lhd        &= \{\langle1,2\rangle,\langle2,3\rangle,\langle3,4\rangle\}
-		\end{aligned}
-		\]
-	\end{minipage}
-	\caption{String model for \textit{HLHL} over $\Sigma=\{H,L\}$.}
-	\label{fig.model.str}
-\end{figure}
-
-\subsection{Autosegmental Representation as Graphs}\label{sec:prelim.ar}
-
-Unlike the string model, where elements are ordered linearly along a
-single axis, an AR distributes linguistic information
-across multiple tiers. In this work, in addition to the basic tone and
-syllable tiers, we incorporate a mora tier, 
-and treat the mora as a secondary unit subordinated
-to syllables to indicate the syllable weight. Therefore,
-we assume each syllable must be associated with at least one
-mora. %, with a pre-specified association line connecting them.
-Figure~\ref{fig.model.AR1} illustrates a disyllabic form with an
-LH.H melody, which is visualised as a graph in 
-Figure~\ref{fig.model.AR2}, which corresponds to the model-theoretic 
-relational structure in Figure~\ref{fig.model.AR3}.
-
-
-\begin{figure}[ht]
-	\centering
-	% Autosegmental Representation
-	\begin{minipage}[b]{0.2\textwidth}
-		\centering
-		\begin{tikzpicture}
-			\node (t1) at (1,1) {L};
-			\node (t2) at (2,1) {H};
-			
-			\node[anchor=base] (c1) at (1,0) {$\mu$};
-			\node[anchor=base] (c2) at (1.5,0) {$\mu$};
-			\node[anchor=base] (c3) at (2,0) {$\mu$};
-			
-			\node (s1) at (1,-1) {$\sigma$};
-			\node (s2) at (2,-1) {$\sigma$};
-			
-			\draw (t1) -- (c1);
-			\draw (t2) -- (c2);
-			\draw (t2) -- (c3);
-			\draw (s1) -- (c1);
-			\draw (s1) -- (c2);
-			\draw (s2) -- (c3);            
-		\end{tikzpicture} \vspace{2em}
-		\subcaption{AR}
-		
-		\label{fig.model.AR1}
-	\end{minipage}
-	\hfill
-	% Graph Representation
-	\begin{minipage}[b]{0.4\textwidth}
-		\centering
-		\begin{tikzpicture}[scale=0.5]
-			\node[state] (t1) at (0,6) {1\textsubscript{L}};
-			\node[state] (t2) at (6,6) {2\textsubscript{H}};
-			
-			\node[state] (c1) at (0,3) {3\textsubscript{$\mu$}};
-			\node[state] (c2) at (3,3) {4\textsubscript{$\mu$}};
-			\node[state] (c3) at (6,3) {5\textsubscript{$\mu$}};
-			
-			\node[state] (s1) at (0,0) {6\textsubscript{$\sigma$}};
-			\node[state] (s2) at (6,0) {7\textsubscript{$\sigma$}};
-			
-			\draw (t1) -- node[midway, left]   {$\alpha$} (c1) -- node[midway, left]
-			{$\alpha$}(s1);
-			\draw (t2) -- node[midway, left] {$\alpha$} (c2) -- node[midway, left]
-			{$\alpha$}(s1);
-			\draw (t2) -- node[midway, right] {$\alpha$} (c3) -- node[midway, right]
-			{$\alpha$}(s2);
-			
-			
-			\draw (t1) -- node[midway, above]  {$\lhd$} (t2);
-			\draw (c1) -- node[midway, above]  {$\lhd$}(c2);
-			\draw (c2) -- node[midway, above]  {$\lhd$}(c3);
-			\draw (s1) -- node[midway, above]  {$\lhd$}(s2);
-		\end{tikzpicture}
-		\subcaption{Graph}
-		\label{fig.model.AR2}
-	\end{minipage}
-	\hfill
-	% Model Representation
-	\begin{minipage}[b]{0.3\textwidth}
-		\small
-		\centering
-		\begin{align*}
-			%            M &= \langle D|  H, L, \mu, \sigma, \lhd, \alpha \rangle \\
-			D &= \{1, 2, 3, 4, 5, 6, 7\} \\
-			L &= \{1\}\\
-			H &= \{2\}\\
-			\mu &= \{3, 4, 5\}\\
-			\sigma &= \{6, 7\} \\
-			\lhd &= \{\, \langle 1,2 \rangle, \langle 3,4 \rangle, \langle 4,5 \rangle,
-			\langle 6,7 \rangle\} \\
-		\alpha &= \left\{
-		\begin{aligned}
-			&(1,3),(2,4),(2,5),\\
-			&(3,6),(4,6),(5,7)
-		\end{aligned}
-		\right\}
-		\end{align*}
-		\subcaption{Model}
-		\label{fig.model.AR3}
-	\end{minipage}
-	
-	
-	\caption{Three representations of a disyllabic LH.H}
-	\label{fig.model.AR}
-\end{figure}
-
-A graph consists of a set of vertices $V$ and edges $E$.  
-As shown in Figure~\ref{fig.model.AR3}, the graph consists
-of seven \textit{labelled nodes} which are circles numbered with $\{1, 2,\dots,7\}$, 
-representing linguistic units, each labelled with its corresponding properties, such
-as $L$, $H$, $\sigma$, or $\mu$. 
-The lines connecting elements are referred to as \textit{edges}, which 
-may be either \textit{directed} or \textit{undirected}. For clarity, 
-we distinguish two types of connections: \textit{association relations}, 
-denoted by $\alpha$, refer to the undirected edges across tiers; 
-%(e.g., between tones and moras, or between moras and syllables), 
-and successor relations, denoted by $\lhd$, represent ordered relationships within a single tier. 
-All the successor connections in the current example are given by
-\( \lhd = \{\langle 1,2 \rangle,\ \langle 3,4 \rangle,\ \langle 4,5
-\rangle,\ \langle 6,7 \rangle \}.\) The association relations, on the
-other hand, are expressed as a set of unordered pairs:
-\(\alpha = \{ (1,3),\ (2,4),\ (2,5),\ (3,6),\ (4,6),\ (5,7) \}.\)
-Together, the tuple $\langle H, L, \mu, \sigma, \lhd, \alpha \rangle$
-constitutes the \textit{signature} of this model-theoretic representation
-of an AR.
-
-In addition to representing model-theoretic relational structures 
-with graphs, one can use \textit{adjacency matrices}
-\citep{west2001introduction,CLRS2022}, which use binary values to
-denote whether there is an edge between two nodes. Two nodes, $v$ and
-$w$, are considered \textit{adjacent} if there is an edge connecting
-them. If $G$ is a graph with $n$ nodes %,labelled $\{1, 2, \ldots, n\}$,
-then its adjacency matrix $A$ is an $n \times n$ matrix. If $i$ and 
-$j$ are connected, the entry $(i, j)$ has the value of 1; otherwise it is
-0. 
-Using this method, an AR with $t$ tones, $m$ moras, and $s$ 
-syllables can be encoded as a $t \times m$ tone-mora matrix and 
-a $m \times s$ mora-syllable matrix, with successor relations 
-implicit in the indexing. For instance, Table~\ref{tab.matrices} provides an alternative
-representation of the same AR in Figure~\ref{fig.model.AR}.
-In the tone-mora matrix, the header row reflects the tonal sequence
-$LH$, and the index column reflects the mora sequence. Since the L tone is
-associated with the first mora $\mu_1$, and the H tone is associated with
-both $\mu_2$ and $\mu_3$, the corresponding cells
-$(L, \mu_1), (H, \mu_2), (H, \mu_3)$ are marked with 1, and the others
-with 0 which indicates no connection between them.\footnote{For
-	convenience, we refer to each cell by the labels of the nodes. Node
-	indices will be omitted from here on. For example, we may refer to $(1,3)$
-	and $(2,4)$ with $(L,\mu_1)$ and $(H, \mu_2)$, respectively. However, 
-	these are the labels of the nodes rather than the nodes 
-	themselves.}  If we examine the matrix by columns, one can infer that
-the L tone occupies the first mora, while the H tone occupies the
-remaining two.  Likewise, in the mora syllable matrix, since
-$\sigma_1$ is associated with $\mu_1$ and $\mu_2$, and $\sigma_2$ with
-$\mu_3$, the corresponding cells are marked with 1. If we examine this
-matrix by rows, it can be seen that $\sigma_1$ is heavy while
-$\sigma_2$ is light. Hereafter, we refer to the rows and columns in
-the tone-mora matrix as the mora rows and tone columns respectively;
-and to the rows and columns in the mora-syllable matrix as the
-syllable rows and mora columns respectively.
-\begin{table}[ht]
-\centering 
-	\begin{tabular}{cc}
-	\centering
-	\begin{tabular}{c|cc}
-			& L & H \\
-			\hline
-			$\mu_1$ & 1 & 0 \\
-			$\mu_2$ & 0 & 1 \\
-			$\mu_3$ & 0 & 1 \\
-	\end{tabular} \vspace{1em}
-		&
-	\begin{tabular}{c|ccc}
-			& $\mu_1$ & $\mu_2$ & $\mu_3$ \\ \hline
-			$\sigma_1$ & 1     & 1     & 0     \\
-			$\sigma_2$ & 0     & 0     & 1
-	\end{tabular}
-	\end{tabular}
-	\caption{Adjacency matrices: tone–mora matrix (left) and mora–syllable matrix (right)}
-	
-	\label{tab.matrices}
-\end{table}
-
-These AR adjacency matrices capture precisely the same information as
-the graphs and model-theoretic structures. If we replace the header
-row and index column with the node numbers used in the graph model
-signature, and replace the 1s with the indices of row and column, we
-obtain the table filled as in Table~\ref{tab.index}. As can be
-seen, these pairs are identical to the information encoded in
-Figure~\ref{tab.matrices}.
-
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{cc}
-		$\begin{array}{c|c@{}c@{}c}
-			& 1 & \lhd & 2 \\
-			\hline
-			3 & (1,3)  && 0 \\
-			\lhd & && \\
-			4 & 0 & & (2,4) \\
-			\lhd & && \\
-			5 & 0 & & (2,5) \\
-		\end{array}$ \hspace{1em} &
-		$\begin{array}{c|c@{}c@{}c@{}c@{}c}
-			& 3 & \lhd & 4 & \lhd & 5 \\
-			\hline
-			6           & (3,6) &         & (4,6) &         &   	\\
-			\lhd  &       &         &       &         &   	\\
-			7           &       &         &       &         & (5,7) \\
-		\end{array}$
-	\end{tabular}
-\caption{Equivalent node-indexed encodings of the adjacency matrices in Table~\ref{tab.matrices}, where $\lhd$ and $\alpha$ are the successor and association predicates of the model signature.}
-	\label{tab.index}
-\end{table}
-
-Furthermore, certain patterns can be easily identified by inspecting the
-matrices. For example, a series of contiguous 1s may indicate tone 
-spreading over multiple moras if observed in the tone column, or a mora 
-shared by multiple tones if seen in the mora row. 
-Two 1s positioned diagonally suggest a one-to-one mapping.
-The associations $(L,\mu_1)$ and $(H,\mu_2)$
-in the tone-mora matrix in Table \ref{tab.matrices}
-present an example of this.
-Some particular or ill-formed patterns can also be 
-readily detected, which will be discussed in Section~\ref{sec:bufiaar}.
-
-
-\subsection{Structure Containment}
-%
-An important concept when considering model-theoretic relational
-structures, either strings, sequences of feature bundles, or ARs, is
-\textit{containment}. Intuitively, containment refers to the situation
-when one structure includes another structure inside of it. We
-formalise this notion using two related definitions, following
-\citet{chandleeBufia2019}: \textit{restriction}
-(Definition~\ref{def.res}) and \textit{containment}
-(Definition~\ref{def.contain}). Readers are referred to
-\citet{rogers.lambert2019mol} for an alternative formulation. In the
-definitions below, it is assumed the structures A and B have the same
-signature $\langle R_1, \ldots R_n \rangle$.
-
-\begin{definition}
-	\label{def.res}
-	\textit{ $A= \langle D^A; R^A_1, \ldots, R^A_n \rangle$ is a \emph{restriction}
-		of $B
-		= \langle D^B; R^B_1, \ldots, R^B_n \rangle$ iff $D^A \subseteq D^B$ and for
-		each $m$-ary relation $R^A_i$, we have $R^A_i = \{(x_1, \ldots, x_m) \in R^B_i \mid x_1, \ldots, x_m \in D^A\}$. }
-\end{definition}
-
-\begin{definition}
-	\label{def.contain}
-	\textit{Structure $A$ is \emph{contained} in structure $B$
-		($A \sqsubseteq B$) if there exists a restriction of $B$, denoted
-		$B'$, and there exists a function $h:A \rightarrow B'$ such that for
-		each $m$-ary relation $R_i$ in the model signature:
-		\(R_i(a_1, \ldots, a_m) \in A \implies R(h(a_1), \ldots, h(a_m)) \in
-		B'.\)}
-\end{definition}
-
-These definitions mean that $A$ is \textit{contained} in $B$ whenever
-there exists a subpart of $B$ onto which \(A\) projects via a function
-\(h\), and furthermore, that the relations that hold among elements of
-\(A\) hold among their corresponding elements in \(B\). For instance,
-the AR in Figure~\ref{fig.restriction:a} is contained in the AR
-in Figure~\ref{fig.restriction:b} because the dotted region in
-\ref{fig.restriction:b} preserves all internal relations of
-%:
-\ref{fig.restriction:a}, despite the differences in the
-indexing. In particular, $\mu_1, \mu_2, \sigma_1$ in
-\ref{fig.restriction:a} project to $\mu_2, \mu_3, \sigma_2$ in
-\ref{fig.restriction:b}, respectively.
-
-
-\begin{figure}[h]
-	\centering
-	\begin{minipage}[t]{0.32\textwidth}
-		
-		
-		\centering
-		\begin{tikzpicture}
-			\node (t2) at (1,1) {L};
-			
-			\node[anchor=base] (c1) at (1,0) {$\mu_1$};
-			\node[anchor=base] (c2) at (2,0) {$\mu_2$};
-			
-			\node (s2) at (1,-1) {$\sigma_1$};
-			\draw (t2) -- (c1) -- (s2);
-			\draw (t2) -- (c2) -- (s2);
-			
-		\end{tikzpicture} 
-		\subcaption{Heavy L syllable}
-		\label{fig.restriction:a}
-	\end{minipage}	
-	\begin{minipage}[t]{0.32\textwidth}
-		\begin{tikzpicture}
-			\node (t1) at (1,1) {H};
-			\node (t2) at (2,1) {L};
-			\node (t3) at (3,1) {H};
-			
-			\node[anchor=base] (c1) at (1,0) {$\mu_1$};
-			\node[thick, anchor=base] (c2) at (2,0) {$\mu_2$};
-			\node[thick, anchor=base] (c3) at (3,0) {$\mu_3$};
-			
-			\node (s1) at (1,-1) {$\sigma_1$};			
-			\node (s2) at (2,-1)  {$\sigma_2$};
-			\draw (t1) -- (c1) -- (s1);
-			\draw (t2) -- (c1) -- (s1);
-			\draw (t2) -- (c3) --(s2);
-			\draw  (t2) -- (c2) -- (s2);
-			\draw  (t3) -- (c3);
-			\draw[dotted, thick]
-			($(t2)+(-0.3,0.3)$) --
-			($(t2)+(0.2,0.3)$) --
-			($(c3)+(0.3,0.2)$) --
-			($(c3)+ (0.3,0.2) + (0,-0.45)$) --
-			($(s2)+(0.2,-0.3)$) --
-			($(s2)+(-0.3,-0.3)$) --
-			cycle;
-			
-			
-		\end{tikzpicture} 
-		\subcaption{AR containing a heavy L}
-		\label{fig.restriction:b}
-	\end{minipage}
-	\caption{A heavy L-toned syllable and a structure in which it is contained}
-	\label{fig.restriction}
-\end{figure}
-
-
-The containment relation is particularly important because it provides
-a natural \textit{ordering} over the space of possible structures. The
-ordering is not total, like a linear order; it is a \textit{partial}
-ordering. In such a partially-ordered space, some structures are
-comparable in terms of containment, but not necessarily all of them
-are. \citet{chandleeBufia2019} provides some additional terminology:
-if one structure \(A\) is contained in another structure \(B\), then
-structure \(A\) is a \textit{subfactor} of structure \(B\), whereas
-\(B\) is a \textit{superfactor} of \(A\). They prefer these terms to
-substructures and superstructures, which have different
-technical meanings in model theory.
-
-To illustrate, Figure~\ref{fig.hasse.str} displays a
-non-exhaustive portion of the partial ordering of possible strings
-over the alphabet $\Sigma = \{a,b\}$. At the bottom of the ordering is
-the empty string $\epsilon$, with more complex strings appearing
-higher in the ordering.  Whenever two elements are connected by a
-line, it means that the higher element contains the lower element. For
-example, no line relates the \(a\) to \(b\), because neither contains
-the other.  However, a line is drawn from \(a\) to \(aa, ab\) and
-\(ba\), because \(a\) is contained in each of these structures. As
-defined above, \(aa, ab, ba\) and \(aaa\), and any other strings that
-contain \(a\) are superfactors of \(a\); correspondingly, \(a\) is a
-subfactor of each of these strings.
-
-There can be many layers between a superfactor and one of its 
-subfactors. When there are no structures ordered 
-between a superfactor and one of its subfactors, the 
-superfactor is called a \textit{next superfactor}. 
-In this sense, among all superfactors of \(a\) such as 
-\(\{aa, ab, ba, aaa, aab, \cdots\}\), only those superfactors that 
-are exactly one level above are next superfactors of \(a\), 
-namely \(\{aa, ab, ba\}\).
-
-\begin{figure}
-	\centering
-	\begin{tikzpicture}[
-		every node/.style={inner sep=1pt, font=\small\itshape},
-		edge/.style={},
-		]
-		\matrix (m) [matrix of nodes,
-		row sep=6mm,
-		column sep=10mm,
-		nodes={anchor=center},
-		]{
-			\node (aaa) {aaa}; &\node (llb1) {...};&   \node (llb2) {...}; & \node (llb3) {...};&\node (llb4) {...};&\node (llb5) {...};&    \node (bbb) {bbb}; \\
-			&\node (aa) {aa}; & \node (ab) {ab}; && \node (ba) {ba}; & \node (bb) {bb}; \\
-			&& \node (a) {a}; & & \node (b) {b}; &  \\
-			&&& \node (z) {$\epsilon$}; && \\};
-		
-		\draw[edge] (z) -- (a);
-		
-		\draw[edge] (z) -- (b);
-		
-		\draw[edge] (a) -- (aa) -- (aaa);
-		\draw[edge] (a) -- (ab);
-		\draw[edge] (a) -- (ba);
-		
-		\draw[edge] (b) -- (bb) -- (bbb);
-		\draw[edge] (b) -- (ab);
-		\draw[edge] (b) -- (ba);
-		\draw[edge, dotted] (aa) -- ++(0,1.5em);
-		%	\draw[edge, dotted] (aa) -- ++(1,1.5em);
-		\draw[edge, dotted] (ab) -- ++(0,1.5em);
-		%	\draw[edge, dotted] (ab) -- ++(1,1.5em);	
-		%	\draw[edge, dotted] (bb) -- ++(-1,1.5em);	
-		\draw[edge, dotted] (ba) -- ++(0,1.5em);
-		\draw[edge, dotted] (bb) -- ++(0,1.5em);
-	\end{tikzpicture}
-	\caption{Strings over $\Sigma = \{a,b\}$ ordered by the containment relation (non-exhaustive)}
-	\label{fig.hasse.str}
-\end{figure}%
-
-
+\subsection{BUFIAs}
 
 \subsection{BUFIA}\label{sec:prelim.bufia}
 
@@ -1798,82 +1249,6 @@ Section~\ref{sec:bufiaar.nextar} introduces the four ways to obtain next
 superfactors of an AR. This section addresses a different question: 
 given two ARs, how can we determine if one AR \textit{contains} the other? 
 
-This question is important for any implementation of BUFIA because it
-provides an explicit, formal criterion for checking containment rather
-than an impressionistic intuition.  For example, one might assume that
-a light HL contour is contained in a heavy HL syllable, and similarly
-that a light LH is contained in a heavy LH. Under this assumption, any
-language that allows a heavy contour would necessarily also allow the
-corresponding light contour. This is, however, not accurate. As shown
-in Table~\ref{tab.2typescontours}, Hausa accepts heavy HL but not
-light HL, whereas Mende accepts heavy LH but not light LH.
-
-In other words, the algorithm must be able to determine that none 
-of the structures in Table~\ref{tab.2typescontours} contains 
-one another. Containment between ARs is not determined solely 
-by tonal string matching or by the number of TBUs, which are 
-straightforward to verify (e.g., \textit{L} is contained in \textit{HLH}, 
-and a bimoraic sequence is contained within a trimoraic sequence). A more  
-challenging task is to identify if the associations across tiers (i.e., the 
-temporal arrangement of autosegments) in one AR are fully preserved in another.
-
-\begin{table}[h]
-	\centering
-	\begin{tabular}{lcccc}
-		\toprule
-		\textbf{} & \textbf{light LH} & \textbf{light HL} & \textbf{heavy LH} &
-		\textbf{heavy HL} \\
-		\midrule
-		AR & 
-		\makecell[c]{\vspace{2pt}
-			\begin{tikzpicture}[scale=0.8]
-				\node (t1) at (1,1) {L};
-				\node (t2) at (2,1) {H};
-				\node (c2) at (1.5,0) {$\mu$};
-				\node (s1) at (1.5,-1) {$\sigma$};
-				\draw (t1) -- (c2) -- (s1);
-				\draw (t2) -- (c2) -- (s1);
-		\end{tikzpicture}} &
-		
-		\makecell[c]{\vspace{2pt}
-			\begin{tikzpicture}[scale=0.8]
-				\node (t1) at (1,1) {H};
-				\node (t2) at (2,1) {L};
-				\node (c2) at (1.5,0) {$\mu$};
-				\node (s1) at (1.5,-1) {$\sigma$};
-				\draw (t1) -- (c2) -- (s1);
-				\draw (t2) -- (c2) -- (s1);
-		\end{tikzpicture}} &
-		
-		\makecell[c]{\vspace{2pt}
-			\begin{tikzpicture}[scale=0.8]
-				\node (t1) at (1,1) {L};
-				\node (t2) at (2,1) {H};
-				\node (c1) at (1,0) {$\mu$};
-				\node (c3) at (2,0) {$\mu$};
-				\node (s1) at (1.5,-1) {$\sigma$};
-				\draw (t1) -- (c1) -- (s1);
-				\draw (t2) -- (c3) -- (s1);
-		\end{tikzpicture}} &
-		
-		\makecell[c]{\vspace{2pt}
-			\begin{tikzpicture}[scale=0.8]
-				\node (t1) at (1,1) {H};
-				\node (t2) at (2,1) {L};
-				\node (c1) at (1,0) {$\mu$};
-				\node (c3) at (2,0) {$\mu$};
-				\node (s1) at (1.5,-1) {$\sigma$};
-				\draw (t1) -- (c1) -- (s1);
-				\draw (t2) -- (c3) -- (s1);
-		\end{tikzpicture}} \\
-		\midrule
-		Hausa & N & N & N & Y \\
-		Mende & N & Y & Y & Y \\
-		\bottomrule
-	\end{tabular}
-	\caption{Contour Inventory in Hausa and Mende}
-	\label{tab.2typescontours}
-\end{table}
 
 
 There is more than one method to achieve this algorithmically.
@@ -3148,3 +2523,785 @@ structure and segmental features \citep{yip2002tone}.
 It would be interesting to explore how to model such 
 an enriched tonal geometry, and how tonal grammars could be 
 learned over ARs in these languages.
+
+
+
+
+This paper investigates whether tonotactic learning differs
+across representations and learning models. We conduct an experiment
+using the same dataset encoded in three representations:
+segments, features, and autosegmental representations (ARs).
+To the extent possible, two learning models are evaluated, the Maximum Entropy
+(MaxEnt) model and the Bottom-Up Factor Inference Algorithm
+(BUFIA), to examine how learning outcomes interact with both
+model type and representations. A follow-up experiment
+further explores the roles of frequency and complexity
+thresholds. The results show that (1) AR-based
+learning gives the strongest overall performance;
+(2) there is no consistent advantage between
+segmental and feature-based representations
+across learning models;
+(3) MaxEnt performance improves substantially when
+frequency information is introduced and lastly (4)
+the effects of complexity bounds interact with 
+representation type and frequency information.
+These findings suggest that tonotactic
+learning benefits from structurally explicit
+representations. Overall this work highlights
+the importance of using linguistically meaningful
+representations into learning.
+
+
+
+\section{Introduction}
+
+This paper focuses on the learnability of tonal phonotactics,
+or tonotactics, which addresses the question of how tones
+and tone-bearing units (TBUs, such as syllable or mora) are
+organized in tonal languages. More specifically, we examine
+how the learning outcomes are influenced by representations
+and learning models.
+
+For a long time, despite the widespread distribution of tonal
+languages across the world \citep{yip2002tone}, tonotactics
+has received considerably less attention in computational
+learning than segmental phonotactics. One possible reason
+for this gap lies in representational differences.
+Segmental phonotactics is typically modeled using linear
+representations such as strings, which makes it readily
+compatible with a wide range of existing learning models.
+ \citep{CP97, hayes2008maximum,goldsmith2012information,
+ mayer2020phonotactic,schrimpf2014comparing}.
+Tonotactics, by contrast, has long been analyzed over
+non-linear structures in linguistics, most widely autosegmental
+representations \citep[ARs,][]{goldsmith1976autosegmental}.
+These more complex representations pose challenges for many
+existing computational models, which are unable to operate
+directly over non-linear structures. As a workaround, many
+approaches usually flatten tonal patterns into strings to
+fit linear learning frameworks \citep{shih2013subsegmental}.
+Although a substantial body of work has argued that linear
+representations are inadequate for capturing tonal
+generalizations \citep{clements2010autosegmental,
+        oddenintroducing2013} and examined the computational
+properties of ARs \citep{bird1990phonological,
+        coleman1991no,kornai2007mathematical,
+        jardine2015concatenation,jardine2016locality,
+        jardine2017LocalNature,jardine2019expressivity},
+we are unaware of any empirical demonstrations of clear
+advantages for non-linear representations over strings in
+tonotactic learning.
+
+To fill this gap, we conducted computational experiments
+and encoded the same dataset in three different representational 
+systems commonly used in tonal phonology, %% may15 add
+namely strings, sequences of features, ARs.
+The string (or segmental) representation uses a sequence of
+symbols representing low (L), high (H), rising (R), and
+falling (F) tones. The feature-based representation encodes 
+the data as a sequence of feature bundles with the features 
+\texttt{[\(\pm\)high]} and \texttt{[\(\pm\)contour]}. The third 
+representation provides ARs, in which tones and tone-bearing units are 
+represented on separate tiers linked by association relations (see \S2). 
+
+These encodings are grounded in theoretical phonology, 
+and differ in the degree to which tone is independent 
+from the TBUs. Since this study focuses on the effect of 
+representational differences on phonotactic learning, we 
+assume that representations are given to the learner 
+rather than learned from the data, These representations are 
+evaluated using two learning models: the Bottom-Up Factor Inference
+Algorithm \citep[BUFIA;][]{chandleeBufia2019} and the
+Maximum Entropy phonotactic learner \citep[MaxEnt;][]{hayes2008maximum}.
+BUFIA is a categorical learner that induces a set of
+inviolable constraints, whereas MaxEnt is a gradient
+learner that assigns probabilistic weights to constraints.
+In addition, a set of linguistically motivated grammars,
+encoded in the corresponding representations, serves as
+a baseline for comparison with the learned grammars.
+
+One limitation of this study is that the current implementation of
+MaxEnt does not support ARs.  A more comprehensive study would also
+include a version of MaxEnt which operates over ARs.  In addition,
+neural models have been proposed for learning phonotactic or stress
+patterns using
+\citep{goldsmith94,mayer2020phonotactic,prickett2025learning}, which
+are not studied here. Furthermore, we do not address the problem of
+representational parsing or acquisition.\footnote{Though see
+\citet{jardine2015concatenation} for one method for deriving ARs from
+strings.} We leave these questions for future work.  Despite these
+limitations, the results presented here help assess the extent to
+which ARs facilitate learning.
+
+The corpus in this study comes from the Hausa database in the
+\textit{World Loanword Database} \citep{wold-4}, which was curated by
+\citet{li2025learning}. The corpus contains 621 mono-morphemic,
+non-borrowed words (64 types) from Hausa's core vocabulary,
+transcribed in orthography.
+
+This corpus was randomly divided into four partitions (folds).
+Each fold was converted into the three representational schemes.
+The tonal representations studied here abstract away from segmental content and
+retain only tonal and TBU information.
+%For example, the Hausa word \textit{mù.tûm} (``person'') is represented in one of the three ways as shown in Table~\ref{tab.threereps}.
+%Representations are discussed in detail in \S\ref{sec:background},
+%and examples are provided in \S\ref{sec:experiment}.
+For each representation and model, cross-fold validation was conducted and
+their model performance examined.
+In every case, the evaluation set was augmented to include forms
+that violated the constraints in the baseline grammar,
+and precision, recall, and F1 scores, were reported.
+These measures help identify whether the models generalize appropriately without overgeneralizing.
+
+The results show three main findings. First, segmental and
+feature-based representations do not show a consistent
+difference in learning outcomes: they perform more or less identically
+under BUFIA and only show marginal and inconsistent differences
+under MaxEnt. Second, BUFIA over ARs achieves the best performance.
+Third, learning
+outcomes are influenced by other factors such as frequency
+information, complexity bounds, and evaluation criteria.
+Frequency substantially improves MaxEnt performance and gives
+comparable results to BUFIA-AR, while categorical learners such
+as BUFIA remain stable without frequency.
+
+Overall, this work highlights the importance of incorporating
+linguistically meaningful representations into computational models of
+phonological learning. It further suggests these approaches should be
+evaluated on larger-scale and more complex datasets to better identify
+differences between the approaches.
+
+\section{Background}
+\label{sec:background}
+
+This section provides the theoretical and computational background and
+methods for the different representations investigated here.
+We adopt a model-theoretic perspective that treats all representations as
+different types of mathematical objects \citep{enderton2001mathematical}, or
+more specifically, relational structures
+\citep{rogers2013,chandleeBufia2019,rogers.lambert2019mol}.
+
+%% May 16 - Han: Added in response to Reviewer 2's comments on  "motivation of representational encoding"
+
+Model-theoretic representations not only provide a unified framework 
+for encoding different representational systems, but also make explicit 
+how linguistic units are structurally related to one another. 
+One can observe that the more enriched representations 
+encode more complex dependency relations, which in turn lead to 
+different generalization for phonotactic learners.
+
+
+\subsection{Representations}
+
+We define a phonological representation as relational structures of the
+form $\langle D, \mathcal{R} \rangle$, where $D$ is a finite domain of
+positions, and $\mathcal{R}$ is a set of relations (also known as the
+model \textit{signature}) that connect the composing units of the
+phonological representation \citep{strother2017using, jardine2016locality}.
+Relations may be unary, indicating the identity of an element, or binary,
+specifying the relationship between pairs of elements.
+
+The string representation arranges symbols along a single axis.
+The signature of a string model includes unary labeling relations indicating
+the symbols, and a single binary successor relation $\rightarrow$ defining linear
+order.
+For example, the string representation of the tonal structure of the Hausa word
+\textit{mù.tûm} (``person'') is L.HL.
+It is visualized in Figure~\ref{sec2.fig.string}.
+The domain  $D=\{1,2,3,4\}$ specifies four positions,
+which are labeled by their tone and syllable the boundary marker (.).
+The successor relation encodes the temporal order.
+Each position occupied by a tone can be thought of representing a single mora.
+Thus bimoraic syllables will contain a sequence of two tones.
+For complex tonal forms where a single mora is associated with contour tones,
+the symbols R (representing rising LH on one mora)
+and F (representing falling HL on one mora) are used.
+
+% \input{string.model.tex}
+
+The feature-based representation also arranges symbols along a single axis.
+Like the string model, the signature of the feature model
+includes single binary successor relation $\rightarrow$ defining linear order.
+Unlike the string models, there are five unary relations:
+\texttt{\{+Low, -Low, +Contour, -Contour, Boundary\}},
+where \texttt{low} and \texttt{contour} are binary features, 
+and \texttt{Boundary} is treated as a privative feature.
+In the string model, each position is true of exactly one unary relation.
+However, in the feature model, positions may be true of more than one unary
+relation.
+\citet{strother2017using} and \citet{vu2018statistical} refer to such models as
+\textit{unconventional} because they are not the standard way to model strings in
+theoretical computer science (though it is standard in phonology).
+Note in this representation \texttt{[$\pm$Contour]} is only used to indicate monomoraic
+contour tones.
+Figure~\ref{sec2.fig.feature} shows the feature representation of same tonal structure of the word in Figure~\ref{sec2.fig.feature}
+% \input{feature.model.tex}
+
+ARs, in contrast, correspond to multi-linear (tiered) relational structures.
+The tiers correspond to units such as tones, moras, and syllables.
+The unary relations are \{L, H, \(\mu\), \(\sigma\)\},
+denoting low and high tones, moras and syllables respectively.
+The signature not only includes the successor relation,
+which relates positions on the same tier,
+but it also includes a binary  association relation $\alpha$.
+This relation captures associations across tiers.
+In this representation, structural dependencies,
+such as tone spreading or contour formation,
+are encoded directly as relations rather than inferred from symbol sequences.
+For example, Figure~\ref{armodel} shows the AR model for the same word \textit{mù.tûm}. The model consists of eight units,
+defined by $D=\{1,\ldots,8\}$, arranged across three tiers, each following
+a successor relation $\rightarrow=\{(1,2),(2,3),\ldots\}$. The association
+relations, on the other hand, are expressed as a set of unordered pairs
+$\alpha=\{(1,4),(2,5),\ldots,(6,8)\}$, indicating which two elements are
+connected by an association line.
+
+% \input{AR.model.tex}
+
+This formalization explicitly captures how within-tier and across-tier
+relations are represented in autosegmental phonology
+\citep{goldsmith1976autosegmental}. In particular, tonal generalizations
+have been argued to be computationally simpler over ARs than over strings,
+because cross-tier dependencies are represented directly as relations. This
+allows processes to be modeled by modifying associations rather than
+altering feature values or symbols, and can describe long-distance
+processes locally \citep{goldsmith1976autosegmental,jardine2017LocalNature}.
+
+\subsection{Phonotactic Learning Models}
+
+One learning system used in this paper is the BUFIA \citep{chandleeBufia2019} which learns constraints expressed as relational structures under an arbitrary
+model-theoretic signature.
+This means the general form of the algorithm can be flexibly applied to very
+many specific linguistic representations.
+In this work, we used three versions of BUFIA: BUFIA-Seg, BUFIA-Ftr and
+BUFIA-AR.
+
+In a nutshell, BUFIA is a deterministic phonotactic learner that 
+traverses a hypothesis space of all logically possible structures, 
+finding those relational structures which absent in the data.
+BUFIA constructs the hypothesis space on the fly,
+beginning from the simplest (smallest) relational structures,
+and considering increasing complex ones as needed.
+The notions `simpler' and `more complex' are made concrete by the
+\textit{containment relation}: some pairs of structures stand in a 
+containment relation (one containing the other, where the more complex 
+structure is referred to as the \textit{superfactor} and the contained 
+structure is the \textit{subfactor}), while others are not comparable.
+Each logically possible structure, which serve as candidate constraints, 
+are partially ordered by the containment relation.
+%
+%As illustrated in
+%Figure [maybe??] for strings over the alphabet ${a,b}$, more general
+%structures (e.g., the empty string or singletons) occupy lower positions in
+%the space, whereas more specific structures appear higher. For any given
+%structure, those that properly contain it are its \textit{superfactors}
+%(positioned above), and those that it properly contains are its
+%\textit{subfactors} (positioned below). Among the superfactors, only those
+%that are one level above the current candidate are referred to as its
+%\textit{next superfactors}.
+
+Two core operations of BUFIA determine its search: containment and the 
+sub/superfactor relation. The learner is provided with a set of positive 
+data and a complexity bound. The search begins from an initial structure 
+at the bottom of hypothesis space (typically the empty structure).
+For each candidate, BUFIA checks whether it is contained in the positive
+dataset. If it is attested, the learner generates its \textit{next
+        superfactors} (i.e., minimally more complex superfactors) and
+        continues searching upward.
+Otherwise, the structure is identified as a forbidden factor (i.e., a
+\textit{constraint}), and its superfactors are pruned from the rest of the 
+space. \citet{chandleeBufia2019} prove that BUFIA identifies the most 
+general constraints within the complexity bounds that are consistent with 
+the data. The resulting grammar guarantees full coverage of the observed 
+data while remaining maximally general.
+
+As said before, a key merit of BUFIA is its representational flexibility.
+The algorithm can operate over any representational choices,
+provided they are defined model-theoretically.
+Recent work has demonstrated the success of BUFIA in phonotactic learning.
+\citet{Swanson+2026} implemented a string-based version of BUFIA
+for learning Quechua phonotactics and showed that it performed
+as well as the \citep{hayes2008maximum, wilson2018accidental}.
+\citet{li2025learning} introduced a version of BUFIA that
+operates directly over ARs for tonotactic learning and
+showed that it could learn tonotactic constraints.
+This representational flexibility allows controlled comparison 
+of different representations of the same data under a shared 
+learning framework.
+
+BUFIA is a categorical learner: a candidate structure is
+either well-formed or ill-formed,
+depending on whether it contains any forbidden subfactor.
+In contrast, probabilistic models, such as MaxEnt
+\citep{hayes2008maximum}, assign gradient well-formedness values
+to candidate forms. Well-formedness is interpreted as a probability
+rather than a binary value; consequently, constraints are treated as 
+violable, each associated with a penalty weight.
+This evaluation is cumulative: the more constraints a candidate
+violates, and the higher the weights of those constraints,
+the lower its predicted probability of well-formedness.
+
+MaxEnt has been widely used in string-based phonotactic learning, and more
+recent implementations induce phonological tiers to capture long-distance
+patterns \citep{GouskovaGallagher2020} and
+metrical structure \citep{lee2025representing}.
+These studies suggest that probabilistic string-based approaches can
+learn structural information that are not directly visible in surface
+sequences.
+However, these representations differ from ARs in that
+they typically do not encode association relations between
+individual elements on separate tiers.
+
+The central question of this paper is the extent to which
+representations facilitate tonotactic learning.
+Does adopting ARs improve learning outcomes over
+adopting string and featural representations?
+A related question is whether learning outcomes are influenced by
+the type of learner (here BUFIA or MaxEnt).
+In the following section, we present an experiment
+designed to test these questions by applying the same dataset across
+different representations and the two learning schemes.
+
+\section{Experiment: Hausa Tonotactics}
+\label{sec:experiment}
+
+To test tonotactic learnability across representations and models,
+we conducted a series of controlled computational experiments on the same
+dataset.
+This section details the experimental setup,
+including construction of the training and test data, and
+the evaluation metrics used to compare model performance.
+
+\subsection{Hausa Data}
+
+The language data used in this study come from Hausa, a major tonal
+language spoken in West Africa.
+Hausa has three surface tones in orthography: H, L,
+and HL (a falling tone, which occurs only in heavy syllables).
+Previously proposed generalizations about Hausa tonotactics are listed
+in Table~\ref{rules} \citep{Newmanbook,leben1996tonal,zoll2003optimal}.
+
+% \input{constraints.table.tex}
+
+We use a curated corpus from \citet{li2025learning},
+constructed from the Hausa database \citep{wold-4}
+in the \textit{World Loanword Database}.
+The corpus contains 621 mono-morphemic, non-borrowed words from the
+core vocabulary, transcribed in orthography.
+These 621 words yield a total of 64 tonal structures.
+
+Among the constraints in Table~\ref{rules}, the first three constraints,
+\textsc{*Rise$_\sigma$},\textsc{*Contour$_{\mu}$},\textsc{*3T}, are hard
+constraints that define the basic phonology of tones and syllable 
+structures of Hausa.
+They are never violated in the corpus.
+Constraint \textsc{*NonFinHL} applies to the non-derived Hausa words
+where the falling contour (HL) can only occur word finally.
+The constraint \textsc{*Lapse} is proposed by \citet{zoll2003optimal}
+to explain the rarity of adjacent L-toned syllables.
+\citet{Newmanbook} points out that there are exceptional words that
+violate \textsc{*NonFinHL} and \textsc{*Lapse}.
+\citet{li2025learning} also reports that the corpus itself
+includes forms violating these two constraints.
+
+% The segment and feature representations are based on the orthographic form,
+% where each TBU is represented by a single symbol or a feature bundle. When
+% multiple tones map onto a single TBU, such as monomoraic LH or monomoraic
+% HL, these are represented as distinct symbols in the string alphabet (R and F,
+% respectively). For the feature system, we adopt a two-feature specification:\{L,
+% Contour\}. Level tones are specified as either [+L] or [−L], while contour tones
+% are specified as [+Contour] in addition to their initial tone value. For example,
+% in Table \ref{tab.threereps}, the Hausa word \textit{mù.tûm} ‘person’ is
+% represented as \textit{L.HL} in the string format, and its feature
+% representation is [+L].[−L][+Contour]. A nonce word such as \textit{R.H}
+% would be represented in the feature system as [+L, +Contour].[−L, −Contour].
+
+% Unlike the string representation, AR does not require expanding the tonal
+% inventory to include symbols such as R and F. Instead, mora and syllables ($
+% \mu,\sigma$) are included in the alphabet. Consequently, syllable boundaries
+% are naturally encoded. In the implementation, each AR is
+% encoded as a pair of adjacency matrices, which we do not discuss further here.
+
+\subsection{Procedure}
+
+The experiment compares grammars learned under multiple conditions,
+varying both learning model (BUFIA vs.\ MaxEnt) and
+representation (Segment, Feature, AR).
+These learned grammars are evaluated against baseline grammars defined over the
+corresponding representations (Baseline-Seg/Ftr/AR, see Appendix~\ref{sec:appendix}).
+Table~\ref{tab.all.models} summarizes all model conditions.
+As mentioned, MaxEnt-AR is one model we are unable to test.
+
+Both BUFIA and MaxEnt specify thresholds that limit the maximum length
+or structural complexity of learned constraints.
+These can be set manually, or ``tuned" according to data.
+However, the data used for tuning cannot be used for training or testing.
+Since our corpus is small (64 forms), we elected to manually set these
+thresholds.
+We chose to set values according to the constraints in the baseline grammar,
+which helps provide a fair comparison. Thus, we set the thresholds to the 
+most complex constraint in the baseline grammar.
+For string and featural representations,
+the most complex baseline constraint has length 3 (e.g., *HL.).
+For AR representations, the threshold consists of three parameters:
+$t$ (maximum number of tonal units), $s$ (maximum number of syllables), and
+$m$ (maximum number of moras).
+Since the most complex constraint in the baseline grammar has two tones, two
+syllables and three moras,
+we set $t=2$, $s=2$, and $m=3$.
+
+\begin{table}[t]
+\centering
+	\begin{tabular}{lccc}
+	\toprule
+		Model        & length              \\
+	\midrule
+		Baseline-Seg & $ k =3 $            \\
+		Baseline-Ftr & $ k =3 $            \\
+		Baseline-AR  & $t = 2, s = 2, m=3$ \\
+	\midrule
+		BUFIA-Seg    & $ k =3 $            \\
+		BUFIA-Ftr    & $ k =3 $            \\
+		BUFIA-AR     & $t = 2,s = 2, m=3$  \\
+	\midrule
+		MaxEnt-Seg   & $ k =3 $            \\
+		MaxEnt-Ftr   & $ k =3 $            \\
+	\bottomrule
+	\end{tabular}
+\caption{Learning models in the experiment}
+\label{tab.all.models}
+\end{table}
+
+We evaluated each model using 4-fold cross-validation. 
+The dataset was partitioned into four equally sized 
+folds (16 forms per fold).
+In each iteration, three folds were used for training
+and the remaining fold provided the positive items in 
+the test set. This process was repeated four times, with 
+each fold serving as the test set once.
+
+Arguably, if the test set only contains positive items, then it can mislead.
+For example, a grammar with no constraints will accept the entire test set
+because no test form violates any constraint.
+Such a grammar therefore over-generates.
+The inclusion of negative forms in the test set helps detect over-generation.
+While the grammar with no constraints would correctly classify all positive
+forms, it would also incorrectly classify all negative forms.
+Similarly, a grammar with too many constraints may correctly classify all
+negative forms,
+and incorrectly reject all positive forms.
+Grammars that more correctly classify both positive and negative forms are
+desirable.
+
+Therefore, we also constructed negative items to include in the test set.
+Since there were 16 positive items in each test set,
+we constructed 16 negative items, and added them to each test set.
+Thus, each test set contained 32 forms.
+
+In the absence of native speaker judgments,
+there is less certainty regarding whether an unattested form is negative or
+positive.
+For example, the baseline grammar includes two constraints that are known to
+have exceptions.
+
+We therefore constructed negative forms that met two conditions.
+First, each negative form was unattested in the corpus.
+Second, each negative form violated at least one of the
+hard constraints in Table~\ref{rules} (constraints 1-3).
+Since there were 16 negative forms and three constraints,
+at least five forms violated each constraint.
+One positive and one negative form are shown in Table~\ref{tab.threereps}.
+% \input{reps.examples.tex}
+
+For training and testing each model, all data was converted into
+each of the three representational systems: string, feature, and ARs.
+To evaluate model performance, we measured learning outcomes
+as a binary classification task.
+
+\subsection{Evaluation}
+
+For grammars returned by BUFIA and the baseline grammars,
+if a test form violated any of the constraints in the grammar,
+then the grammar marked it as rejected; otherwise, it was marked as accepted.
+A prediction was counted as correct if positive forms were accepted
+and negative forms were rejected.
+Performance was measured using averaged recall, precision,
+and F1 score across the folds.
+
+The MaxEnt model produces a gradient grammar with weighted constraints.
+This grammar assigns a score to each test form
+based on a weighted sum of constraint violations.
+A zero score means the form violates no constraints, and higher scores
+indicate the form violates multiple, or higher-weighted, constraints.
+
+There are many ways this score can be interpreted to produce a binary
+classification.
+We considered a simple threshold.
+If the score the grammar assigns to a form is greater than the threshold then
+it is rejected;
+otherwise it is accepted.
+We examined a few possible thresholds and selected the one that gave the best
+results.
+Again, normally the threshold could be set as part of a tuning phase,
+but we did not want to spare any data for this.
+
+The three thresholds we considered are the following.
+First, over-zero: a form is rejected if its total weighted violation score is
+greater than zero.
+Second, over-average: a form is rejected if its total weighted violation score
+exceeds the average violation score across all candidate forms.
+Third, over-median: a form is rejected if its total weighted violation score
+exceeds the median score across all candidate forms.
+These criteria are different ways to categorically interpret the gradient grammar.
+
+In all of our experiments, the over-average interpretation 
+performed the best.
+The over-zero interpretation was the worst, and tended to reject more than half
+of the positive forms.
+This is likely because constraints with small non-zero weights were learned.
+Generally, the over-median approach performed similarly to over-average, but
+had lower scores.
+Consequently, in what follows, the MaxEnt results are reported with the
+over-average threshold.
+
+\section{Results}
+
+Results of the experiments are shown in Table~\ref{tab:model_comparison}.
+Several aspects are worth noting.
+First, the baseline grammars have identical results.
+A closer inspection of the errors confirms that they also coincide.
+This indicates a one-to-one correspondence between representations,
+and the forms that violate these constraints.
+It follows that representational differences do not affect
+how this fixed grammar classifies forms.
+
+% \input{results1.tex}
+
+On the other hand, for the BUFIA and MaxEnt models, which learn constraints,
+performance does vary depending on both the representation and the learning
+model.
+Among the BUFIA models, while there is no difference between BUFIA-Seg and
+BUFIA-Ftr,
+both achieve an F1 score of 0.992. BUFIA-AR, however performs perfectly (F1 =
+1.000).
+Although it is true that BUFIA-AR outperforms BUFIA-Seg and BUFIA-Ftr,
+all the BUFIA models are exhibiting ceiling levels of performance,
+or are extremely close to it.
+
+Choice of representation also impacts the MaxEnt models.
+MaxEnt-Ftr achieves an F1 score of 0.832, while MaxEnt-Seg reaches
+0.871. The better performance on segmental representations over featural ones
+contrasts with earlier studies with MaxEnt on segmental phonotactics, which
+found that learned constraints over features were more effective
+than learned constraints over segments \citep{hayes2008maximum,
+  wilson2018accidental}.
+
+Finally, the results show that BUFIA-Seg and BUFIA-Ftr outperform
+MaxEnt-Seg and MaxEnt-Ftr. We were surprised by this result and
+conducted follow-up experiments to see if we could improve the
+MaxEnt models performance.
+
+
+One finding is that ARs provide a learning advantage over segmental or
+feature-based representations.
+However, the improvement is marginal as all the BUFIA models performed at,
+or close to, ceiling.
+We therefore conclude that while there is some evidence that
+AR representations improve tonotactic learnability,
+we believe it is premature to draw firm conclusions.
+The tonotactics of Hausa may simply be too simple to see
+any significant difference in BUFIA's learning capacities with different representations.
+Therefore, we think that similar experiments ought to be conducted
+on languages with more complex tonotactics as that may allow for
+clearer distinctions to emerge when learning over
+segmental, featural, or autosegmental representations.
+
+
+\section{Follow-Up Experiments}
+
+
+We were curious what hindered the performance of the MaxEnt model.
+In the previous experiments,
+the model was trained on dataset of types rather than tokens; therefore,
+frequency information was not available during learning.
+Since MaxEnt determines weights for the constraints it learns
+partially based on frequencies,
+we hypothesized their absence may have been hindrance.
+
+Therefore, in a follow-up experiment, we introduced frequency
+to MaxEnt by training the model on token data rather
+than type data (621 tokens in total).
+As in the previous setup, we conducted cross-fold validation over four
+folds (each fold contained 156 or 155 tokens per fold).
+As before, an equal number of negative forms were included in the test set.
+Since the over-mean criterion gave the best results in the previous experiment,
+we use it again here to calculate recall, precision, and F1 scores.
+
+
+Another question is how to determine an appropriate
+complexity bound that accounts for the data without leading to
+over-generalization. To examine this, we also ran experiments with
+MaxEnt models where the maximum constraint length was set to 4.
+This is the highest value permitted by the implementation we used.
+We conducted experiments where these MaxEnt models had access to 
+frequency information, and where they did not. 
+% \input{results2.tex}
+
+As shown in Table~\ref{tab.results2}, 
+the inclusion of frequency information makes a substantial 
+difference. When frequency information was included,
+all MaxEnt models performed close to ceiling with F1 scores
+greater than or equal to 0.990 regardless of the complexity bound. 
+Without frequency information, the highest F1 score, achieved by 
+MaxEnt-Seg, is 0.871 when $k=3$, and the other MaxEnt models get
+even lower when $k$ increases to $4$.
+
+In terms of the feature vs.\ segment comparison, the results are 
+inconsistent. When frequency information is not included, the advantage 
+between MaxEnt-Seg and MaxEnt-Ftr reverses between complexity bounds: 
+MaxEnt-Seg performs better at $k=3$, whereas MaxEnt-Ftr performs 
+better at $k=4$. Once the frequency information is introduced, 
+there appears to be no appreciable difference among the F1 
+scores on the grammars obtained by the MaxEnt models between constraint lengths $3$ and $4$, as these results are effectively at ceiling.
+
+
+For the sake of comparison, we also examined the grammars returned by
+the BUFIA models when we varied the maximum sizes of the constraints.
+For BUFIA-Seg and BUFIA-Ftr, we examined constraint lengths from 
+3 to 7, as shown in Table~\ref{tab.results2};
+For BUFIA-AR, we explore parameter settings for $t,m,s$ up to $3$,
+The results for $m=3$ are presented in Table~\ref{tab:ar_grid}, while 
+the complete set of results is provided in the Appendix~\ref{sec:appendix2}
+
+
+For BUFIA-Seg and BUFIA-Ftr, the highest F1 score is 0.992 when \(k=3\).
+For \(k=4\), the F1 is still close to ceiling at 0.984.
+As \(k\) increases, the F1 continues to drop for these models,
+indicating over-fitting.
+
+For BUFIA-AR, when \(m<3\), the highest F1 score was 0.842.
+When the search for constraints cannot consider structures with three moras,
+BUFIA-AR will not find the constraint against trimoraic contours.
+Similarly, when \(t=1\), the hard constraints against monosyllabic rises
+and monomoraic contours cannot be learned which significantly brought down
+performance.
+On the other hand, F1 scores were at 1.000 in the following three settings:
+\([m=3, s=1, t=2], [m=3, s=1, t=3], [m=3, s=2, t=2]\).
+In the maximum setting when \([m=3, s=3, t=3]\), the F1 scored dropped to 0.967,
+indicating the beginning of the cline towards over-fitting.
+
+
+\begin{table}
+\centering
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{cccccc}
+\toprule
+ $m$ & $s$ & $t$ & Recall & Precision & F1    \\
+ \midrule
+%  1   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
+%  1   & 1   & 2   & 1.000  & 0.615     & 0.762 \\
+%  1   & 1   & 3   & 1.000  & 0.615     & 0.762 \\
+%  1   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
+%  1   & 2   & 2   & 1.000  & 0.615     & 0.762 \\
+%  1   & 2   & 3   & 1.000  & 0.615     & 0.762 \\
+%  1   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
+%  1   & 3   & 2   & 1.000  & 0.615     & 0.762 \\
+%  1   & 3   & 3   & 1.000  & 0.615     & 0.762 \\
+%  \midrule
+%  2   & 1   & 1   & 1.000  & 0.500     & 0.667 \\
+%  2   & 1   & 2   & 1.000  & 0.727     & 0.842 \\
+%  2   & 1   & 3   & 1.000  & 0.727     & 0.842 \\
+%  2   & 2   & 1   & 1.000  & 0.500     & 0.667 \\
+%  2   & 2   & 2   & 1.000  & 0.727     & 0.842 \\
+%  2   & 2   & 3   & 0.969  & 0.721     & 0.826 \\
+%  2   & 3   & 1   & 1.000  & 0.500     & 0.667 \\
+%  2   & 3   & 2   & 1.000  & 0.727     & 0.842 \\
+%  2   & 3   & 3   & 0.969  & 0.721     & 0.826 \\
+% \midrule
+ 3   & 1   & 1   & 1.000  & 0.615     & 0.762 \\
+ 3   & 1   & 2   & 1.000  & 1.000     & 1.000 \\
+ 3   & 1   & 3   & 1.000  & 1.000     & 1.000 \\
+ 3   & 2   & 1   & 1.000  & 0.615     & 0.762 \\
+ 3   & 2   & 2   & 1.000  & 1.000     & 1.000 \\
+ 3   & 2   & 3   & 0.953  & 1.000     & 0.975 \\
+ 3   & 3   & 1   & 0.984  & 0.612     & 0.754 \\
+ 3   & 3   & 2   & 0.984  & 1.000     & 0.992 \\
+ 3   & 3   & 3   & 0.938  & 1.000     & 0.967 \\
+\bottomrule
+\end{tabular}
+\caption{Performance of BUFIA-AR across complexity thresholds when $m =3$.}
+\label{tab:ar_grid}
+\end{table}
+
+\section{Discussion and Conclusion}
+We observe from the results that several factors influence learning
+outcomes in surface-based tonotactics.
+
+First, \citet{wilson2018accidental} show that for segmental
+phonotactics, learning tends to be more successful over
+feature-based representations than over segments. Our results
+in tonal phonology, however, do not show a consistent difference
+between featural and segmental representations. Under the BUFIA
+model, the two representations yield identical performance,
+while under MaxEnt the difference is marginal and inconsistent.
+One possible explanation is that string-based tonal representations
+are relatively simple, involving a much smaller inventory of tonal
+symbols (typically two to four tonemes and three to six
+features) compared with the richer feature systems used in
+segmental phonology.
+
+In contrast, ARs can be used effectively for learning and
+consistently outperform string-based representations.
+This advantage is particularly evident when compared with
+MaxEnt models without frequency, and the improved performance is
+marginal when compared with MaxEnt models trained with frequency.
+
+In addition, for gradient learners, frequency information in the
+dataset is crucial for achieving strong performance; however,
+this is not required for BUFIA, which achieves competitive
+results even without frequency information. Furthermore, for
+a dataset such as Hausa, which exhibits a relatively small
+set of surface tonal constraints, the optimal complexity
+threshold appears to lie between $k=3$ and $k=5$ for string
+representations, or under AR settings where $\mu \geq 3$
+and $t > 1$. We believe for more complex tonal systems, learners
+like BUFIA-AR are advantageous as they allow complexity to be
+controlled more finely across multiple tiers while searching the
+hypothesis space.
+
+We aim to draw attention to the use of computational methods
+for evaluating competing representational choices and theories
+%in linguistics. For example, one discussion concerns whether
+%different representations are genuinely distinct, or whether
+%they merely differ superficially but notationally equivalent
+\citep{oakdenNotationalEquivalenceTonal2020,danis2025logical}.
+Models such as BUFIA, which allow flexible representations,
+can serve as practical tools for facilitating such comparisons.
+More broadly, computational approaches also allow us to explore
+how grammar inference can be improved through interactions
+among representations, token or type data, complexity bounds,
+and evaluation criteria.
+
+
+In conclusion, we show that tonotactics can be learned
+effectively and efficiently over autosegmental representations
+using BUFIA-AR with sparse and limited data. The model
+achieves a comparable learning outcome to gradient models
+that rely heavily on distributional information.
+The results suggest that AR-based learning is a promising
+direction for modeling tonal grammars and tonal processes,
+where phonological changes often involve modifications of
+associations between tiers rather than individual symbols.
+
+This work remains limited in some respects, which motivate 
+future research. First, we conducted the experiments on a 
+small dataset with comparatively simple tonotactic patterns, 
+and therefore the performance across learners does not differ 
+greatly. Future work should evaluate these approaches on 
+larger-scale and more complex datasets. This would enable more 
+statistically meaningful comparisons and experiments on probabilistic 
+or neural phonotactic learners. Nonetheless, we hope that by 
+making non-linear representations available for learning, 
+it will become easier to investigate representational learning itself 
+or phonological transformations in the future.
+
+

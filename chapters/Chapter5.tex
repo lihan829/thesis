@@ -1,2 +1,270 @@
-\chapter{Tonal Processes} 
+\chapter{Tonal Processes}
 \label{chap:process}
+
+\section{Overview}
+\label{sec:process-overview}
+
+This chapter turns to tonal processes, that is, the mapping
+between the underlying forms (UR) and the surface forms (SRs). 
+In particular, I focus mainly on those processes that feature 
+associations lines changes, for it is these processes that 
+typically present the most challenges for learning. The goal of 
+this chapter is to demonstrate that these processes can be learned 
+using logical transductions.
+
+As Chapter~\ref{chap:tonotactics}\todo{fix the structure of prev chap}, 
+I will first present relevant linguistic data for three types of 
+associational changes: processes triggered by segmental changes, 
+processes triggered by tone quality changes, and tone-segment 
+interactions (\ref{sec:process-type}). I then formalize the learning 
+problem and present the logical transduction framework (\ref{sec:logi_trans}, some background on logical transductions is in 
+Chapter~\ref{chap:formal}). I then propose a learning algorithm and 
+demonstrate the learning process using three case studies.
+
+\section{Tonal Association Changes}
+\label{sec:process-type}
+In this section, I present three types of tonal processes that
+primarily involve changes in association lines. As shown in
+Table~\ref{tab:process-types}, these processes fall into three groups
+according to the source of the trigger: (i)~segmentally motivated
+changes, (ii)~changes motivated by tone quality, and
+(iii)~changes arising from tone--segment interaction. All three types
+reflect the autonomy of tones from their host TBUs: when a change 
+occurs on one tier, the associations between tiers are rearranged to
+accommodate the change. Type~(i) is triggered by a change on the TBU tier,
+type~(ii) by a change on the tone tier, and type~(iii) by the
+interaction of both tiers.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Tone reassociation processes classified by trigger.}
+  \label{tab:process-types}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabularx}{\textwidth}{@{} >{\RaggedRight}p{0.2\textwidth}
+                                  >{\RaggedRight}X
+                                  >{\RaggedRight}p{0.24\textwidth} @{}}
+    \toprule
+    Trigger & Description & Example \\
+    \midrule
+    Segment-driven
+      & reassociate to accommodate TBU deletion/insertion, or syllabic shape
+      & Etako, Engenni, Ogoja Yala \\ 
+    Tone-driven
+      & reassociate to accommodate a particular melody
+      & Spreading, OCP \\
+    Tone--TBU
+      & reassociate to accommodate a tone-TBU context
+      & Consonant depressors \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+As we progress, one can see that all three types of processes can be captured through a single association relation
+\(\alpha\) together with two sub-operations, \textsf{deassoc} and
+\textsf{reassoc}, modeled as logical transductions, and be learned by
+a BUFIA-styled algorithm as shown in Chapter\ref{chap:learning}. 
+There are indeed processes that the current learning fails to 
+capture yet, and I will discuss them in the section \todo{add 
+label}. 
+
+
+
+
+\subsection{Segmentally Motivated Changes}
+
+One significant consequence of ARs is it is able to capture
+the tonal stability. One common case is triggered by vowel 
+deletion, which is often accompanied by tonal changes. Here,
+I use vowel deletion as a remedy for vowel hiatus from three
+languages: Engenni, Estako, and Ogoja Yala. When in vowel
+hiatus, all three languages will delete the first vowel and
+keep the following vowel. However, the tonal behaviors are
+differ.
+
+\ex \textbf{Engenni} \label{ex:engenni}
+\begin{multicols}{2}
+\quad\ L\quad H\qquad\qquad H\\
+ /\` ɔkò \# édèì/ $\rightarrow$ [\` ɔkédèì] \\
+ \textit{man \ \ canoe} $\rightarrow$ \textit{``a man’s canoe"} \\
+ 
+ \quad\ \ H\quad L\qquad\qquad\ \ \ L\\
+/fùnú \# èdhí/ $\rightarrow$ [fùnèdhí] \\
+\textit{climb \ palm tree} $\rightarrow$ \textit{``to climb a palm tree"}
+\end{multicols}
+\xe
+
+In (\ref{ex:engenni}), Engenni deletes the first vowel in vowel hiatus. When the vowel is deleted, the tone of the deleted vowel is also deleted. The surviving vowel keeps its original tone. To represent this process autosegmentally, the only change regarding the association line change is a delinking between T$_1$ and V$_1$. The other association lines stay the same.
+The AR is shown in (\ref{ex:engenni-etsako}a).
+
+Another example is from Etsako (Example \ref{ex:etsako}), which also deletes the
+first vowel in the hiatus, but the tone of the deleted
+vowel will survive the deletion, and forms a new link 
+to the following vowel that survives. Since the surviving vowel also bears its original tone, the two
+tone will form a contour (following the original order) on the surviving vowel. 
+
+
+\ex \textbf{Etsako (contour formation):} 
+\label{ex:etsako}
+\vspace{-1em}
+\begin{multicols}{2}
+\quad\ \ L \ \ \ H\qquad\qquad LH\\
+/ówà \# ówà/ \ $\rightarrow$ [ówǒwà] \\
+\textit{house \ \ house} $\rightarrow$ \textit{``every house"}
+
+\qquad\ H \ \ \ L\qquad\qquad HL\\
+/\`ɔ \# dé \ \# àkpà/ $\rightarrow$ [\`ɔdâkpà] \\
+\textit{he \ \ buy \ \ cup}\quad$\rightarrow$ \textit{``he buys a cup"}
+\end{multicols}
+\xe
+
+
+Similar to Engenni, Estako also has a delink takes place between T$_1$ and V$_1$. However, the tone of the deleted vowel (T$_1$) will be reassociated to the surviving vowel (V$_2$). The AR is shown in (\ref{ex:engenni-etsako}b).
+
+
+\ex \label{ex:engenni-etsako}
+  a.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+      \node[tone] (t1) at (0,1) {T$_1$};
+      \node[tone] (t2) at (1,1) {T$_2$};
+      \node[seg]  (v1) at (0,0) {V$_1$};
+      \node[seg]  (v2) at (1,0) {V$_2$};
+      %%%% drawing
+      \draw[assoc] (t1)--(v1) node[midway] {$=$};
+      \draw[assoc] (t2)--(v2);
+      \node (arrow) at (2,0.5) {$\rightarrow$};
+      \node[tone] (t2o) at (3,1) {T$_2$};
+      \node[seg]  (v2o) at (3,0) {V$_2$};
+      \draw[assoc] (t2o)--(v2o);
+    \end{tikzpicture}
+  \hfill
+  b.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+      \node[tone] (t1) at (0,1) {T$_1$};
+      \node[tone] (t2) at (1,1) {T$_2$};
+      \node[seg]  (v1) at (0,0) {V$_1$};
+      \node[seg]  (v2) at (1,0) {V$_2$};
+      %%%% drawing
+      \draw[assoc] (t1)--(v1) node[midway] {$=$};
+      \draw[assoc] (t2)--(v2);
+      \draw[newline] (t1)--(v2);
+      \node (arrow) at (2,0.5) {$\rightarrow$};
+      \node[tone] (t1o) at (3,1) {T$_1$};
+      \node[tone] (t2o) at (4,1) {T$_2$};
+      \node[seg]  (v2o) at (3.5,0) {V$_2$};
+      \draw[assoc] (t1o)--(v2o);
+      \draw[assoc] (t2o)--(v2o);
+    \end{tikzpicture}
+  \hspace*{\fill}
+\xe
+
+The third case is from Ogoja Yala (Example \ref{ex:ogoja}), which 
+always deletes the first vowel in the hiatus. However, whether the 
+tone will be deleted or not depends on its pitch relative to its 
+neighbor tone: if it is higher than following tone, T$_1$ will replace the T$_2$; but if it is lower, it will be deleted along with the deleting vowel. In addition, Ogoja Yala also has a mid tone (M). If no H is present (i.e., only L and M), then M is preferred. 
+
+\ex Ogoja Yala
+\label{ex:ogoja}
+\begin{multicols}{3}
+\quad L\quad H\qquad\ \ \ \quad H\\
+/dè \# áchí/ $\rightarrow$ [dáchí]\\
+\textit{give \ grass} $\rightarrow$ \textit{``to give grass"}
+
+\quad H\quad L\qquad\ \ \ \quad H\\
+/má \# \` ɔchí/ $\rightarrow$ [m\' ɔchí]\\
+\vspace{1em}\textit{see \quad tree} $\rightarrow$ \textit{``to see tree"}
+
+\hspace{0.2cm}M \ \ L\qquad\ \ \quad M\\
+/b\=i \# \` ɔchí/ $\rightarrow$ [b\=ɔchí]\\
+\textit{carry  stick} $\rightarrow$ \textit{``to carry a stick"}
+\end{multicols}
+\xe
+
+The AR generalizations are shown in \ref{ex:ogoja-ar}. When T1 is L, it patterns with the Engenni case; when T1 is H, it patterns with the Etsako case. When T1 is M, the following tone determines the pattern.
+
+\ex\label{ex:ogoja-ar}
+  a.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+      \node[tone] (t1) at (0,1) {L};
+      \node[tone] (t2) at (1,1) {\{H, M\}};
+      \node[seg]  (v1) at (0,0) {V$_1$};
+      \node[seg]  (v2) at (1,0) {V$_2$};
+      %%%% drawing
+      \draw[assoc] (t1)--(v1) node[midway] {$=$};
+      \draw[assoc] (t2)--(v2);
+      \node (arrow) at (2,0.5) {$\rightarrow$};
+      \node[tone] (t2o) at (3,1) {\{H, M\}};
+      \node[seg]  (v2o) at (3,0) {V$_2$};
+      \draw[assoc] (t2o)--(v2o);
+    \end{tikzpicture}
+  \hfil
+  b.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+      \node[tone] (t1) at (0,1) {H};
+      \node[tone] (t2) at (1,1) {\{M,L\}};
+      \node[seg]  (v1) at (0,0) {V$_1$};
+      \node[seg]  (v2) at (1,0) {V$_2$};
+      %%%% drawing
+      \draw[assoc] (t1)--(v1) node[midway] {$=$};
+      \draw[assoc] (t2)--(v2) node[midway] {$=$};
+      \draw[newline] (t1)--(v2);
+      \node (arrow) at (2,0.5) {$\rightarrow$};
+      \node[tone] (t2o) at (3,1) {\{H, M\}};
+      \node[seg]  (v2o) at (3,0) {V$_2$};
+      \draw[assoc] (t2o)--(v2o);
+      \draw[assoc] (t1o)--(v2o);
+      \draw[assoc] (t2o)--(v2o);
+    \end{tikzpicture}
+
+
+    c.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+      \node[tone] (t1) at (0,1) {M};
+      \node[tone] (t2) at (1,1) {H};
+      \node[seg]  (v1) at (0,0) {V$_1$};
+      \node[seg]  (v2) at (1,0) {V$_2$};
+      %%%% drawing
+      \draw[assoc] (t1)--(v1) node[midway] {$=$};
+      \draw[assoc] (t2)--(v2);
+      \node (arrow) at (2,0.5) {$\rightarrow$};
+      \node[tone] (t2o) at (3,1) {H};
+      \node[seg]  (v2o) at (3,0) {V$_2$};
+      \draw[assoc] (t2o)--(v2o);
+    \end{tikzpicture}
+    \hfil
+    d.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+      \node[tone] (t1) at (0,1) {M};
+      \node[tone] (t2) at (1,1) {L};
+      \node[seg]  (v1) at (0,0) {V$_1$};
+      \node[seg]  (v2) at (1,0) {V$_2$};
+      %%%% drawing
+      \draw[assoc] (t1)--(v1) node[midway] {$=$};
+      \draw[assoc] (t2)--(v2) node[midway] {$=$};
+      \draw[newline] (t1)--(v2);
+      \node (arrow) at (2,0.5) {$\rightarrow$};
+      \node[tone] (t2o) at (3,1) {M};
+      \node[seg]  (v2o) at (3,0) {V$_2$};
+      \draw[assoc] (t2o)--(v2o);
+      \draw[assoc] (t1o)--(v2o);
+      \draw[assoc] (t2o)--(v2o);
+    \end{tikzpicture}
+    \hfil
+  
+\xe
+
+
+
+\subsection{Tone-driven changes}
+\subsection{Tone--segment interaction}
+
+
+\section{Learning association changes using logical transductions}
+As mentioned above, the three types under discussion can be captured through a single association relation
+\(\alpha\) together with two sub-operations, \textsf{deassoc} and
+\textsf{reassoc}, modeled as logical transductions. These
+transductions are grounded in model-theoretic representations of
+phonological structures, where logical formulas define the mapping
+from input to output representations.
+\section{The Learning Problem}
+
+\section{The Learning Algorithm}
+
+\section{Case Studies}
+
+\section{Discussion}
+
+\section{Conclusion}

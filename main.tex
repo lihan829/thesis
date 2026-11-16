@@ -26,6 +26,22 @@
 % --------------------------------------------------
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows.meta, calc}
+\tikzset{
+  tone/.style={circle,  line width=0.5pt, minimum size=7mm,
+               inner sep=0pt, font=\small},
+  seg/.style={circle, line width=0.5pt, minimum size=7mm,
+               inner sep=0pt, font=\small},
+  % gone/.style={text=silver},                             % unlicensed node
+  assoc/.style={line width=1pt},                       % plain line
+  assocl/.style={assoc, postaction={decorate, decoration={markings,
+     mark=at position 0.5 with {\node[font=\tiny, fill=white, inner sep=0.5pt] {$\alpha$};}}}},
+  cut/.style={line width=0.6pt, silver},                 % removed line
+  newline/.style={line width=1pt, red!75, dashed},       % added line
+  % cutmark/.style={midway, text=body, red!75, font=\small},
+  succ/.style={-{Stealth[length=1.4mm]}, line width=0.4pt, subtle, dashed}, % successor
+  tbu/.style={inner sep=1pt, font=\small},
+}
+
 
 % ---------- References ----------
 \usepackage[authoryear]{natbib}
@@ -33,7 +49,7 @@
 % ---------- Formatting ----------
 % \usepackage{parskip}
 \usepackage{enumitem}
-\usepackage{booktabs}
+\usepackage{booktabs,ragged2e}
 % ---------- Hyperlinks ----------
 \usepackage[
     colorlinks=true,
@@ -60,6 +76,10 @@
 \usepackage[table]{xcolor}
 \usepackage{bm}
 \usepackage{makecell}
+
+
+
+
 \begin{document}
 
 \tableofcontents
@@ -67,9 +87,8 @@
 \include{chapters/Chapter1}
 \include{chapters/Chapter2}
 \include{chapters/Chapter3}
-
-% \include{chapters/Chapter4}
-% \include{chapters/Chapter5}
+\include{chapters/Chapter4}
+\include{chapters/Chapter5}
 % \include{chapters/Chapter6}
 % \include{Chapter7}
 \bibliographystyle{apalike}
