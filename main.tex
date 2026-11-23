@@ -1,97 +1,101 @@
 \documentclass[12pt]{scrbook}
 
+% ---------- Page layout & fonts ----------
 \usepackage[margin=1in]{geometry}
 \usepackage{setspace}
 \onehalfspacing
-
 \usepackage{libertine}
 
 % ---------- Math ----------
-\usepackage{amsmath,amsthm, amssymb}
-% \usepackage{xcolor}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm}
 
-% ---------- Graphics & Tables ----------
+% ---------- Colour (before tikz so [table] applies) ----------
+\usepackage[table]{xcolor}
+
+% ---------- Graphics & tables ----------
 \usepackage{graphicx}
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{ragged2e}
+\usepackage{subcaption}
 
 % ---------- Linguistics ----------
 \usepackage{expex}
 \usepackage[tone]{tipa}
+\usepackage{phonrule}
 
-% \usepackage{libertine}
-% Drawing
-% --------------------------------------------------
+% ---------- Drawing ----------
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta, calc}
+\usetikzlibrary{arrows, arrows.meta, automata, calc, decorations.markings,
+	matrix, positioning, tikzmark}
+
+\colorlet{silver}{black!35}   % used by the cut style
+\colorlet{subtle}{black!55}   % used by the succ style
+
 \tikzset{
-  tone/.style={circle,  line width=0.5pt, minimum size=7mm,
-               inner sep=0pt, font=\small},
-  seg/.style={circle, line width=0.5pt, minimum size=7mm,
-               inner sep=0pt, font=\small},
-  % gone/.style={text=silver},                             % unlicensed node
-  assoc/.style={line width=1pt},                       % plain line
-  assocl/.style={assoc, postaction={decorate, decoration={markings,
-     mark=at position 0.5 with {\node[font=\tiny, fill=white, inner sep=0.5pt] {$\alpha$};}}}},
-  cut/.style={line width=0.6pt, silver},                 % removed line
-  newline/.style={line width=1pt, red!75, dashed},       % added line
-  % cutmark/.style={midway, text=body, red!75, font=\small},
-  succ/.style={-{Stealth[length=1.4mm]}, line width=0.4pt, subtle, dashed}, % successor
-  tbu/.style={inner sep=1pt, font=\small},
+	tone/.style    = {circle, line width=0.5pt, minimum size=7mm,
+		inner sep=0pt, font=\small},
+	seg/.style     = {circle, line width=0.5pt, minimum size=7mm,
+		inner sep=0pt, font=\small},
+	tbu/.style     = {inner sep=1pt, font=\small},
+	assoc/.style   = {line width=1pt},                    % plain line
+	assocl/.style  = {assoc, postaction={decorate, decoration={markings,
+				mark=at position 0.5 with
+				{\node[font=\tiny, fill=white, inner sep=0.5pt] {$\alpha$};}}}},
+	cut/.style     = {line width=0.6pt, silver},          % removed line
+	newline/.style = {line width=1pt, red!75, dashed},    % added line
+	succ/.style    = {-{Stealth[length=1.4mm]}, line width=0.4pt,
+		subtle, dashed},                    % successor
+	% gone/.style   = {text=silver},                     % unlicensed node
+	% cutmark/.style= {midway, text=body, red!75, font=\small},
 }
 
+% ---------- Lists ----------
+\usepackage{enumitem}
+% \usepackage{parskip}
+
+% ---------- Algorithms ----------
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 % ---------- References ----------
 \usepackage[authoryear]{natbib}
+\usepackage{quotchap}
 
-% ---------- Formatting ----------
-% \usepackage{parskip}
-\usepackage{enumitem}
-\usepackage{booktabs,ragged2e}
-% ---------- Hyperlinks ----------
+% ---------- Hyperlinks (load last) ----------
 \usepackage[
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    urlcolor=blue
+colorlinks=true,
+linkcolor=blue,
+citecolor=blue,
+urlcolor=blue
 ]{hyperref}
-\usepackage{tikz}
+
 % ---------- Theorems ----------
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{definition}{Definition}[chapter]
 \newtheorem{example}{Example}[chapter]
+
+% ---------- Custom commands ----------
 \newcommand{\tocite}[1]{\textbf{\textcolor{red}{[CITE: #1]}}}
 \newcommand{\todo}[1]{\textbf{\textcolor{red}{[#1]}}}
 \newcommand{\kuo}[1]{(\ref{#1})}
-\usepackage{phonrule}
-\usepackage{booktabs}
-\usepackage{tikz}
-\usetikzlibrary{arrows, arrows.meta, positioning, matrix, tikzmark,calc, automata}
-\usepackage{subcaption}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\algrenewcommand\algorithmiccomment[1]{\hfill{\footnotesize\textit{// #1}}}
-\usepackage[table]{xcolor}
-\usepackage{bm}
-\usepackage{makecell}
-
-
-
 
 \begin{document}
-
-\tableofcontents
- 
-\include{chapters/Chapter1}
-\include{chapters/Chapter2}
-\include{chapters/Chapter3}
-\include{chapters/Chapter4}
-\include{chapters/Chapter5}
-% \include{chapters/Chapter6}
-% \include{Chapter7}
+	
+	\tableofcontents
+	
+	 \include{chapters/Chapter1}
+	 \include{chapters/Chapter2}
+	 \include{chapters/Chapter3}
+	 \include{chapters/Chapter4}
+	\include{chapters/Chapter5}
+	% \include{chapters/Chapter6}
+	%
+\bibliography{references.bib}
 \bibliographystyle{apalike}
-\bibliography{references}
-
 \end{document}

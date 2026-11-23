@@ -4,267 +4,1415 @@
 \section{Overview}
 \label{sec:process-overview}
 
-This chapter turns to tonal processes, that is, the mapping
-between the underlying forms (UR) and the surface forms (SRs). 
-In particular, I focus mainly on those processes that feature 
-associations lines changes, for it is these processes that 
-typically present the most challenges for learning. The goal of 
-this chapter is to demonstrate that these processes can be learned 
-using logical transductions.
+This chapter turns to tonal processes, that is, the mapping between the
+underlying forms (UR) and the surface forms (SRs). In particular, I
+focus mainly on those processes that feature associations lines changes,
+for it is these processes that typically present the most challenges for
+learning. The goal of this chapter is to demonstrate that these
+processes can be learned using logical transduction.
 
-As Chapter~\ref{chap:tonotactics}\todo{fix the structure of prev chap}, 
-I will first present relevant linguistic data for three types of 
-associational changes: processes triggered by segmental changes, 
-processes triggered by tone quality changes, and tone-segment 
-interactions (\ref{sec:process-type}). I then formalize the learning 
-problem and present the logical transduction framework (\ref{sec:logi_trans}, some background on logical transductions is in 
-Chapter~\ref{chap:formal}). I then propose a learning algorithm and 
-demonstrate the learning process using three case studies.
+In this Chapter, Section \ref{sec:process-type} first presents three 
+types of tonal processes that involve association line changes. Section
+\ref{sec:tonal.trans} formalizes the problem and present the logical 
+transduction framework, based on some background in Chapter~\ref{chap:formal}). 
+I then propose a learning algorithm and demonstrate the learning process 
+using three case studies.
 
-\section{Tonal Association Changes}
+\section{Tonal Processes: Spreading and Contour}
 \label{sec:process-type}
-In this section, I present three types of tonal processes that
-primarily involve changes in association lines. As shown in
-Table~\ref{tab:process-types}, these processes fall into three groups
-according to the source of the trigger: (i)~segmentally motivated
-changes, (ii)~changes motivated by tone quality, and
-(iii)~changes arising from tone--segment interaction. All three types
-reflect the autonomy of tones from their host TBUs: when a change 
-occurs on one tier, the associations between tiers are rearranged to
-accommodate the change. Type~(i) is triggered by a change on the TBU tier,
-type~(ii) by a change on the tone tier, and type~(iii) by the
-interaction of both tiers.
+There are various typologies of tonal processes. 
+\citet{HymanSchuh1974} observe the patterns in West African tone systems
+and point out that tone spreading and contour simplification are the two
+most common processes. \citet{Hyman2007}\todo{and hyman 1975} distinguishes
+two tone rule typology: phonetic rules (phonetically grounded, or ``natural diachronic) 
+and morphophonemic rules (non-phonetically grounded, natural synchronic). 
 
+\citet{schuh1978tone} points out 
+
+\begin{quote}
+\textit{the major division here is between rules 
+which change the segmental domain of a given tone versus those were a tone within a particular
+segmental domain is changed.}
+\end{quote}
+
+
+This section I draw on \citet{schuh1978tone} and present 
+three types of tonal processes which I call segment-driven
+processes, tone-driven processes, and segment-tone interaction. As shown in
+Table~\ref{tab:process-types}, the segment-driven processes corresponds to those \citet{schuh1978tone} describes the domain of a tone changes; the tone-driven proceses describes
+the rules where the tone of a certain domain changes; and
+there I add another type where was also discussed in details
+in \citet{schuh1978tone}: tone-segmental interaction processes.
+
+\todo{fix this table later}
 \begin{table}[htbp]
-  \centering
-  \caption{Tone reassociation processes classified by trigger.}
-  \label{tab:process-types}
-  \renewcommand{\arraystretch}{1.2}
-  \begin{tabularx}{\textwidth}{@{} >{\RaggedRight}p{0.2\textwidth}
-                                  >{\RaggedRight}X
-                                  >{\RaggedRight}p{0.24\textwidth} @{}}
-    \toprule
-    Trigger & Description & Example \\
-    \midrule
-    Segment-driven
-      & reassociate to accommodate TBU deletion/insertion, or syllabic shape
-      & Etako, Engenni, Ogoja Yala \\ 
-    Tone-driven
-      & reassociate to accommodate a particular melody
-      & Spreading, OCP \\
-    Tone--TBU
-      & reassociate to accommodate a tone-TBU context
-      & Consonant depressors \\
-    \bottomrule
-  \end{tabularx}
+	\centering
+	\caption{Tone reassociation processes classified by trigger.}
+	\label{tab:process-types}
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabularx}{\textwidth}{@{} >{\RaggedRight}p{0.2\textwidth}
+			>{\RaggedRight}X
+			>{\RaggedRight}p{0.24\textwidth} @{}}
+		\toprule
+		Trigger & Description & Example \\
+		\midrule
+		Segment-driven
+		& processes triggered by the change of tonal or melodic domain, 
+		& spreading, mapping \\
+		Tone-driven
+		& processes triggered by the a given tone quality within a domain,
+		reassociate to accommodate a particular melody
+		& assimilation, polarization, simplification \\
+		Tone--TBU
+		& reassociate to accommodate a tone-TBU context
+		& Consonant depressors \\
+		\bottomrule
+	\end{tabularx}
 \end{table}
 
-As we progress, one can see that all three types of processes can be captured through a single association relation
-\(\alpha\) together with two sub-operations, \textsf{deassoc} and
-\textsf{reassoc}, modeled as logical transductions, and be learned by
-a BUFIA-styled algorithm as shown in Chapter\ref{chap:learning}. 
-There are indeed processes that the current learning fails to 
-capture yet, and I will discuss them in the section \todo{add 
-label}. 
+As we progress, one can see that all three types of processes can be
+captured through a single association relation \(\alpha\) together with
+two sub-operations, \textsf{deassoc} and \textsf{reassoc}, modeled as
+logical transductions, and be learned by a BUFIA-styled algorithm as
+shown in Chapter~\ref{chap:learning}. There are indeed processes that
+the current learning fails to capture yet, and I will discuss them in
+the section \todo{add label}.
+
+\subsection{Change of Domain: Spreading}
+
+Tonal spreading is considered to be the most basic process \citep{hyman1974universals,Hyman2007}, and there are
+at least two ways to talk about spreading: complete vs
+partial and bounded vs unbounded. 
+
+\subsubsection{Partial vs Complete Spreading}
+
+Processes with partial spreading are when the spreading tone forms 
+a contour with the following tone. As the examples in (\ref{ex:nupe-spreading}) and (\ref{ex:gwari-spreading}), the H tone in the initial syllable
+spreads to the following syllable, and forms a contour with the 
+original tone. In Gwari (\ref{ex:gwari-spreading}), L spreads 
+rightward onto a TBU that already bears H. The target retains its
+original H, so the two tones form a rising LH contour, which 
+demonstrates a partial spreading. The same patterns applies to Nupe,
+unless the consonant the spreading tone crosses is voiceless.
+
+
+\ex \textbf{Nupe (Schuh 1973 \todo{og. George 1970})} \label{ex:nupe-spreading}\\
+\begin{tabular}{@{}lcll@{}}
+	/èbé/ & $\rightarrow$ & [èbě] & `pumpkin' \\
+	/èlé/ & $\rightarrow$ & [èlě] & `past' \\
+	/èfú/ & $\rightarrow$ & [èfú] & `honey'
+\end{tabular}
+\xe
+
+\ex \textbf{Gwari (Schuh 1973)} \label{ex:gwari-spreading}\\
+\begin{tabular}{@{}lcll@{}}
+	/òšá/ & $\rightarrow$ & [òšǎ] & `throat' \\
+	/òjé/ & $\rightarrow$ & [òjě] & `cloth'
+\end{tabular}
+\xe
+
+In complete spreading, the spreading tone retains its association
+with its original TBU and associates with the target TBU, whose
+original tone delinks. The Vai example in (\ref{ex:vai-spreading})
+illustrates this pattern. The initial L of /mùsú/ spreads onto the
+second TBU, replacing its H. When the target TBU is toneless, the
+spreading tone simply associates with it without any delinking.
+\ex \textbf{Vai (Welmers 1976)} \label{ex:vai-spreading}\\
+/mùsú\ máánì/ $\rightarrow$ [mùsù\ máánì]
+\xe
+
+\ex \textbf{Bemba} \label{ex:bemba-spreading}\\
+\begin{tabular}{@{}lcll@{}}
+	/bá-ka-fik-a/ & $\rightarrow$ & [bá-ká-fik-a] & `they will arrive' \\
+	/bá-ka-bik-a/ & $\rightarrow$ & [bá-ká-bik-a] & `they will sew'
+\end{tabular}
+\xe
+
+Autosegmentally, the above processes can be formalized as Figure~\ref{ex:spreading-ar}. It can be seen clearly that spreading
+features at least adding a new line, as in the case of partial spreading
+(\ref{ex:spreading-ar}a) and spreading to a toneless TBU (\ref{ex:spreading-ar}c). The complete spreading further involves 
+delinking following tone and its original host. 
+
+\ex \label{ex:spreading-ar}
+\begin{minipage}[t]{0.22\linewidth}
+	\centering
+a. Partial spreading\par\smallskip
+	\begin{tikzpicture}[scale=1.2]
+		\node[tone] (t1) at (0,1) {T$_1$};
+		\node[tone] (t2) at (1,1) {T$_2$};
+		\node[seg]  (v1) at (0,0) {$\mu$};
+		\node[seg]  (v2) at (1,0) {$\mu$};
+		
+		\draw[assoc] (t1) -- (v1);
+		\draw[assoc] (t2) -- (v2);
+		\draw[newline] (t1) -- (v2);
+	\end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}[t]{0.3\linewidth}
+	\centering
+b. Complete spreading\par\smallskip
+	\begin{tikzpicture}[scale=1.2]
+		\node[tone] (t1) at (0,1) {T$_1$};
+		\node[tone] (t2) at (1,1) {T$_2$};
+		\node[seg]  (v1) at (0,0) {$\mu$};
+		\node[seg]  (v2) at (1,0) {$\mu$};
+		
+		\draw[assoc] (t1) -- (v1);
+		\draw[newline] (t1) -- (v2);
+		\draw[assoc] (t2) -- (v2)
+		node[midway, fill=white, inner sep=0.5pt] {$=$};
+	\end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}[t]{0.3\linewidth}
+	\centering
+c. Spreading to toneless \par\smallskip
+	\begin{tikzpicture}[scale=1.2]
+		\node[tone] (t1) at (0,1) {T$_1$};
+		\node[seg]  (v1) at (0,0) {$\mu$};
+		\node[seg]  (v2) at (1,0) {$\mu$};
+		
+		\draw[assoc] (t1) -- (v1);
+		\draw[newline] (t1) -- (v2);
+	\end{tikzpicture}
+\end{minipage}
+\xe
+
+\subsubsection{Unbounded spreading}
+
+The three preceding examples illustrate bounded spreading, in which a
+tone can extend only a fixed number of TBUs beyond
+its source. In an unbounded process, there is no fixed limit on the
+distance between the source and the target. The target can instead be
+defined by its position relative to the edge of a prosodic domain.
+
+The Nguni infinitives in (\ref{ex:nguni-unbounded}) illustrate this
+distinction. In these forms, the rightmost surface H falls on the
+antepenultimate syllable, while its distance from the initial preprefix
+increases with stem length (Downing 1990 \todo{add}). In Zulu, for example,
+H surfaces on the infinitival prefix in \emph{u-kú-bala}, on the first
+syllable of the stem in \emph{u-ku-hlékisa}, and on the second syllable
+of the stem in \emph{u-ku-hlabélela}.
+
+\ex \textbf{H tone shift in Zulu} (Downing 1990, ex.~3)
+
+\begin{tabular}{@{}lll@{}}
+(a) & u-kú-bala            & `to count' \\
+(b) & u-kú-hleka           & `to laugh' \\
+(c) & u-ku-hlékisa         & `to amuse' \\
+(d) & u-ku-hlabélela       & `to sing' \\
+(e) & u-ku-hlekísana       & `to amuse each other' \\
+(f) & u-ku-namathélisa     & `to make stick' \\[0.4em]
+\end{tabular}
+\xe
+
+\ex \textbf{H tone spreading in Ndebele} (Sibanda 2004)
+
+\begin{tabular}{@{}lll@{}}
+	(a) & ú-kú-lima	& `to cultivate'	\\
+	(b) & ú-kú-líma-is-a	           & `to cause to cultivate' \\
+	(c) & ú-kú-líma-ís-el-a	           & `to cause to cultivate for' \\
+\end{tabular}
+\xe
+ 
+\ex \textbf{Unbounded H tone spreading in Luganda} (Jardine 2016 \todo{find OG source})
+
+\begin{tabular}{@{}lllll@{}}
+	(a) & mu-tém-a+bi-sikí	&$\rightarrow$& mu-tém-á+bí-síkî \todo{why the F} & `log-chopper'	\\
+	(b) & mu-tund-a+bi-kópo	&$\rightarrow$& mu-tund-a+bi-kópo	           & `cup-seller' \\
+
+\end{tabular}
+\xe
+
+
+\ex \label{ex:spreading-ar}
+\begin{minipage}[t]{0.5\linewidth}
+	\centering
+	a. Unbounded antepenultimate spreading\par\smallskip
+	\begin{tikzpicture}[scale=1.2]
+		\node[tone] (t1) at (0,1.5) {T$_1$};
+%		\node[tone] (t2) at (1,1) {T$_2$};
+		\node[seg]  (v1) at (0,0) {$\mu$};
+		\node[seg]  (dots) at (0.5,0) {...};
+		\node[seg]  (v2) at (1.5,0) {$\mu_{n-1}$};
+		\node[seg]  (v3) at (2.5,0) {$\mu_{n}$};
+		
+		\draw[assoc] (t1.south) -- (v1);
+		\draw[newline] (t1.south) -- (dots);
+		\draw[newline] (t1.south) -- (v2);
+	\end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}[t]{0.5\linewidth}
+	\centering
+	b. Unbounded antepenultimate shift\par\smallskip
+\begin{tikzpicture}[scale=1.2]
+	\node[tone] (t1) at (0,1.5) {T$_1$};
+	%		\node[tone] (t2) at (1,1) {T$_2$};
+	\node[seg]  (v1) at (0,0) {$\mu$};
+	\node[seg]  (dots) at (0.5,0) {...};
+	\node[seg]  (v2) at (1.5,0) {$\mu_{n-1}$};
+	\node[seg]  (v3) at (2.5,0) {$\mu_{n}$};
+	
+	\draw[assoc] (t1.south) -- (v1) node[midway]{=};
+%	\draw[newline] (t1.south) -- (dots);
+	\draw[newline] (t1.south) -- (v2);
+\end{tikzpicture}
+\end{minipage}\hfill%
+\xe
 
 
 
+\ex \label{ex:spreading-ar}
+Unbounded circumambivalent spreading\par\smallskip
+	\begin{tikzpicture}[scale=1.2]
+		\node[tone] (t1) at (0,1.5) {T$_1$};
+		\node[tone] (t2) at (1.25,1.5) {T$_2$};
+		\node[tone] (tn) at (2.5,1.5) {T$_1$};
+		\node[seg]  (v1) at (0,0) {$\mu$};
+		\node[seg]  (dots) at (1.25,0) {...};
+%		\node[seg]  (v2) at (1.5,0) {$\mu_{n-1}$};
+		\node[seg]  (v3) at (2.5,0) {$\mu_{n}$};
+		
+		\draw[assoc] (t1.south) -- (v1);
+		\draw[assoc] (t2.south) -- (dots) node[midway]{=};
+		\draw[newline] (t1.south) -- (dots);
+		\draw[assoc] (tn.south) -- (v3);
+	\end{tikzpicture}
+\xe
 
-\subsection{Segmentally Motivated Changes}
-
-One significant consequence of ARs is it is able to capture
-the tonal stability. One common case is triggered by vowel 
-deletion, which is often accompanied by tonal changes. Here,
-I use vowel deletion as a remedy for vowel hiatus from three
-languages: Engenni, Estako, and Ogoja Yala. When in vowel
-hiatus, all three languages will delete the first vowel and
-keep the following vowel. However, the tonal behaviors are
-differ.
+\subsection{Change of Tone: Contour}
+One significant consequence of ARs is it is able to capture the tonal
+stability. One common case is triggered by vowel deletion, which is
+often accompanied by tonal changes. Here, I use vowel deletion as a
+remedy for vowel hiatus from three languages: Engenni, Etsako, and Ogoja
+Yala. When in vowel hiatus, all three languages will delete the first
+vowel and keep the following vowel. However, the tonal behaviors differ.
 
 \ex \textbf{Engenni} \label{ex:engenni}
 \begin{multicols}{2}
 \quad\ L\quad H\qquad\qquad H\\
- /\` ɔkò \# édèì/ $\rightarrow$ [\` ɔkédèì] \\
- \textit{man \ \ canoe} $\rightarrow$ \textit{``a man’s canoe"} \\
- 
- \quad\ \ H\quad L\qquad\qquad\ \ \ L\\
-/fùnú \# èdhí/ $\rightarrow$ [fùnèdhí] \\
-\textit{climb \ palm tree} $\rightarrow$ \textit{``to climb a palm tree"}
+	/\` ɔkò \# édèì/ $\rightarrow$ [\` ɔkédèì] \\
+	\textit{man \ \ canoe} $\rightarrow$ \textit{``a man’s canoe''} \\
+	
+	\quad\ \ H\quad L\qquad\qquad\ \ \ L\\
+	/fùnú \# èdhí/ $\rightarrow$ [fùnèdhí] \\
+	\textit{climb \ palm tree} $\rightarrow$ \textit{``to climb a palm tree''}
 \end{multicols}
 \xe
 
-In (\ref{ex:engenni}), Engenni deletes the first vowel in vowel hiatus. When the vowel is deleted, the tone of the deleted vowel is also deleted. The surviving vowel keeps its original tone. To represent this process autosegmentally, the only change regarding the association line change is a delinking between T$_1$ and V$_1$. The other association lines stay the same.
-The AR is shown in (\ref{ex:engenni-etsako}a).
+In (\ref{ex:engenni}), Engenni deletes the first vowel in vowel hiatus.
+When the vowel is deleted, the tone of the deleted vowel is also
+deleted. The surviving vowel keeps its original tone. To represent this
+process autosegmentally, the only change regarding the association line
+change is a delinking between T$_1$ and V$_1$. The other association
+lines stay the same. The AR is shown in (\ref{ex:engenni-etsako}a).
+Another example is from Etsako (Example~\ref{ex:etsako}), which also
+deletes the first vowel in the hiatus, but the tone of the deleted vowel
+will survive the deletion, and forms a new link to the following vowel
+that survives. Since the surviving vowel also bears its original tone,
+the two tone will form a contour (following the original order) on the
+surviving vowel.
 
-Another example is from Etsako (Example \ref{ex:etsako}), which also deletes the
-first vowel in the hiatus, but the tone of the deleted
-vowel will survive the deletion, and forms a new link 
-to the following vowel that survives. Since the surviving vowel also bears its original tone, the two
-tone will form a contour (following the original order) on the surviving vowel. 
-
-
-\ex \textbf{Etsako (contour formation):} 
+\ex \textbf{Etsako (contour formation):}
 \label{ex:etsako}
 \vspace{-1em}
 \begin{multicols}{2}
-\quad\ \ L \ \ \ H\qquad\qquad LH\\
-/ówà \# ówà/ \ $\rightarrow$ [ówǒwà] \\
-\textit{house \ \ house} $\rightarrow$ \textit{``every house"}
-
-\qquad\ H \ \ \ L\qquad\qquad HL\\
-/\`ɔ \# dé \ \# àkpà/ $\rightarrow$ [\`ɔdâkpà] \\
-\textit{he \ \ buy \ \ cup}\quad$\rightarrow$ \textit{``he buys a cup"}
+	\quad\ \ L \ \ \ H\qquad\qquad LH\\
+	/ówà \# ówà/ \ $\rightarrow$ [ówǒwà] \\
+	\textit{house \ \ house} $\rightarrow$ \textit{``every house''}
+	
+	\qquad\ H \ \ \ L\qquad\qquad HL\\
+	/\`ɔ \# dé \ \# àkpà/ $\rightarrow$ [\`ɔdâkpà] \\
+	\textit{he \ \ buy \ \ cup}\quad$\rightarrow$ \textit{``he buys a cup''}
 \end{multicols}
 \xe
 
-
-Similar to Engenni, Estako also has a delink takes place between T$_1$ and V$_1$. However, the tone of the deleted vowel (T$_1$) will be reassociated to the surviving vowel (V$_2$). The AR is shown in (\ref{ex:engenni-etsako}b).
-
+Similar to Engenni, Etsako also has a delink takes place between T$_1$
+and V$_1$. However, the tone of the deleted vowel (T$_1$) will be
+reassociated to the surviving vowel (V$_2$). The AR is shown in
+(\ref{ex:engenni-etsako}b).
 
 \ex \label{ex:engenni-etsako}
-  a.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
-      \node[tone] (t1) at (0,1) {T$_1$};
-      \node[tone] (t2) at (1,1) {T$_2$};
-      \node[seg]  (v1) at (0,0) {V$_1$};
-      \node[seg]  (v2) at (1,0) {V$_2$};
-      %%%% drawing
-      \draw[assoc] (t1)--(v1) node[midway] {$=$};
-      \draw[assoc] (t2)--(v2);
-      \node (arrow) at (2,0.5) {$\rightarrow$};
-      \node[tone] (t2o) at (3,1) {T$_2$};
-      \node[seg]  (v2o) at (3,0) {V$_2$};
-      \draw[assoc] (t2o)--(v2o);
-    \end{tikzpicture}
-  \hfill
-  b.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
-      \node[tone] (t1) at (0,1) {T$_1$};
-      \node[tone] (t2) at (1,1) {T$_2$};
-      \node[seg]  (v1) at (0,0) {V$_1$};
-      \node[seg]  (v2) at (1,0) {V$_2$};
-      %%%% drawing
-      \draw[assoc] (t1)--(v1) node[midway] {$=$};
-      \draw[assoc] (t2)--(v2);
-      \draw[newline] (t1)--(v2);
-      \node (arrow) at (2,0.5) {$\rightarrow$};
-      \node[tone] (t1o) at (3,1) {T$_1$};
-      \node[tone] (t2o) at (4,1) {T$_2$};
-      \node[seg]  (v2o) at (3.5,0) {V$_2$};
-      \draw[assoc] (t1o)--(v2o);
-      \draw[assoc] (t2o)--(v2o);
-    \end{tikzpicture}
-  \hspace*{\fill}
+a.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+	\node[tone] (t1) at (0,1) {T$_1$};
+	\node[tone] (t2) at (1,1) {T$_2$};
+	\node[seg]  (v1) at (0,0) {V$_1$};
+	\node[seg]  (v2) at (1,0) {V$_2$};
+	%%%% drawing
+	\draw[assoc] (t1)--(v1) node[midway] {$=$};
+	\draw[assoc] (t2)--(v2);
+	\node (arrow) at (2,0.5) {$\rightarrow$};
+	\node[tone] (t2o) at (3,1) {T$_2$};
+	\node[seg]  (v2o) at (3,0) {V$_2$};
+	\draw[assoc] (t2o)--(v2o);
+\end{tikzpicture}
+\hfill
+b.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+	\node[tone] (t1) at (0,1) {T$_1$};
+	\node[tone] (t2) at (1,1) {T$_2$};
+	\node[seg]  (v1) at (0,0) {V$_1$};
+	\node[seg]  (v2) at (1,0) {V$_2$};
+	%%%% drawing
+	\draw[assoc] (t1)--(v1) node[midway] {$=$};
+	\draw[assoc] (t2)--(v2);
+	\draw[newline] (t1)--(v2);
+	\node (arrow) at (2,0.5) {$\rightarrow$};
+	\node[tone] (t1o) at (3,1) {T$_1$};
+	\node[tone] (t2o) at (4,1) {T$_2$};
+	\node[seg]  (v2o) at (3.5,0) {V$_2$};
+	\draw[assoc] (t1o)--(v2o);
+	\draw[assoc] (t2o)--(v2o);
+\end{tikzpicture}
+\hspace*{\fill}
 \xe
 
-The third case is from Ogoja Yala (Example \ref{ex:ogoja}), which 
-always deletes the first vowel in the hiatus. However, whether the 
-tone will be deleted or not depends on its pitch relative to its 
-neighbor tone: if it is higher than following tone, T$_1$ will replace the T$_2$; but if it is lower, it will be deleted along with the deleting vowel. In addition, Ogoja Yala also has a mid tone (M). If no H is present (i.e., only L and M), then M is preferred. 
+The third case is from Ogoja Yala (Example~\ref{ex:ogoja}), which always
+deletes the first vowel in the hiatus. However, whether the tone will be
+deleted or not depends on its pitch relative to its neighbor tone: if it
+is higher than following tone, T$_1$ will replace the T$_2$; but if it
+is lower, it will be deleted along with the deleting vowel. In addition,
+Ogoja Yala also has a mid tone (M). If no H is present (i.e., only L and
+M), then M is preferred.
 
 \ex Ogoja Yala
 \label{ex:ogoja}
-\begin{multicols}{3}
-\quad L\quad H\qquad\ \ \ \quad H\\
-/dè \# áchí/ $\rightarrow$ [dáchí]\\
-\textit{give \ grass} $\rightarrow$ \textit{``to give grass"}
+\
+/dè \# áchí/ $\rightarrow$ [dáchí] \vspace{3em} \textit{give \ grass} $\rightarrow$ \textit{``to give grass''}\\
+/má \# \` ɔchí/ $\rightarrow$ [m\' ɔchí] \vspace{3em}\textit{see \quad tree} $\rightarrow$ \textit{``to see tree''}\\
+/b\=i \# \` ɔchí/ $\rightarrow$ [b\=ɔchí] \vspace{3em} \textit{carry  stick} $\rightarrow$ \textit{``to carry a stick''}\\
 
-\quad H\quad L\qquad\ \ \ \quad H\\
-/má \# \` ɔchí/ $\rightarrow$ [m\' ɔchí]\\
-\vspace{1em}\textit{see \quad tree} $\rightarrow$ \textit{``to see tree"}
-
-\hspace{0.2cm}M \ \ L\qquad\ \ \quad M\\
-/b\=i \# \` ɔchí/ $\rightarrow$ [b\=ɔchí]\\
-\textit{carry  stick} $\rightarrow$ \textit{``to carry a stick"}
-\end{multicols}
 \xe
 
-The AR generalizations are shown in \ref{ex:ogoja-ar}. When T1 is L, it patterns with the Engenni case; when T1 is H, it patterns with the Etsako case. When T1 is M, the following tone determines the pattern.
+The AR generalizations are shown in (\ref{ex:ogoja-ar}). When T1 is L,
+it patterns with the Engenni case; when T1 is H, it patterns with the
+Etsako case. When T1 is M, the following tone determines the pattern.
 
 \ex\label{ex:ogoja-ar}
-  a.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
-      \node[tone] (t1) at (0,1) {L};
-      \node[tone] (t2) at (1,1) {\{H, M\}};
-      \node[seg]  (v1) at (0,0) {V$_1$};
-      \node[seg]  (v2) at (1,0) {V$_2$};
-      %%%% drawing
-      \draw[assoc] (t1)--(v1) node[midway] {$=$};
-      \draw[assoc] (t2)--(v2);
-      \node (arrow) at (2,0.5) {$\rightarrow$};
-      \node[tone] (t2o) at (3,1) {\{H, M\}};
-      \node[seg]  (v2o) at (3,0) {V$_2$};
-      \draw[assoc] (t2o)--(v2o);
-    \end{tikzpicture}
-  \hfil
-  b.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
-      \node[tone] (t1) at (0,1) {H};
-      \node[tone] (t2) at (1,1) {\{M,L\}};
-      \node[seg]  (v1) at (0,0) {V$_1$};
-      \node[seg]  (v2) at (1,0) {V$_2$};
-      %%%% drawing
-      \draw[assoc] (t1)--(v1) node[midway] {$=$};
-      \draw[assoc] (t2)--(v2) node[midway] {$=$};
-      \draw[newline] (t1)--(v2);
-      \node (arrow) at (2,0.5) {$\rightarrow$};
-      \node[tone] (t2o) at (3,1) {\{H, M\}};
-      \node[seg]  (v2o) at (3,0) {V$_2$};
-      \draw[assoc] (t2o)--(v2o);
-      \draw[assoc] (t1o)--(v2o);
-      \draw[assoc] (t2o)--(v2o);
-    \end{tikzpicture}
+a.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+	\node[tone] (t1) at (0,1) {L};
+	\node[tone] (t2) at (1,1) {\{H, M\}};
+	\node[seg]  (v1) at (0,0) {V$_1$};
+	\node[seg]  (v2) at (1,0) {V$_2$};
+	%%%% drawing
+	\draw[assoc] (t1)--(v1) node[midway] {$=$};
+	\draw[assoc] (t2)--(v2);
+	\node (arrow) at (2,0.5) {$\rightarrow$};
+	\node[tone] (t2o) at (3,1) {\{H, M\}};
+	\node[seg]  (v2o) at (3,0) {V$_2$};
+	\draw[assoc] (t2o)--(v2o);
+\end{tikzpicture}
+\hfil
+b.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+	\node[tone] (t1) at (0,1) {H};
+	\node[tone] (t2) at (1,1) {\{M,L\}};
+	\node[seg]  (v1) at (0,0) {V$_1$};
+	\node[seg]  (v2) at (1,0) {V$_2$};
+	%%%% drawing
+	\draw[assoc] (t1)--(v1) node[midway] {$=$};
+	\draw[assoc] (t2)--(v2) node[midway] {$=$};
+	\draw[newline] (t1)--(v2);
+	\node (arrow) at (2,0.5) {$\rightarrow$};
+	\node[tone] (t2o) at (3,1) {\{H, M\}};
+	\node[seg]  (v2o) at (3,0) {V$_2$};
+	\draw[assoc] (t2o)--(v2o);
+	\draw[assoc] (t1o)--(v2o);
+	\draw[assoc] (t2o)--(v2o);
+\end{tikzpicture}
 
+c.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+	\node[tone] (t1) at (0,1) {M};
+	\node[tone] (t2) at (1,1) {H};
+	\node[seg]  (v1) at (0,0) {V$_1$};
+	\node[seg]  (v2) at (1,0) {V$_2$};
+	%%%% drawing
+	\draw[assoc] (t1)--(v1) node[midway] {$=$};
+	\draw[assoc] (t2)--(v2);
+	\node (arrow) at (2,0.5) {$\rightarrow$};
+	\node[tone] (t2o) at (3,1) {H};
+	\node[seg]  (v2o) at (3,0) {V$_2$};
+	\draw[assoc] (t2o)--(v2o);
+\end{tikzpicture}
+\hfil
+d.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
+	\node[tone] (t1) at (0,1) {M};
+	\node[tone] (t2) at (1,1) {L};
+	\node[seg]  (v1) at (0,0) {V$_1$};
+	\node[seg]  (v2) at (1,0) {V$_2$};
+	%%%% drawing
+	\draw[assoc] (t1)--(v1) node[midway] {$=$};
+	\draw[assoc] (t2)--(v2) node[midway] {$=$};
+	\draw[newline] (t1)--(v2);
+	\node (arrow) at (2,0.5) {$\rightarrow$};
+	\node[tone] (t2o) at (3,1) {M};
+	\node[seg]  (v2o) at (3,0) {V$_2$};
+	\draw[assoc] (t2o)--(v2o);
+	\draw[assoc] (t1o)--(v2o);
+	\draw[assoc] (t2o)--(v2o);
+\end{tikzpicture}
+\hfil
 
-    c.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
-      \node[tone] (t1) at (0,1) {M};
-      \node[tone] (t2) at (1,1) {H};
-      \node[seg]  (v1) at (0,0) {V$_1$};
-      \node[seg]  (v2) at (1,0) {V$_2$};
-      %%%% drawing
-      \draw[assoc] (t1)--(v1) node[midway] {$=$};
-      \draw[assoc] (t2)--(v2);
-      \node (arrow) at (2,0.5) {$\rightarrow$};
-      \node[tone] (t2o) at (3,1) {H};
-      \node[seg]  (v2o) at (3,0) {V$_2$};
-      \draw[assoc] (t2o)--(v2o);
-    \end{tikzpicture}
-    \hfil
-    d.~\begin{tikzpicture}[scale=1.2, baseline=(t1.base)]
-      \node[tone] (t1) at (0,1) {M};
-      \node[tone] (t2) at (1,1) {L};
-      \node[seg]  (v1) at (0,0) {V$_1$};
-      \node[seg]  (v2) at (1,0) {V$_2$};
-      %%%% drawing
-      \draw[assoc] (t1)--(v1) node[midway] {$=$};
-      \draw[assoc] (t2)--(v2) node[midway] {$=$};
-      \draw[newline] (t1)--(v2);
-      \node (arrow) at (2,0.5) {$\rightarrow$};
-      \node[tone] (t2o) at (3,1) {M};
-      \node[seg]  (v2o) at (3,0) {V$_2$};
-      \draw[assoc] (t2o)--(v2o);
-      \draw[assoc] (t1o)--(v2o);
-      \draw[assoc] (t2o)--(v2o);
-    \end{tikzpicture}
-    \hfil
-  
 \xe
 
 
+\section{Learning Tonal Processes using Graph Transductions}
 
-\subsection{Tone-driven changes}
-\subsection{Tone--segment interaction}
+From segmental phonology, we are familiar with rewrite rules such as
+
+\[
+A \rightarrow B \,/\, C \_ D
+\]
+
+where \(C \_ D\) represents the contextual environment that triggers the
+change from \(A\) to \(B\). In autosegmental phonology, such processes
+are not always easy to express linearly, since the relevant structure
+involves relations rather than simple strings. The unbounded tonal shift
+or spreading further involves linking the tones to multiple TBUs.
+However, the learning question, for either segmental or tonal processes,
+remains the same: what \textbf{environment} triggers the change. In
+tonal phonology, a process can involve three types of representational
+change.
+
+\begin{enumerate}
+	\item \textbf{Featural or quality change.} The quality of a tone or a
+	segment change on a single tier. The corresponding rows or columns
+	in the matrix change.
+	
+	\item \textbf{Delinking.} An existing association line between a tone
+	and TBU is removed. The corresponding entry in the tone--TBU
+	association matrix changes from \(1\) to \(0\).
+	
+	\item \textbf{Linking.} An association line between a tone and a TBU
+	is added. The corresponding matrix entry changes from \(0\) to
+	\(1\).
+\end{enumerate}
+%
+%These three types of tonal processes can be summarized below:
+%\[
+%T_1 \rightarrow T_2 \,/\, C \_ D
+%\]
+%\[
+%\begin{array}{ccc}
+%	? & ? & ? \\
+%	? & \colorbox{pink}{1} & ? \\
+%	? & ? & ?
+%\end{array}
+%\quad \rightarrow \quad
+%\begin{array}{ccc}
+%	? & ? & ? \\
+%	? & \colorbox{pink}{0} & ? \\
+%	? & ? & ?
+%\end{array}
+%\]
+%\[
+%\begin{array}{ccc}
+%	? & ? & ? \\
+%	? & \colorbox{pink}{0} & ? \\
+%	? & ? & ?
+%\end{array}
+%\quad \rightarrow \quad
+%\begin{array}{ccc}
+%	? & ? & ? \\
+%	? & \colorbox{pink}{1} & ? \\
+%	? & ? & ?
+%\end{array}
+%\]
+
+For Type 1 process, it is simply a string transformation, which can be
+learned by most string-based learners, provided the all other
+association lines keep unchanged, and the tonal quality is the only
+change. The rest two types are more complex than the Type 1 for we are
+studying the line linking and delinking.
+
+Here I propose these processes can be generalized as modeling with graph
+transductions from input structures to output structures.
+%\citep{Courcelle1994, EngelfrietHoogeboom2001, CourcelleEngelfriet2012}.
+Readers can circle back to Chapter~\ref{chap:formal} for the basics of
+logical transduction. In short, a set of logic formulas define a
+function from ARs to ARs. The formulas are always evaluated with respect
+to the input structure and together they determine the structure of the
+output.
 
 
-\section{Learning association changes using logical transductions}
-As mentioned above, the three types under discussion can be captured through a single association relation
-\(\alpha\) together with two sub-operations, \textsf{deassoc} and
-\textsf{reassoc}, modeled as logical transductions. These
-transductions are grounded in model-theoretic representations of
-phonological structures, where logical formulas define the mapping
-from input to output representations.
-\section{The Learning Problem}
 
-\section{The Learning Algorithm}
+\begin{table}[t]
+	\centering
+	\small
+	\begin{tabular}{llll}
+		\toprule
+		\textbf{Output} & & \textbf{Input} & \textbf{Interpretation} \\
+		\midrule
+		$\phi_{\textsf{Domain}}$ & $:=$ & $\textsc{True}$
+		& Preserve all input elements \\[0.5em]
+		\textsc{Copy} & $:=$ & 1
+		& Define output domain same size as input \\[0.5em]
+		$\phi_{H}(x)$ & $:=$ & $?$
+		& Preserve elements and their labels \\[0.5em]
+		$\phi_{<}(x,y)$ & $:=$ & $<(x,y)$
+		& Preserve linear order within tiers \\[0.5em]
+		$\phi_{\alpha}(x,y)$ & $:=$
+		& $\begin{aligned}
+			\bigl(\alpha(x,y) \land \neg \textsf{deassoc}(x,y)\bigr)\\
+			\lor \bigl(\neg \alpha(x,y) \land \textsf{reassoc}(x,y)\bigr)
+		\end{aligned}$
+		& Update association relations \\[0.5em]
+		$\phi_{\textsf{license}}(x)$ & $:=$ & $\exists y\, \phi_\alpha(x,y)$
+		& Preserve only associated elements \\
+		\bottomrule
+	\end{tabular}
+	\caption{Logical formulas defining an input-output AR transduction.}
+	\label{tab.transduction}
+\end{table}
 
-\section{Case Studies}
+Table~\ref{tab.transduction} provides the formulas described below.
+\begin{itemize}\itemsep-0.5ex
+	\item The domain formula $\phi_{\textsf{Domain}}$ determines which ARs
+	are in the domain of the function. Here, we set this value to True,
+	indicating this function is total.
+	\item The copy set helps determine the size of the output structures.
+	Here, we set it to 1, which means every node in the output
+	corresponds to one element in the input.
+	\item For each unary relation $P\in\{L, H, C, V\}$, the formula
+	\(\phi_{P}(x)\) determines whether node \(x\) in the output has
+	property \(P\). Here, nodes in the output have the same properties
+	as their corresponding nodes in the input.
+	\item The formula  \(\phi_{<}(x,y)\) determines which pairs of nodes
+	in the output structure stand in the precedence relation. Here,
+	pairs of nodes in the output stand in the precedence relation only
+	if their corresponding nodes in the input are in the precedence
+	relation.
+	\item The formula  \(\phi_{\alpha}(x,y)\) determines which pairs of
+	nodes in the output structure stand in the association relation.
+	Here pairs of nodes stand in the association relation provided (i)
+	they were associated in the input and they do not satisfy the
+	deassociation condition \textsf{deassoc} or (ii) they were not
+	associated in the input and they do satisfy the reassociation
+	condition \textsf{reassoc}. We refer to these two components as
+	\textsf{Retain} and \textsf{Add}, respectively. The predicates
+	\textsf{deassoc} and \textsf{reassoc} are language-specific logical
+	formulas, which correspond to structures, and which constitute the
+	parameters to be learned.
+	
+	% \begin{equation}
+		%   \phi_{\alpha}(x,y) :=
+		%   \underbrace{\bigl(\alpha(x,y) \land \neg \textsf{deassoc}(x,y)\bigr)}_{\textsf{Retain}}
+		%   \;\lor\;
+		%   \underbrace{\bigl(\neg \alpha(x,y) \land \textsf{reassoc}(x,y)\bigr)}_{\textsf{Add}}
+		%   \label{eq:retainadd}
+		% \end{equation}
+	% % \hijeff{I know we agreed on calling it P and Q. But we just used P to indicate unary relation, which might be confusing. I changed the condition names to Retain vs Add. Let me know if this is too textual}
+	% % \hihan{Perfect}
+	
+	\item The licensing formula $\phi_{\textsf{license}}(x)$ determines
+	which nodes in the output are licensed. According to the semantics
+	of graph transductions, unlicensed nodes disappear, along with any
+	relations associated with them. Here, only output nodes that stand
+	in an association relation in the output are licensed.
+	
+\end{itemize}
 
+It follows that the transduction defines an output structure whose
+domain is the same as the input structure, except that unassociated
+elements are filtered out by $\phi_{\textsf{license}}(x)$. All unary
+relations \(P(x)\) in the input signature are preserved in the
+corresponding output. Similarly, precedence relations are preserved. The
+only change is the association relation \(\alpha\). Thus, the problem of
+learning association-line transformations can be reduced to learning the
+logical formulas for \textsf{deassoc} and/or \textsf{reassoc}, or their
+equivalent structural representations.
+
+When no transformation occurs between the input and output
+representations, neither \textsf{deassoc} nor \textsf{reassoc} takes
+place (i.e., both have the value of False). The association relation
+therefore remains unchanged: all input associations are preserved in the
+output (\textsf{Retain} evaluates to True iff \(\alpha(x,y)\) holds in
+the input structure), and no new associations are added (\textsf{Add}
+applies to none because it always evaluates False). Since these two
+predicates are combined through disjunction, two parallel learning
+processes apply simultaneously, one for \textsf{deassoc} and one for
+\textsf{reassoc}, and their outputs are combined to define
+$\phi_\alpha$.
+
+To illustrate,
+%consider contour formation
+%as shown in Figure~\ref{fig:IOpair}. %When two vowels become
+%adjacent, the first vowel, V$_1$, is deleted. The tone T$_1$,
+%originally associated with V$_1$, is delinked from
+%V$_1$ and reassociates with the following vowel V$_2$.
+%As a result, V$_2$ bears both tones in their original order,
+%which surface together as a contour tone.
+Figure~\ref{fig:hiatus} visualizes this contour formation from
+Figure~\ref{fig:IOpair} in both graph-theoretic and matrix
+representations.
+%From a logical perspective, this transformation is captured
+%by three predicates: \textsf{deassoc}, \textsf{reassoc}, and
+%$\phi_{\textsf{license}}$.
+The \textsf{deassoc} function identifies the association to be broken
+between T$_1$ and the deleted vowel V$_1$ (the crossed-out line). The
+\textsf{Retain} conjunction $\alpha(x,y)\land\neg\textsf{deassoc}(x,y)$
+removes this association $(T_1,V_1)$ while preserving all unaffected
+associations, that is, $(T_2,V_2)$. The \textsf{reassoc} function then
+links T$_1$ to the surviving vowel V$_2$ (the dotted line). As a result,
+V$_1$ is no longer associated with any element on the opposite tier and
+therefore fails to satisfy the licensing condition
+$\phi_{\textsf{license}}$ in the output. Consequently, V$_1$ is not
+licensed and is omitted from the surface form (shown in gray).
+
+\begin{figure}
+	\centering
+	
+	\begin{minipage}[t]{0.48\textwidth}
+		\centering
+		
+		\begin{tabular}{c c c}
+			
+			\textbf{UR} & $\Rightarrow$ & \textbf{SR} \\[0.5em]
+			
+			\begin{tikzpicture}[scale=0.7, every node/.style={inner sep=2pt}]
+				\node (v1) at (0,0) {V$_1$};
+				\node (v2) at (1.4,0) {V$_2$};
+				
+				\node (t1) at (0,1.3) {T$_1$};
+				\node (t2) at (1.4,1.3) {T$_2$};
+				
+				\draw (v1)--(t1);
+				\draw (v2)--(t2);
+			\end{tikzpicture}
+			
+			&&
+			
+			\begin{tikzpicture}[scale=0.7, every node/.style={inner sep=2pt}]
+				\node [fill=gray!20](v1) at (0,0) {V$_1$};
+				\node (v2) at (1.4,0) {V$_2$};
+				
+				\node (t1) at (0,1.3) {T$_1$};
+				\node (t2) at (1.4,1.3) {T$_2$};
+				
+				\draw (v1)--(t1) node[midway] {=};
+				\draw (v2)--(t2);
+				
+				\draw[dotted, thick] (v2)--(t1);
+			\end{tikzpicture}
+			
+		\end{tabular}
+		
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{0.48\textwidth}
+		\centering
+		
+		\begin{tabular}{c c c}
+			
+			\textbf{UR} & $\Rightarrow$ & \textbf{SR} \\[0.5em]
+			
+			$
+			\begin{array}{c|cc}
+				& T_1 & T_2\\
+				\hline
+				V_1 & \cellcolor{gray!75}1 & 0 \\
+				V_2 & \cellcolor{gray!15}0 & 1 \\
+			\end{array}
+			$
+			
+			&&
+			
+			$
+			\begin{array}{c|cc}
+				& T_1 & T_2\\
+				\hline
+				V_1 & \cellcolor{gray!15}0 & 0 \\
+				V_2 & \cellcolor{gray!75}1 & 1 \\
+			\end{array}
+			$
+			
+		\end{tabular}
+		
+	\end{minipage}
+	\caption{Contour formation in both graph-theoretic and matrix representations.}
+	\label{fig:hiatus}
+\end{figure}
+
+% -------------------------------------------------------------------
+
+\section{Association Learning}
+This section follows the ideas of using logical transductions to learn
+phonological mappings in \citet{yolyan2025logical}, who in turn
+leveraged the entailment relation in the partially ordered space crucial
+to \citet{chandleeBufia2019} to find a smallest environment that
+triggers a change.
+
+Importantly, if an environment (which itself is a structure defined
+model-theoretically, henceforth we call it `environment') is sufficient
+to trigger a transformation, then any superfactor containing that
+environment will likewise undergo the same transformation. Conversely,
+if an environment fails to trigger the change, then none of its
+subfactors can do so. Given a hypothesized environment, all data
+satisfying this condition are expected to undergo the transformation
+(positive evidence), while all data not satisfying this condition are
+expected not to undergo the transformation (negative evidence). If some
+positive data fails to undergo the transformation, then this hypothesis
+is too restrictive; if some negative data nevertheless undergo the
+transformation, then the hypothesis is too general. The goal of learning
+is therefore to identify the smallest common environment that is
+contained in all positive evidence, but absent from all negative
+evidence.
+
+\citet{yolyan2025logical} worked with string-to-string functions, but
+the same ideas apply to ARs. This is because ARs, like any
+model-theoretic representation, form a partial order with the
+containment relation \citep{chandleeBufia2019}.
+
+%Equivalently, transformations can be
+%viewed as changes to the graph's adjacency matrix, where an entry
+%changes from $1\rightarrow0$ or $1\rightarrow0$.
+
+% To learn ASGs, we adapt the bottom-up factor inference framework of
+% \citet{chandleeBufia2019} and the logical learning framework of
+% \citet{yolyan2025logical} to graph-based autosegmental
+% representations \citep{LiHeinzPhO2026}.
+
+% \begin{figure}[t!]
+	%   \centering
+	%   \[
+	%     0 \rightarrow 1 \;/\;
+	%     \begin{array}{ccc}
+		%       ? & ? & ? \\
+		%       ? & {\_} & ? \\
+		%       ? & ? & ?
+		%     \end{array}
+	%     \quad \text{or} \quad
+	%     1 \rightarrow 0 \;/\;
+	%     \begin{array}{ccc}
+		%       ? & ? & ? \\
+		%       ? & {\_} & ? \\
+		%       ? & ? & ?
+		%     \end{array}
+	%   \]
+	%   \caption{What contexts determine whether an association relation is inserted or removed.}
+	%   \label{fig:10rules}
+	% \end{figure}
+
+The core learning algorithm is shown in Algorithm~1 (BUFIA-AC). It takes
+as input a set of input-output pairs, an initial hypothesized
+environment \(h_0\), and a bound \(k\in\mathbb{N}\) on the size of
+environments to consider.
+%Initially, the learner identifies changing association sites by comparing the input and output association matrices.
+%Learning then proceeds separately for the \textsf{Retain}
+%and \textsf{Add} components.
+To find the environment for \textsf{Retain}, BUFIA-AC is called with the
+most general hypothesis \(h_0=\alpha(x,y)\). To find the environment for
+\textsf{Add}, BUFIA-AC is called with  \(h_0=\neg\alpha(x,y)\). Thus
+BUFIA-AC is called twice to learn the two environments independently.
+Those results are combined through disjunction to obtain the formula in
+Equation~\ref{eq:retainadd} as shown in Algorithm~2.
+
+
+%  \begin{algorithm}[t]
+%	    \SetKwInput{KwData}{Input}
+%	    \SetKwInput{KwResult}{Output}
+%	  \small
+%	  \LinesNumbered
+%	
+%	  \KwData{$D=     \{(I_1,O_1),\dots,(I_n,O_n)\}, h_0, k$
+%		      }
+%	  \KwResult{An environment \(c\) or \(\bot\)
+%		      }
+%	
+%	          %
+%	  %  \KwOut{
+%		    %    minimal structural environment $c$
+%		    %  }
+%	    \(D^+ \gets \{\, I_i \mid I_i \neq O_i \,\}\)\;
+%	
+%	    \(D^- \gets \{\, I_i \mid I_i = O_i \,\}\)\;
+%	
+%	    $P \gets \emptyset$\;
+%	  %  \tcp*{pruned set}
+%	
+%	    $Q \gets h_0$\;
+%	
+%	    \While{$Q \neq \emptyset$}{
+%		
+%		        $h \gets Q.\mathrm{Dequeue}()$\;
+%		
+%		        \If{$\forall I_i \in D^+\; [\textsc{match}(h,I_i,O_i,h_0)]$}{
+%			
+%			            \If{$\forall I_i \in D^-\; [\neg \textsc{match}(h,I_i,O_i,h_0)]$}{
+%				
+%				                \Return{$h$}\;
+%				              }
+%			
+%			            \Else{
+%				                                  \ForEach{$s \in \textsc{NextSupFact}(h)$}{
+%					                                      \If{$|s| < k \land (\forall p \in P)[s \not\sqsubseteq p]$}{$Q.\mathrm{Enqueue}(s)$}\;
+%					                  }
+%				              }
+%			          }
+%		
+%		        \Else{
+%			
+%			            $P \gets P \cup \{h\}$\;
+%			          }
+%		      }
+%	    \Return{$\bot$}\;
+%	
+%	    \caption{BUFIA-AC}
+%	    \label{algo1}
+%	  \end{algorithm}
+%
+%  \begin{algorithm}[t]
+%	    \SetKwInput{KwData}{Input}
+%	    \SetKwInput{KwResult}{Output}
+%	  \small
+%	  \LinesNumbered
+%	  \setcounter{AlgoLine}{0}
+%	
+%	  \KwData{$D = \{(I_1,O_1),\dots,(I_n,O_n)\}, k$}
+%	  \KwResult{The formula \(\phi_\alpha(x,y)\) or \(\bot\)}
+%	
+%	  \(\textsf{Retain} \gets \textsf{BUFIA-AC}(D, \alpha(x,y), k)\)\;
+%	
+%	  \(\textsf{Add} \gets \textsf{BUFIA-AC}(D, \neg\alpha(x,y), k)\)
+%	
+%	  \If{\(\textsf{Retain} =\bot \;\lor\; \textsf{Add} =\bot\)}{
+%		      \Return{\(\bot\)} }
+%	  \Else{
+%		      \Return{\(\textsf{Retain} \lor \textsf{Add}\)}}
+%	  \caption{Learning Association Changes}
+%	  \label{algo2}
+%	  \end{algorithm}
+%
+%  \begin{algorithm}[t]
+%	    \SetKwInput{KwData}{Input}
+%	    \SetKwInput{KwResult}{Output}
+%	  \small
+%	  \LinesNumbered
+%	  \setcounter{AlgoLine}{0}
+%	
+%	  \KwData{$h, I, O, h_0$}
+%	  \KwResult{True or False}
+%	  \If{\(h_0\)=\(\alpha(x,y)\)}{
+%		      \If{\(h\sqsubseteq I\)}{
+%			          \If{\(\forall (i,j) \in D(I,O)\)\\
+%				              \Indp\([\exists r,c: r(x)=i, c(y)=j]\)}{
+%				              \Return{True}}
+%			        }}
+%	    \Else{\If{\(h\not\sqsubseteq I\)}{
+%			            \If{\(\forall (i,j) \in R(I,O)\)\\
+%				                \Indp\([\exists r,c: r(x)=i, c(y)=j]\)}{
+%				              \Return{True}}
+%			          }}
+%	  \Return{False}
+%	  \caption{Match}
+%	  \label{algo3}
+%	  \end{algorithm}
+
+The input data consists of a finite set of input-output AR pairs, which
+are partitioned into positive and negative evidence, denoted $D^+$ and
+$D^-$ respectively. It also maintains a pruning set \(P\), and a queue
+\(Q\) of hypotheses to be checked. The queue is initialized with the
+structure \(c_0\) as the initial hypothesis.
+%, namely \(\alpha(x,y)\) for further deassociation learning and \(\neg \alpha(x,y)\) for further reassociation learning.
+
+The algorithm conducts a breadth-first search over a partially ordered
+hypothesis space. At each step, a candidate hypothesis $h$ is first
+tested against the positive evidence. For each \((I,O)\in D^+\)
+$\textsc{match}(h, I, O,h_0)$ returns true iff the hypothesized
+environment \(h\) matches the relevant positions in the structure that
+undergo the transformation.
+
+Formally, this is carried out by Algorithm~3 (Match). It uses \(h_0\) to
+determine whether it is looking for deassociations or reassociations and
+behaves accordingly. In the former case, it checks whether there are
+bijections \(r,c\) such that \((r(x),c(y))=D(I,O)\) for each \((I,O)\in
+D^+\), and that these bijections witness \(h\) being contained in \(I\).
+These conditions ensure that the \(x,y\) coordinates are anchored to the
+positions in the structure that undergo the transformation. The
+reassociation case proceeds similarly. If \(h\) fails to match all
+positive examples \(D^+\), then the current hypothesis is incompatible
+with the observed transformation and thus is added to the pruning set
+$P$. Because any superfactor of \(h\) will also fail to be contained in
+the same positive example, such hypotheses need not be refined further.
+
+If \(h\) passes the positive test, it is then tested against all
+negative examples in $D^-$. Then \(h\) is checked to see whether it
+matches any datum in $D^-$. If not, it is consistent with both the
+positive and negative evidence. Therefore \(h\) is returned as a valid
+environment, and BUFIA-AC terminates. Otherwise, \(h\) is too general.
+In this case, the learner generates the next superfactors of \(h\) using
+\textsc{NextSupFact} and adds them to the queue, provided that they do
+not contain a pruned hypothesis and do not exceed the complexity bound
+\(k\).
+
+Since hypotheses are explored breadth-first, the first valid hypothesis
+returned by the learner is guaranteed to be a minimal environment
+consistent with all positive and negative evidence. In terms of
+\textsc{NextSupFact}, there are many ways to generate superfactors and
+enqueue them for the same hypothesis space. Each operation increases the
+size of the current structure by exactly one, ensuring that
+\textsc{NextSupFact} generates only minimal superfactors:
+\begin{enumerate}[label=(\roman*),noitemsep]
+	\item assigning labels to previously unspecified nodes;
+	\item introducing a new neighboring node, which may either follow or
+	precede an existing node on either tier, at both boundaries;
+	\item add one association line, provided that both nodes are already
+	present in the structure.
+\end{enumerate}
+We add these superfactors to the queue in the order shown above.
+Consequently, Algorithm~1 considers superfactors with new labels before
+ones with new nodes before those with new association lines. Within
+those groups, the superfactors must also be ordered.\footnote{This can
+	be done in many ways and can impact the algorithm's output. See
+	\citet{rawski2021structure} for discussion on this point.}
+
+Table~\ref{tab:nextsupfact} presents a non-exhaustive set of examples
+illustrating the generation of \textsc{NextSupFact} from an initial
+\textsf{deassoc} hypothesis \(\alpha(x,y)\). As can be seen, each
+operation provides an equivalent interpretation from the matrix,
+graph-theoretic, and logical perspectives. New quantifiers are
+only introduced through successor %\hijeff{local }precedence
+relations, corresponding to the addition of neighboring nodes in the
+graph structure. Learners may further specialize the hypothesis through
+conjunction, including adding association relations (which corresponds
+to changing matrix cells) or specifying node labels.
+
+
+\section{Case Study: Contour Formation}
+We use the contour formation to demonstrate both the logical
+transduction framework and BUFIA-style learning over ARs.
+%We assume a model $\mathcal{M}= \{H,L,C,V,\alpha,\lhd\}$.
+%where \(H\) and \(L\) are tonal elements on the tone tier \(T\),
+%while \(C\) and \(V\) belong to the segmental tier \(S\).
+
+% [MERGED from AMP] ------------------------------------------------
+Table~\ref{tab:estako} gives Etsako data \citep{elimelech1976tonal}.
+Forms (a)--(c) surface faithfully. In (d) and (e), compounding and
+reduplication create a vowel hiatus: the first vowel deletes and its
+tone reassociates to the second, yielding a falling contour in (d) and a
+rising contour in (e). The last column abstracts each form to its
+segmental and tonal shape.
+
+\begin{table}[t]
+	\centering\small
+	\begin{tabular}{llllll}
+		\toprule
+		& \textbf{Input} & \textbf{Output} & \textbf{Gloss} & \textbf{Shape} & \textbf{Change} \\
+		\midrule
+		a. & /\'ow\`a/ & [\'ow\`a] & `house' & VCV, HL & -- \\
+		b. & /\'ow\'a/ & [\'ow\'a] & `house-ACC' & VCV, HH & -- \\
+		c. & /\'ow\'a/ + /mh\`e/ & [\'ow\'amh\`e] & `my house' & VCVCV, HHL & -- \\
+		d. & /\'ow\'a/ + /\`e\texttheta\`a/ & [\'ow\^e\texttheta\`a] & `father's house' & VCVVCV, HHLL & HL contour \\
+		e. & /\'ow\`a/ + /\'ow\`a/ & [\'ow\v{o}w\`a] & `every house' & VCVVCV, HLHL & LH contour \\
+		\bottomrule
+	\end{tabular}
+	% NOTE: (c) treats <mh> as a single consonant; check against the source.
+	\caption{Etsako tonal alternations in vowel hiatus.}
+	\label{tab:estako}
+\end{table}
+
+Figure~\ref{fig:estakomatrix} shows the association matrices for (d) and
+(e). The changed cells are in the same positions in both, even though
+the tones involved differ: the change depends on the configuration of
+the vowels, not on tonal identity.
+
+\begin{figure}[t]
+	\centering
+	\begin{tabular}{ccccc}
+		\multicolumn{2}{c}{(d) /\'ow\'a/ + /\`e\texttheta\`a/} & \hspace{2em} &
+		\multicolumn{2}{c}{(e) /\'ow\`a/ + /\'ow\`a/} \\[0.3em]
+		\textbf{UR} & \textbf{SR} & & \textbf{UR} & \textbf{SR} \\
+		$\begin{array}{c|cccc}
+			& H & H & L & L \\ \hline
+			V & 1 & 0 & 0 & 0 \\
+			C & 0 & 0 & 0 & 0 \\
+			V & 0 & \cellcolor{gray!75}1 & 0 & 0 \\
+			V & 0 & \cellcolor{gray!15}0 & 1 & 0 \\
+			C & 0 & 0 & 0 & 0 \\
+			V & 0 & 0 & 0 & 1
+		\end{array}$
+		&
+		$\begin{array}{c|cccc}
+			& H & H & L & L \\ \hline
+			V & 1 & 0 & 0 & 0 \\
+			C & 0 & 0 & 0 & 0 \\
+			V & 0 & \cellcolor{gray!15}0 & 0 & 0 \\
+			V & 0 & \cellcolor{gray!75}1 & 1 & 0 \\
+			C & 0 & 0 & 0 & 0 \\
+			V & 0 & 0 & 0 & 1
+		\end{array}$
+		& &
+		$\begin{array}{c|cccc}
+			& H & L & H & L \\ \hline
+			V & 1 & 0 & 0 & 0 \\
+			C & 0 & 0 & 0 & 0 \\
+			V & 0 & \cellcolor{gray!75}1 & 0 & 0 \\
+			V & 0 & \cellcolor{gray!15}0 & 1 & 0 \\
+			C & 0 & 0 & 0 & 0 \\
+			V & 0 & 0 & 0 & 1
+		\end{array}$
+		&
+		$\begin{array}{c|cccc}
+			& H & L & H & L \\ \hline
+			V & 1 & 0 & 0 & 0 \\
+			C & 0 & 0 & 0 & 0 \\
+			V & 0 & \cellcolor{gray!15}0 & 0 & 0 \\
+			V & 0 & \cellcolor{gray!75}1 & 1 & 0 \\
+			C & 0 & 0 & 0 & 0 \\
+			V & 0 & 0 & 0 & 1
+		\end{array}$
+	\end{tabular}
+	\caption{Association matrices for Table~\ref{tab:estako}(d) and (e).
+		Columns are tones in linear order. In each pair, the darker cell is
+		the association that is removed (UR) or added (SR).}
+	\label{fig:estakomatrix}
+\end{figure}
+
+To illustrate the learner step by step, we abstract further, to the
+shorthand data below.
+% -------------------------------------------------------------------
+
+Table~\ref{tab.toy} gives five input-output pairs, and cells marked with
+a dash indicate the same output as the input. The headers provide
+shorthand notations for each pair. The contour formation process can be
+observed in the CVV-LH and CVV-HL examples, where both tones become
+associated with the same vowel. This transformation can equivalently be
+represented as a change in the association matrix. Notably, tonal
+identities themselves are irrelevant to the deassociation and
+reassociation process: both CVV-LH and CVV-HL undergo contour formation
+once the two tones are linked to a single vowel. By contrast, an LH
+sequence does not necessarily surface as a contour; whether it does
+depends on the structural configuration of the vowels. For example, the
+LH sequence surfaces as a contour in CVV-LH, where the vowels are
+adjacent, but not in VCV-LH, where they are separated.
+\begin{table}[t]
+	\small
+	\centering
+	\begin{tabular}{c |c| c |c| c|c}
+		
+		\toprule
+		& CV-H& CV-L& VCV-LH& CVV-LH& CVV-HL\\
+		\midrule
+		
+		\textbf{UR}
+		
+		&
+		
+		\begin{tikzpicture}[scale=1, every node/.style={inner sep=1pt}]
+			\node (c1) at (-.5,0) {C};
+			\node (v1) at (0,0) {V};
+			\node (t1) at (0,1) {H};
+			\draw (v1)--(t1);
+		\end{tikzpicture}
+		
+		&
+		
+		\begin{tikzpicture}[scale=1, every node/.style={inner sep=1pt}]
+			\node (c1) at (-.5,0) {C};
+			\node (v1) at (0,0) {V};
+			\node (t1) at (0,1) {L};
+			\draw (v1)--(t1);
+		\end{tikzpicture}
+		
+		&
+		
+		\begin{tikzpicture}[scale=1, every node/.style={inner sep=1pt}]
+			%				\node (c1) at (-.5,0) {C};
+			\node (v1) at (0,0) {V};
+			\node (c2) at (.5,0) {C};
+			\node (t1) at (0,1) {L};
+			\node (v2) at (1,0) {V};
+			\node (t2) at (1,1) {H};
+			\draw (v1)--(t1);
+			\draw (v2)--(t2);
+		\end{tikzpicture}
+		
+		&
+		
+		\begin{tikzpicture}[scale=1, every node/.style={inner sep=1pt}]
+			\node (c1) at (-.5,0) {C};
+			\node (v1) at (0,0) {V$_1$};
+			\node (t1) at (0,1) {L};
+			\node (v2) at (.5,0) {V$_2$};
+			\node (t2) at (.5,1) {H};
+			\draw (v1)--(t1);
+			\draw (v2)--(t2);
+		\end{tikzpicture}
+		&
+		
+		\begin{tikzpicture}[scale=1, every node/.style={inner sep=1pt}]
+			%				\node (c1) at (-.5,0) {C};
+			\node (v1) at (0,0) {V$_1$};
+			\node (t1) at (0,1) {H};
+			\node (v2) at (.5,0) {V$_2$};
+			\node (t2) at (.5,1) {L};
+			\draw (v1)--(t1);
+			\draw (v2)--(t2);
+		\end{tikzpicture}
+		\\
+		
+		\midrule
+		
+		\textbf{SR}
+		
+		& -- & -- & --
+		
+		&
+		
+		\begin{tikzpicture}[scale=1, every node/.style={inner sep=1pt}]
+			\node (c1) at (-.5,0) {C};
+			\node (t1) at (0,1) {L};
+			\node (v2) at (.5,0) {V$_2$};
+			\node (t2) at (.5,1) {H};
+			\draw (v2)--(t1);
+			\draw (v2)--(t2);
+		\end{tikzpicture}
+		&
+		
+		\begin{tikzpicture}[scale=1, every node/.style={inner sep=1pt}]
+			%	\node (c1) at (-.5,0) {C};
+			\node (t1) at (0,1) {H};
+			\node (v2) at (.5,0) {V$_2$};
+			\node (t2) at (.5,1) {L};
+			\draw (v2)--(t1);
+			\draw (v2)--(t2);
+		\end{tikzpicture}			
+		\\
+		
+		\bottomrule
+		
+	\end{tabular}
+	
+	
+	\caption{Toy ASG}
+	\label{tab.toy}
+\end{table}
+
+%\input{tab.toy}
+\begin{table}[t]
+\small
+\centering
+\[
+A_i =
+\begin{array}{c|cc}
+    & {\color{gray!60} T} & {\color{gray!60} T} \\
+\hline
+{\color{gray!60} C}
+    & {\color{gray!60} 0}
+    & {\color{gray!60} 0} \\
+V   & 1 & {\color{gray!60} 0} \\
+V   & 0 & 1
+\end{array}
+\quad
+\Rightarrow
+\quad
+A_o =
+\begin{array}{c|cc}
+    & {\color{gray!60} T} & {\color{gray!60} T} \\
+\hline
+{\color{gray!60} C}
+    & {\color{gray!60} 0}
+    & {\color{gray!60} 0} \\
+V   & 0 & {\color{gray!60} 0} \\
+V   & 1 & 1
+\end{array}
+\]
+\caption{Input-output matrices ($A_i$) and ($A_o$) contour formation. The highlighted entries indicate changes in association relations.}
+\label{tab:contour-matrix}
+\end{table}
+
+
+By comparing \(D^{+}\), the learner can observe both
+deassociation and reassociation occur, thus carries out both
+search for \textsf{Retain} and \text{Add}.
+
+We will see how Algorithm~2 (LPA) finds the environment shown in
+Figure~\ref{fig:ans} for \textsf{Retain}.
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[baseline=(current bounding box.center)]
+		\node (x) at (0,0) {};
+		\node (y) at (0,1) {};
+		\node (z) at (.6,0) {};
+		
+		\draw[fill=black] (x) circle (2pt);
+		\draw[fill=black] (y) circle (2pt);
+		\draw[fill=black] (z) circle (2pt);
+		
+		\draw (x) -- (y);
+		\draw[dashed] (x) -- (z);
+		
+		\node[left] at (x) {$V(x)$};
+		\node[right] at (y) {$y$};
+		\node[right] at (z) {$V(z)$};
+	\end{tikzpicture}
+	\caption{A distinguishing environment}
+	\label{fig:ans}
+\end{figure}
+We call Algorithm~2 (LPA) with the data \(D\) in Table~\ref{tab.toy}
+letting \(k=5\). It calls Algorithm~1 (BUFIA-AC) to search for predicate
+\textsf{Retain} with \(D, k\) and with \(H_0=\alpha(x,y)\).
+
+BUFIA-AC first partitions the data into positive evidence \(D^{+}\) and
+negative evidence \(D^{-}\). In this toy example, \(D^{+}\) consists of
+CVV-LH and CVV-HL, and \(D^{-}\) consists of the rest pairs marked with
+dashes in Table~\ref{tab.toy}.
+
+% \[
+% H_0: \textsf{Retain} = \alpha(x,y)
+% \]
+
+BUFIA-AC tests $h_0$ against both positive and negative evidence.
+Trivially, it matches every structure in \(D^+\), but, when evaluated
+against \(D^-\), the hypothesis is rejected: in CV-H, CV-L, and VCV-LH,
+the association lines in the input remain associated in the output,
+contrary to the expectation of \(h_0\). BUFIA-AC therefore concludes
+that the hypothesis is too general and must be made more specific.
+
+To refine the environment, BUFIA-AC generates increasingly minimally
+specific structures through \textsc{NextSupFact} generation. Following
+the new label/node/association-line ordering introduced above, the
+learner first enqueues the next superfactors obtained by labeling
+previously unspecified nodes.
+%Concretely, it iterates over all symbols available on the
+%corresponding tier and assigns them to previously unlabeled
+%nodes.
+These superfactors are shown in Table~\ref{tab.h1abcd}. Superfactors
+(\ref{tab.h1abcd}a) and (\ref{tab.h1abcd}b) label $y$ as $H$ or $L$ on
+the tone tier, while (\ref{tab.h1abcd}c) and (\ref{tab.h1abcd}d) label
+$x$ as $V$ or $C$ on the segment tier. Superfactors (\ref{tab.h1abcd}e)
+through (\ref{tab.h1abcd}h) add one node adjacent to an existing one.
+
+%\input{tab.supfac.of.H0}
+
+When evaluating the candidate hypotheses in Table~\ref{tab.h1abcd},
+BUFIA-AC determines that superfactors (\ref{tab.h1abcd}a,
+\ref{tab.h1abcd}b, \ref{tab.h1abcd}d, \ref{tab.h1abcd}g) do not match
+all positive examples. They are thus pruned.
+%This indicates that tonal
+%identity does not contribute to the transformation, and
+%\hihan{It seems like you are doing more here, and throughout, than algo 1. In particular, even though none of th 6a-d are consistent with the data, you differentiate between 6ab and 6cd. Algo 1 doesn't. Let's discuss.}
+However, (\ref{tab.h1abcd}c, \ref{tab.h1abcd}e, \ref{tab.h1abcd}f,
+\ref{tab.h1abcd}h) are consistent with all of \(D^+\), and they are thus
+checked against \(D^-\).
+%BUFIA-AC therefore continues with this hypothesis for \textsf{deassoc}.
+% \[
+% H_1:\quad
+% \textsf{Retain} = \alpha(x,y)\land
+% \underbrace{V(x)}_{\text{current \textsf{deassoc} hypothesis}}
+% \]
+% \hihan{isn't this whole thing \textsf{deassoc}?}
+Each of these superfactors (\ref{tab.h1abcd}c, \ref{tab.h1abcd}e,
+\ref{tab.h1abcd}f, \ref{tab.h1abcd}g) matches some negative example,
+hence they each fail to distinguish contexts in which the transformation
+applies from those in which it does not. BUFIA-AC therefore generates
+their next superfactors and enqueues them. BUFIA-AC then dequeues the
+next \(h\), which is (\ref{tab.h1abcd}c) because of the ordering imposed
+by the construction of superfactors: new labels then new nodes then new
+associations.
+%As tonal identity is  shown not relevant to the
+%transformation, node \(y\) remains underspecified rather than
+%being assigned a tonal label.
+
+%\input{tab.supfac.of.H1}
+Hypothesis (\ref{tab.h1abcd}c) is consistent with \(D^+\) and so it is
+then checked against \(D^-\). It is not consistent with \(D^-\) and so
+its superfactors are generated next. However, not all of its
+superfactors are enqueued. This is because the superfactors that add a
+label to the tonal node are pruned away by the factors in the pruned set
+\(P\). The superfactors that are not pruned away are shown in
+Table~\ref{tab.h2}, where (\ref{tab.h2}a)--(\ref{tab.h2}b) introduce a
+new node that immediately precedes or follows the existing node on the
+segment tier, while (\ref{tab.h2}c)--(\ref{tab.h2}d) do so on the tone
+tier. These are added to the end of the queue.
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[baseline=(current bounding box.center)]
+		\node (x) at (0,0) {};
+		\node (y) at (0,1) {};
+		\node (z) at (.6,0) {};
+		
+		\draw[fill=black] (x) circle (2pt);
+		\draw[fill=black] (y) circle (2pt);
+		\draw[fill=black] (z) circle (2pt);
+		
+		\draw (x) -- (y);
+		\draw[dashed] (x) -- (z);
+		
+		\node[left] at (x) {$V(x)$};
+		\node[right] at (y) {$y$};
+		\node[right] at (z) {$z$};
+	\end{tikzpicture}
+	\caption{A superfactor generated twice}
+	\label{fig:sfx2}
+\end{figure}
+
+The next item on the queue is (\ref{tab.h1abcd}e). It too is not
+consistent with \(D^-\) and its superfactors are generated and added to the queue. Note that there is
+some inefficiency here because the superfactor shown in
+Figure~\ref{fig:sfx2} is a next superfactor of both (\ref{tab.h1abcd}c)
+and (\ref{tab.h1abcd}e). Nonetheless, this procedure continues until the
+environment in Figure~\ref{fig:ans} is dequeued. This environment is
+consistent with both \(D^+\) and \(D^-\).
+
+Furthermore, it is the first hypothesis in the queue to be so. To see
+why, consider that the environment in Figure~\ref{fig:ans} is a next
+superfactor of Figure~\ref{fig:sfx2}. As such, it is a next superfactor
+of a next superfactor of Hypothesis (\ref{tab.h1abcd}c). In other words,
+the environment in Figure~\ref{fig:ans} is generated and placed on the
+queue after Figure~\ref{fig:sfx2} is dequeued and examined for
+consistency.
+
+Call a next superfactor of a next superfactor a `grandchild.' The
+grandchildren of Hypothesis (\ref{tab.h1abcd}c) will all occur on the
+queue before the grandchildren of Hypotheses (\ref{tab.h1abcd}e,
+\ref{tab.h1abcd}f, \ref{tab.h1abcd}g) by the ordering imposed. So the
+only way BUFIA-AC would not return the environment in
+Figure~\ref{fig:ans} is if a next superfactor (\ref{tab.h1abcd}e,
+\ref{tab.h1abcd}f, \ref{tab.h1abcd}g) was consistent with both the
+positive and negative data. However, none of them are.
+
+The learner therefore converges on the environment in
+Figure~\ref{fig:ans} as a minimal structure that triggers the
+transformation and is consistent with both positive and negative
+evidence. This formula below encodes the same structural condition
+illustrated in Figure~\ref{fig:hiatus}.
+\begin{equation}
+	\textsf{Retain}
+	=
+	\alpha(x,y)
+	\land
+	V(x)\land \exists z \bigl(x \lhd z \land V(z)\bigr)
+\end{equation}
+
+Importantly, one may observe that triggering deassociation does not
+require T$_2$ to be associated with V$_2$. The learned hypothesis
+therefore predicts that deassociation applies whenever two vowels are
+adjacent, regardless of whether the following vowel is associated with
+a tone. %\hijeff{delete or stay??}\hihan{stay}
+
+Algorithm~2 (LPA) follows a similar process to determine \textsf{Add}.
+The learner eventually converges on the following hypothesis.
+\begin{equation}
+	\textsf{Add}
+	=
+	\neg \alpha(x,y) \land V(x) \land \exists z \big((z \lhd x) \land V(z) \land \alpha (z,y)\big)
+\end{equation}
+Algorithm~2 (LPA) combines the two operations into the final
+transformation.
+\begin{align}
+	\phi_{\alpha(x,y)} :=\ &
+	\alpha(x,y)\land V(x)
+	\land \exists z\big((x\lhd z)\land V(z)\big) \nonumber \\
+	\lor\ &
+	\neg\alpha(x,y)\land V(x)
+	\land \exists z\big((z\lhd x)\land V(z)\land \alpha(z,y)\big)
+\end{align}
+
+Lastly, the graph transduction presented in Table~\ref{tab.transduction}
+is now complete. The licensing function \(\phi_{\textsf{license}}\)
+filters out elements that are not associated in the surface
+representation. Such unlicensed elements are not realized phonetically
+and therefore do not appear in the output. In this way, the algorithms
+presented here have learned how to transform the association relation
+between the tonal and segmental tiers.
 \section{Discussion}
 
 \section{Conclusion}
